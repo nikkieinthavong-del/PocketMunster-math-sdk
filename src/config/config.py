@@ -17,6 +17,7 @@ class Config:
         self.provider_name = "sample_provider"
         self.provider_number = 1
         self.game_name = "sample_lines"
+        self.output_regular_json = True  # if True, outputs .json if compression = False. If False, outputs .jsonl
         if self.game_id != "0_0_sample":
             self.construct_paths()
 
