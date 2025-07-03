@@ -144,7 +144,6 @@ def output_lookup_and_force_files(
             )
 
     if compress:
-        # Write a temporary file
         temp_book_output_path = os.path.join(gamestate.output_files.book_path, "temp_book_output.json")
         with open(temp_book_output_path, "w", encoding="UTF-8") as outfile:
             for fname in file_list:
@@ -263,7 +262,11 @@ def write_json(gamestate, filename: str):
             f.write(compressed_data)
     else:
         with open(filename, "w", encoding="UTF-8") as f:
-            f.write(combined_data)
+            if not (gamestate.config.output_regular_json):
+                f.write(combined_data)
+            else:
+                j_regular = [item for item in gamestate.library.values()]
+                f.write(json.dumps(j_regular))
 
 
 def print_recorded_wins(gamestate: object, name: str = ""):
