@@ -24,6 +24,8 @@ setup: packInstall
 
 run GAME:
 	$(VENV_PY) games/$(GAME)/run.py
+	@echo "Formatting books files..."
+	@$(VENV_PY) scripts/format_books_json.py games/$(GAME) || echo "Warning: Failed to format books files"
 
 test:
 	cd $(CURDIR)
