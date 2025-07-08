@@ -83,11 +83,11 @@ class OutputFiles:
                 "folder_dir": self.book_path,
                 "names": {
                     "books_uncompressed": books_name + ext_name,
-                    "books_compressed": books_name + ext_name + ".zst",
+                    "books_compressed": books_name + ".jsonl.zst",
                 },
                 "paths": {
                     "books_uncompressed": os.path.join(self.book_path, books_name + ext_name),
-                    "books_compressed": os.path.join(self.compressed_path, books_name + ext_name + ".zst"),
+                    "books_compressed": os.path.join(self.compressed_path, books_name + ".jsonl.zst"),
                 },
             }
 
@@ -121,12 +121,15 @@ class OutputFiles:
 
     def get_temp_multi_thread_name(self, betmode: str, thread_index: int, repeat_count: int, compress: bool):
         """Naming convention for temp book files."""
-        if self.game_config.output_regular_json:
-            filename = f"books_{betmode}_{thread_index}_{repeat_count}.json"
-        else:
-            filename = f"books_{betmode}_{thread_index}_{repeat_count}.jsonl"
         if compress:
-            filename += ".zst"
+            filename = f"books_{betmode}_{thread_index}_{repeat_count}.jsonl.zst"
+        elif not (compress) and self.game_config.output_regular_json:
+            filename = f"books_{betmode}_{thread_index}_{repeat_count}.json"
+        elif not (compress) and not (self.game_config.output_regular_json):
+            filename = f"books_{betmode}_{thread_index}_{repeat_count}.jsonl"
+        else:
+            raise RuntimeError("Error in logic generating book name")
+
         return os.path.join(self.temp_path, filename)
 
     def get_temp_lookup_name(self, betmode: str, thread_index: int, repeat_count: int):
@@ -143,12 +146,14 @@ class OutputFiles:
 
     def get_final_book_name(self, betmode: str, compress: bool):
         """Returns final simulation books output name."""
-        if self.game_config.output_regular_json:
-            filename = f"books_{betmode}.json"
-        else:
-            filename = f"books_{betmode}.jsonl"
         if compress:
-            filename += ".zst"
+            filename = f"books_{betmode}.jsonl.zst"
+        elif not (compress) and self.game_config.output_regular_json:
+            filename = f"books_{betmode}.json"
+        elif not (compress) and not (self.game_config.output_regular_json):
+            filename = f"books_{betmode}.jsonl"
+        else:
+            raise RuntimeError("Logic error in name generation.")
         return os.path.join(self.compressed_path if compress else self.book_path, filename)
 
     def get_final_lookup_name(self, betmode: str):
