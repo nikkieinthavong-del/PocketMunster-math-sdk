@@ -206,7 +206,8 @@ class GameConfig(Config):
         }
 
         self.include_padding = True
-        self.special_symbols = {"wild": ["W"], "scatter": ["S"], "multiplier": ["W"]}
+        self.special_symbols = {"wild": ["W"],
+                                "scatter": ["S"], "multiplier": ["W"]}
 
         self.freespin_triggers = {
             self.basegame_type: {3: 8, 4: 12, 5: 15},
@@ -220,11 +221,13 @@ class GameConfig(Config):
         reels = {"BR0": "BR0.csv", "FR0": "FR0.csv", "WCAP": "FRWCAP.csv"}
         self.reels = {}
         for r, f in reels.items():
-            self.reels[r] = self.read_reels_csv(os.path.join(self.reels_path, f))
+            self.reels[r] = self.read_reels_csv(
+                os.path.join(self.reels_path, f))
 
         self.padding_reels[self.basegame_type] = self.reels["BR0"]
         self.padding_reels[self.freegame_type] = self.reels["FR0"]
-        self.padding_symbol_values = {"W": {"multiplier": {2: 100, 3: 50, 4: 50, 5: 50, 10: 30, 20: 20, 50: 5}}}
+        self.padding_symbol_values = {"W": {"multiplier": {
+            2: 100, 3: 50, 4: 50, 5: 50, 10: 30, 20: 20, 50: 5}}}
 
         # Contains all game-logic simulation conditions
         self.bet_modes = [

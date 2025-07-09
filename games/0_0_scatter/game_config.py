@@ -2,7 +2,6 @@ import os
 from src.config.config import Config
 from src.config.distributions import Distribution
 from src.config.betmode import BetMode
-from src.config.paths import PROJECT_PATH
 
 
 class GameConfig(Config):
@@ -16,7 +15,6 @@ class GameConfig(Config):
         return cls._instance
 
     def __init__(self):
-        os.chdir(PROJECT_PATH)
         super().__init__()
         self.game_id = "0_0_scatter"
         self.game_name = "sample_scatter"
@@ -29,7 +27,8 @@ class GameConfig(Config):
 
         # Game Dimensions
         self.num_reels = 6
-        self.num_rows = [5] * self.num_reels  # Optionally include variable number of rows per reel
+        # Optionally include variable number of rows per reel
+        self.num_rows = [5] * self.num_reels
         # Board and Symbol Properties
         t1, t2, t3, t4 = (8, 8), (9, 10), (11, 13), (14, 36)
         pay_group = {
@@ -69,7 +68,8 @@ class GameConfig(Config):
         self.paytable = self.convert_range_table(pay_group)
 
         self.include_padding = True
-        self.special_symbols = {"wild": ["W"], "scatter": ["S"], "multiplier": ["M"]}
+        self.special_symbols = {"wild": ["W"],
+                                "scatter": ["S"], "multiplier": ["M"]}
 
         self.freespin_triggers = {
             self.basegame_type: {
@@ -102,7 +102,8 @@ class GameConfig(Config):
         reels = {"BR0": "BR0.csv", "FR0": "FR0.csv"}
         self.reels = {}
         for r, f in reels.items():
-            self.reels[r] = self.read_reels_csv(os.path.join(self.reels_path, f))
+            self.reels[r] = self.read_reels_csv(
+                os.path.join(self.reels_path, f))
 
         self.padding_reels[self.basegame_type] = self.reels["BR0"]
         self.padding_reels[self.freegame_type] = self.reels["FR0"]
