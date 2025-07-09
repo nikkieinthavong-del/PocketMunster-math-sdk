@@ -21,7 +21,8 @@ class PrintJSON:
 
     def setup_json(self):
         """Create new JSON format file for storing PAR sheet results."""
-        json_path = os.path.join(self.game_info.libraryPath, "statistics_summary.json")
+        json_path = os.path.join(
+            self.game_info.libraryPath, "statistics_summary.json")
         self.json_object = open(json_path, "w", encoding="UTF-8")
 
     def print_info(self):
@@ -36,7 +37,8 @@ class PrintJSON:
             "custom_av_win_summary": self.game_info.custom_av_win_summary,
             "custom_sim_count_summary": self.game_info.custom_sim_count_summary,
         }
-        json.dump(data, self.json_object, indent=4)  # Add indent for pretty-printing
+        # Add indent for pretty-printing
+        json.dump(data, self.json_object, indent=4)
 
 
 class PrintXLSX:
@@ -73,23 +75,28 @@ class PrintXLSX:
         for idx, win_range in enumerate(self.global_ranges):
             self.hit_rate_sheet.write(x0 + idx + 1, y0, str(win_range))
             self.hit_rate_sheet.write(x0 + idx + 1, y0 + 1, hr_dict[win_range])
-            self.hit_rate_sheet.write(x0 + idx + 1, y0 + 2, list(rtp_dict.values())[idx])
+            self.hit_rate_sheet.write(
+                x0 + idx + 1, y0 + 2, list(rtp_dict.values())[idx])
 
         # Hit-rate table by game-mode
-        game_headers = list(self.game_info.mode_hit_rate_info[mode]["all_gameType_rtp"].keys())
+        game_headers = list(
+            self.game_info.mode_hit_rate_info[mode]["all_gameType_rtp"].keys())
         game_headers_reduced = game_headers[:-1]
         game_col_start = y0 + 5
-        self.hit_rate_sheet.write_row(x0, game_col_start + 1, game_headers_reduced)
+        self.hit_rate_sheet.write_row(
+            x0, game_col_start + 1, game_headers_reduced)
 
         hr_dict = self.game_info.mode_hit_rate_info[mode]["all_gameType_hits"]
         rtp_dict = self.game_info.mode_hit_rate_info[mode]["all_gameType_rtp"]
 
         for idx, win_range in enumerate(self.global_ranges):
-            self.hit_rate_sheet.write(x0 + idx + 1, game_col_start, str(win_range))
+            self.hit_rate_sheet.write(
+                x0 + idx + 1, game_col_start, str(win_range))
             for idy, game_type in enumerate(game_headers_reduced):
                 # print(hr_dict[game_type][list(self.global_ranges)[idx]])
                 self.hit_rate_sheet.write(
-                    x0 + idx + 1, game_col_start + 1 + idy, str(hr_dict[game_type][list(self.global_ranges)[idx]])
+                    x0 + idx + 1, game_col_start + 1 +
+                    idy, str(hr_dict[game_type][list(self.global_ranges)[idx]])
                 )
 
         # Write symbol hit-rate table
@@ -135,32 +142,41 @@ class PrintXLSX:
         for idKind, kind in enumerate(kinds):
             self.hit_rate_sheet.write(symRow, symCol + 1 + idKind, kind)
             for idSym, sym in enumerate(symbols):
-                self.hit_rate_sheet.write(symRow + idSym + 1, symCol + idKind + 1, freq_dict[sym][kind])
+                self.hit_rate_sheet.write(
+                    symRow + idSym + 1, symCol + idKind + 1, freq_dict[sym][kind])
 
         self.last_row_end = symRow + idSym + 1
         self.last_col_end = symCol + idKind + 4
 
         # Write number valid sim counts
-        self.hit_rate_sheet.write(symRow - 1, symCol + self.last_col_end, str("SIM COUNTS"))
+        self.hit_rate_sheet.write(
+            symRow - 1, symCol + self.last_col_end, str("SIM COUNTS"))
         for idSym, sym in enumerate(symbols):
-            self.hit_rate_sheet.write(symRow + idSym + 1, symCol + self.last_col_end, str(sym))
+            self.hit_rate_sheet.write(
+                symRow + idSym + 1, symCol + self.last_col_end, str(sym))
         for idKind, kind in enumerate(kinds):
-            self.hit_rate_sheet.write(symRow, symCol + 1 + idKind + self.last_col_end, kind)
+            self.hit_rate_sheet.write(
+                symRow, symCol + 1 + idKind + self.last_col_end, kind)
             for idSym, sym in enumerate(symbols):
                 self.hit_rate_sheet.write(
-                    symRow + idSym + 1, symCol + idKind + 1 + self.last_col_end, count_dict[sym][kind]
+                    symRow + idSym + 1, symCol + idKind + 1 +
+                    self.last_col_end, count_dict[sym][kind]
                 )
 
         self.last_col_end += symCol + idKind + 4
         # Write Avg Win for valid symbol combination
-        self.hit_rate_sheet.write(symRow - 1, symCol + self.last_col_end, str("AVG WINS"))
+        self.hit_rate_sheet.write(
+            symRow - 1, symCol + self.last_col_end, str("AVG WINS"))
         for idSym, sym in enumerate(symbols):
-            self.hit_rate_sheet.write(symRow + idSym + 1, symCol + self.last_col_end, str(sym))
+            self.hit_rate_sheet.write(
+                symRow + idSym + 1, symCol + self.last_col_end, str(sym))
         for idKind, kind in enumerate(kinds):
-            self.hit_rate_sheet.write(symRow, symCol + 1 + idKind + self.last_col_end, kind)
+            self.hit_rate_sheet.write(
+                symRow, symCol + 1 + idKind + self.last_col_end, kind)
             for idSym, sym in enumerate(symbols):
                 self.hit_rate_sheet.write(
-                    symRow + idSym + 1, symCol + idKind + 1 + self.last_col_end, av_dict[sym][kind]
+                    symRow + idSym + 1, symCol + idKind + 1 +
+                    self.last_col_end, av_dict[sym][kind]
                 )
 
         self.last_row_end = symRow + idSym + 4
@@ -172,7 +188,8 @@ class PrintXLSX:
         self.hit_rate_sheet.write(x0, y0 + 1, "SIM COUNTS")
         for idx, key in enumerate(list(range_hit_counts[mode].keys())):
             self.hit_rate_sheet.write(x0 + idx + 1, y0, str(key))
-            self.hit_rate_sheet.write(x0 + 1 + idx, y0 + 1, range_hit_counts[mode][key])
+            self.hit_rate_sheet.write(
+                x0 + 1 + idx, y0 + 1, range_hit_counts[mode][key])
 
     def write_custom_key_info(self, mode, row_start):
         """Write summary win information for user-defined search keys."""
@@ -185,6 +202,9 @@ class PrintXLSX:
         self.hit_rate_sheet.write_row(row_start + 1, 1, ["HR", "COUNT", "AVG"])
         for idx, key in enumerate(custom_keys):
             self.hit_rate_sheet.write(row_start + 2 + idx, 0, str(key))
-            self.hit_rate_sheet.write(row_start + 2 + idx, 1, str(custom_hr[key]))
-            self.hit_rate_sheet.write(row_start + 2 + idx, 2, str(custom_count[key]))
-            self.hit_rate_sheet.write(row_start + 2 + idx, 3, str(custom_avg[key]))
+            self.hit_rate_sheet.write(
+                row_start + 2 + idx, 1, str(custom_hr[key]))
+            self.hit_rate_sheet.write(
+                row_start + 2 + idx, 2, str(custom_count[key]))
+            self.hit_rate_sheet.write(
+                row_start + 2 + idx, 3, str(custom_avg[key]))

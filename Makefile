@@ -1,15 +1,16 @@
-ifeq ($(OS), Windows_NT)
-	PYTHON = python
-	VENV_PY = env\Scripts\python
-else
-	PYTHON = python3
-	VENV_PY = ./env/bin/python3
-endif 
+PYTHON := python3
+VENV_DIR := env
+VENV_PY := $(VENV_DIR)/bin/python
 
-.PHONY: setup run test clean 
+ifeq ($(OS),Windows_NT)
+	VENV_PY := $(VENV_DIR)\Scripts\python.exe
+	ACTIVATE := $(VENV_DIR)\Scripts\activate.bat
+else
+	ACTIVATE := source $(VENV_DIR)/bin/activate
+endif
 
 makeVirtual:
-	$(PYTHON) -m venv env 
+	$(PYTHON) -m venv $(VENV_DIR)
 
 pipInstall: makeVirtual
 	$(VENV_PY) -m pip install --upgrade pip
@@ -21,6 +22,10 @@ packInstall: pipPackages
 	$(VENV_PY) -m pip install -e .
 
 setup: packInstall
+	@echo "Virtual environment ready."
+	@echo "To activate it, run:"
+	@echo "$(ACTIVATE)"
+
 
 run GAME:
 	$(VENV_PY) games/$(GAME)/run.py

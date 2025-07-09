@@ -1,5 +1,4 @@
 """Main file for generating results for sample ways-pay game."""
-
 from gamestate import GameState
 from game_config import GameConfig
 from game_optimization import OptimizationSetup
