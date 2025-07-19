@@ -163,7 +163,7 @@ class GeneralGameState(ABC):
             ):
                 self.recorded_events[description]["timesTriggered"] += 1
                 self.recorded_events[description]["bookIds"] += [book_id]
-            else:
+            elif description not in self.recorded_events:
                 self.check_force_keys(description)
                 self.recorded_events[description] = {
                     "timesTriggered": 1,
