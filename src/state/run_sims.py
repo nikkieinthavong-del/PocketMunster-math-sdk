@@ -152,16 +152,16 @@ def run_multi_process_sims(
             )
         elif threads == 1:
             gamestate.run_sims(
-                all_betmode_configs,
-                betmode,
-                sim_allocation,
-                threads,
-                num_repeats,
-                sims_per_thread,
-                0,
-                repeat,
-                compress,
-                write_event_list,
+                betmode_copy_list=all_betmode_configs,
+                betmode=betmode,
+                sim_to_criteria=sim_allocation,
+                total_threads=threads,
+                total_repeats=num_repeats,
+                num_sims=sims_per_thread,
+                thread_index=0,
+                repeat_count=repeat,
+                compress=compress,
+                write_event_list=write_event_list,
             )
         else:
             for thread in range(threads):

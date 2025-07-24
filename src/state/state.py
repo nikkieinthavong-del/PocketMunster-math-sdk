@@ -232,6 +232,7 @@ class GeneralGameState(ABC):
     ) -> None:
         """Assigns criteria and runs individual simulations. Results are stored in temporary file to be combined when all threads are finished."""
         self.win_manager = WinManager(self.config.basegame_type, self.config.freegame_type)
+        self.library = {}
         self.betmode = betmode
         self.num_sims = num_sims
         for sim in range(
