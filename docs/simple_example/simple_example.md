@@ -21,7 +21,7 @@ If your **win is greater than 0**, you’ll need to manually call the `/end-roun
 
 ## Simple Math Results
 
-Navigate to the `games/fifty_fifty/` directory and execute the `run.py` script. This will generate:
+Navigate to the `math-sdk/games/fifty_fifty/` directory and execute the `run.py` script. This will generate:
 
 - A **Zstandard-compressed** set of simulation results
 - A **lookup table** matching each result to its simulation
