@@ -13,14 +13,14 @@ class GameConfig(Config):
         self.game_id = "fifty_fifty"
         self.provider_numer = 0
         self.working_name = "fifty_fifty"
-        self.wincap = 10
+        self.wincap = 2
         self.win_type = "other"
         self.rtp = 0
         self.construct_paths()
 
         # Game Dimensions
         self.num_reels = 0
-        self.num_rows = [0] * self.num_reels  # Optionally include variable number of rows per reel
+        self.num_rows = [0] * self.num_reels
         self.paytable = {}
         self.include_padding = False
         self.special_symbols = {"wild": [], "scatter": [], "multiplier": []}
@@ -42,7 +42,7 @@ class GameConfig(Config):
                         criteria="basegame",
                         quota=1.0,
                         conditions={
-                            "reel_weights": {self.basegame_type: {"BR0": 1}},
+                            "reel_weights": {},
                             "force_wincap": False,
                             "force_freegame": False,
                         },

@@ -32,9 +32,4 @@ class GameState(GameStateOverride):
         self.imprint_wins()
 
     def run_freespin(self):
-        self.reset_fs_spin()
-        while self.fs < self.tot_fs:
-            self.update_freespin()
-            pass
-
-        self.end_freespin()
+        pass
