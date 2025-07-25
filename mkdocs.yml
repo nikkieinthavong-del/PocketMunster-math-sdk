@@ -98,3 +98,4 @@ nav:
       - UI: fe_docs/ui.md
 
     - RGS Technical Details: rgs_docs/RGS.md
+  - RGS Connection Example: simple_example/simple_example.md
