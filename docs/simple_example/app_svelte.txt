@@ -1,0 +1,85 @@
+<script lang="ts">
+	import { onMount } from "svelte";
+    
+    const API_MULTIPLIER = 1000000
+    let gamestate = $state('rest')
+    let response: any = $state(null)
+    let endRoundResponse = $state(null)
+    let balance = $state(1000)
+    let lastWin = $state(0)
+
+    const getParam = (key: string) => new URLSearchParams(window.location.search).get(key);
+    async function getRGSResponse(endpoint: string, body: any): Promise<any> {
+        const response = await fetch(`https://${getParam('rgs_url')}${endpoint}`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        })
+        return response.json()
+    }
+
+    onMount(async () => {
+        const response = await getRGSResponse('/wallet/authenticate', {
+            sessionID: getParam('sessionID'),
+            language: getParam('language') || 'en'  
+        });
+        balance = response.balance.amount / API_MULTIPLIER
+        console.log('loaded..')
+    });
+
+    const endRound = async () => {
+        const confirmation = await getRGSResponse('/wallet/end-round', {
+            sessionID: getParam("sessionID")
+        });
+        balance = confirmation.balance.amount / API_MULTIPLIER
+        endRoundResponse = confirmation
+        if(confirmation?.balance.amount != null) {
+          gamestate = 'rest'
+        }
+    }
+
+    async function getBookResponse() {
+      if(gamestate == 'rest'){
+        balance -= 1
+      }
+        const resp = await getRGSResponse('/wallet/play', {
+            mode: getParam('mode') ?? "BASE",
+            currency: getParam('currency'),
+            sessionID: getParam('sessionID'),
+            amount: 1 * API_MULTIPLIER
+        });
+        endRoundResponse = null
+        response = resp
+        gamestate = 'playing'
+        if(response != null ){
+          lastWin = response.round.payoutMultiplier
+        }
+        if(lastWin == undefined){
+          gamestate = 'rest'
+          lastWin = 0
+        }
+        console.log(lastWin)
+        console.log(resp.round.state)
+    }
+</script>
+
+<div class="game-wrapper">
+  <div class="game-content">
+    <button onclick={getBookResponse}>Place Bet</button>
+    <button onclick={endRound}>End Round</button>
+    <h2>Balance: ${balance}</h2>
+    <h2>Round Win: ${lastWin}</h2>
+  </div>
+
+  <div class="json-stack">
+    <h3>play/ response</h3>
+    <div class="bet-display">
+      <pre>{JSON.stringify(response, null, 2)}</pre>
+    </div>
+
+    <h3>end-round/ response</h3>
+    <div class="end-display">
+      <pre>{JSON.stringify(endRoundResponse, null, 2)}</pre>
+    </div>
+  </div>
+</div>
