@@ -40,16 +40,14 @@ We’ll use **Svelte 5** bundled with **Vite** to create a static frontend. We'l
 ### Setup Steps
 
 1. **Create the Vite project**:
-    ```bash
-    npm create vite@latest
-    ```
+    `npm create vite@latest`
 
 2. **Edit the `vite.config.ts` file**:
     Make sure the defineConfig function includes: `base: "./"` (under *plugins*),
 
 3. **Replace styles and main component**:
     - Copy the contents of [`css.txt`](css.txt) into your generated `app.css`
-    - Replace the contents of `src/App.svelte` with [`app_svelte.txt`](app_svelte.txt)
+    - Replace the contents of [`app_svelte.txt`](app_svelte.txt) into: `src/App.svelte`
 
 4. **Build the project**:
     `yarn build`
