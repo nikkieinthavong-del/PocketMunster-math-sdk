@@ -16,13 +16,19 @@ class Ways:
 
     @staticmethod
     def get_ways_data(
-        config: Config, board: list[list[Symbol]], wild_key: str = "wild", multiplier_key="multiplier"
+        config: Config,
+        board: list[list[Symbol]],
+        wild_key: str = "wild",
+        multiplier_key="multiplier",
+        multiplier_strategy="symbol",
     ):
         """Ways calculation with possibility for global multiplier application."""
         return_data = {
             "totalWin": 0,
             "wins": [],
         }
+        assert multiplier_strategy in ["symbol", "global"]
+        global_mult_count = 0
         potential_wins = defaultdict()
         wilds = [[] for _ in range(len(board))]
         for reel, _ in enumerate(board):
@@ -36,29 +42,58 @@ class Ways:
 
                 if sym.name in config.special_symbols[wild_key]:
                     wilds[reel].append({"reel": reel, "row": row})
+                    if board[reel][row].check_attribute(multiplier_key):
+                        wilds[reel][-1][multiplier_key] = board[reel][row].get_attribute(multiplier_key)
 
         for symbol in potential_wins:
-            kind, ways, cumulative_sym_mult = 0, 1, 0
+            kind, ways, cumulative_sym_mult, cumulative_wild_mult = 0, 1, 0, 0
             for reel, _ in enumerate(potential_wins[symbol]):
+                wild_mult = 0
                 if len(potential_wins[symbol][reel]) > 0 or len(wilds[reel]) > 0:
                     kind += 1
-                    mult_enhance = 0
-                    # Note that here multipliers on subsequent reels multiplier (not add, like in lines games)
+                    reel_sym_count = 0
+                    # Note that here multipliers on subsequent reels multiply (not add, like in lines games)
+                    symbols_have_mult = False
                     for s in potential_wins[symbol][reel]:
-                        if (
-                            board[s["reel"]][s["row"]].check_attribute(multiplier_key)
-                            and board[s["reel"]][s["row"]].get_attribute(multiplier_key) > 1
-                        ):
-                            mult_enhance += board[s["reel"]][s["row"]].get_attribute(multiplier_key)
-                    for s in wilds[reel]:
-                        if (
-                            board[s["reel"]][s["row"]].check_attribute(multiplier_key)
-                            and board[s["reel"]][s["row"]].get_attribute(multiplier_key) > 1
-                        ):
-                            mult_enhance += board[s["reel"]][s["row"]].get_attribute(multiplier_key)
+                        if board[s["reel"]][s["row"]].check_attribute(multiplier_key):
+                            symbols_have_mult = True
 
-                    ways *= len(potential_wins[symbol][reel]) + len(wilds[reel]) + mult_enhance
-                    cumulative_sym_mult += mult_enhance
+                    if symbols_have_mult is False:
+                        reel_sym_count += len(potential_wins[symbol][reel])
+                    else:
+                        reel_sym_count = 0
+                        for s in potential_wins[symbol][reel]:
+                            if (
+                                board[s["reel"]][s["row"]].check_attribute(multiplier_key)
+                                and multiplier_strategy == "symbol"
+                            ):
+                                reel_sym_count += board[s["reel"]][s["row"]].get_attribute(multiplier_key)
+                            else:
+                                reel_sym_count += 1
+                                if (
+                                    board[s["reel"]][s["row"]].check_attribute(multiplier_key)
+                                    and multiplier_strategy == "global"
+                                ):
+                                    global_mult_count += board[s["reel"]][s["row"]].get_attribute(multiplier_key)
+
+                    if len(wilds[reel]) > 0:
+                        cumulative_wild_mult = 0
+                        wilds_have_mults = False
+                        for sym in wilds[reel]:
+                            if board[sym["reel"]][sym["row"]].check_attribute(multiplier_key):
+                                wilds_have_mults = True
+                                wild_mult = board[sym["reel"]][sym["row"]].get_attribute(multiplier_key)
+                                global_mult_count += board[sym["reel"]][sym["row"]].get_attribute(multiplier_key)
+                                cumulative_wild_mult += wild_mult
+                                assert wild_mult > 0, "Wild multiplier cannot be 0."
+                        if multiplier_strategy == "global" or wilds_have_mults is False:
+                            reel_sym_count += len(wilds[reel])
+                        else:
+                            reel_sym_count += cumulative_wild_mult
+                        cumulative_sym_mult += cumulative_wild_mult
+
+                    ways *= reel_sym_count
+
                 else:
                     break
 
@@ -71,7 +106,15 @@ class Ways:
                         positions += [pos]
 
                 win = config.paytable[kind, symbol] * ways
-                win_amt, multiplier = apply_mult(board=board, strategy="global", win_amount=win)
+                win_amt, multiplier = apply_mult(
+                    board=board,
+                    strategy="global",
+                    win_amount=win,
+                    global_multiplier=(global_mult_count if multiplier_strategy == "global" else 1),
+                )
+                if multiplier_strategy == "symbol":
+                    assert win_amt == win
+
                 return_data["wins"] += [
                     {
                         "symbol": symbol,
@@ -86,7 +129,7 @@ class Ways:
                         },
                     }
                 ]
-                return_data["totalWin"] += win
+                return_data["totalWin"] += win_amt
 
         return return_data
 
