@@ -50,7 +50,7 @@ def gamestate():
 
 
 def test_basic_ways(gamestate):
-    totalWays = len(gamestate.board[0]) ** len(gamestate.board)  # Assume all reels have equal rows
+    totalWays = len(gamestate.board[0]) ** len(gamestate.board)
     for idx, _ in enumerate(gamestate.board):
         for idy, _ in enumerate(gamestate.board[idx]):
             if idx < len(gamestate.board) - 1:
@@ -88,12 +88,10 @@ def setup_test_board(gamestate, symbol_name="H1", wild_mults=(2, 3)):
     """Setup a 3x3 board with H1s on reels 0 and 2, and wilds with multipliers on reel 1."""
     create_non_winning_board(gamestate)
 
-    # Place base symbols
     gamestate.board[0][0] = gamestate.create_symbol(symbol_name)
     gamestate.board[2][0] = gamestate.create_symbol(symbol_name)
     gamestate.board[2][1] = gamestate.create_symbol(symbol_name)
 
-    # Place wilds with specified multipliers
     for i, mult in enumerate(wild_mults):
         wild = gamestate.create_symbol("W")
         setattr(wild, "multiplier", mult)
@@ -116,17 +114,10 @@ def test_global_multiplier_strategy(gamestate):
     board = setup_test_board(gamestate, wild_mults=(2, 2))
     windata = Ways.get_ways_data(config=gamestate.config, board=board, multiplier_strategy="global")
 
-    expected_ways = 1 * 2 * 2  # wilds only count as 2 positions, not inflated
+    expected_ways = 1 * 2 * 2
     base_win = gamestate.config.paytable[(3, "H1")] * expected_ways
     global_mult = 2 + 2  # 4x total multiplier (additive)
 
     expected_win = base_win * global_mult
 
     assert windata["totalWin"] == expected_win, f"Expected {expected_win}, got {windata['totalWin']}"
-
-
-if __name__ == "__main__":
-
-    gs = create_test_ways_gamestate()
-    test_symbol_multiplier_strategy(gs)
-    test_global_multiplier_strategy(gs)
