@@ -46,7 +46,7 @@ class Ways:
                         wilds[reel][-1][multiplier_key] = board[reel][row].get_attribute(multiplier_key)
 
         for symbol in potential_wins:
-            kind, ways, cumulative_sym_mult, cumulative_wild_mult = 0, 1, 0, 0
+            kind, ways, cumulative_sym_mult = (0, 1, 0)
             for reel, _ in enumerate(potential_wins[symbol]):
                 wild_mult = 0
                 if len(potential_wins[symbol][reel]) > 0 or len(wilds[reel]) > 0:
@@ -77,20 +77,17 @@ class Ways:
                                     global_mult_count += board[s["reel"]][s["row"]].get_attribute(multiplier_key)
 
                     if len(wilds[reel]) > 0:
-                        cumulative_wild_mult = 0
-                        wilds_have_mults = False
                         for sym in wilds[reel]:
                             if board[sym["reel"]][sym["row"]].check_attribute(multiplier_key):
-                                wilds_have_mults = True
-                                wild_mult = board[sym["reel"]][sym["row"]].get_attribute(multiplier_key)
-                                global_mult_count += board[sym["reel"]][sym["row"]].get_attribute(multiplier_key)
-                                cumulative_wild_mult += wild_mult
-                                assert wild_mult > 0, "Wild multiplier cannot be 0."
-                        if multiplier_strategy == "global" or wilds_have_mults is False:
-                            reel_sym_count += len(wilds[reel])
-                        else:
-                            reel_sym_count += cumulative_wild_mult
-                        cumulative_sym_mult += cumulative_wild_mult
+                                wild_mult_val = board[sym["reel"]][sym["row"]].get_attribute(multiplier_key)
+                                cumulative_sym_mult += wild_mult_val * (wild_mult_val > 1)
+                                if multiplier_strategy == "global":
+                                    reel_sym_count += 1
+                                    global_mult_count += wild_mult_val * (wild_mult_val > 1)
+                                else:
+                                    reel_sym_count += wild_mult_val
+                            else:
+                                reel_sym_count += 1
 
                     ways *= reel_sym_count
 
@@ -105,7 +102,7 @@ class Ways:
                     for pos in wilds[reel]:
                         positions += [pos]
 
-                win = config.paytable[kind, symbol] * ways
+                win = round(config.paytable[kind, symbol] * ways, 2)
                 win_amt, multiplier = apply_mult(
                     board=board,
                     strategy="global",
