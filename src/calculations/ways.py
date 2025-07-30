@@ -74,7 +74,8 @@ class Ways:
                                     board[s["reel"]][s["row"]].check_attribute(multiplier_key)
                                     and multiplier_strategy == "global"
                                 ):
-                                    global_mult_count += board[s["reel"]][s["row"]].get_attribute(multiplier_key)
+                                    gm = board[s["reel"]][s["row"]].get_attribute(multiplier_key)
+                                    global_mult_count += gm * (gm > 1)
 
                     if len(wilds[reel]) > 0:
                         for sym in wilds[reel]:
