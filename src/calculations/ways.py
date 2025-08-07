@@ -19,16 +19,17 @@ class Ways:
         config: Config,
         board: list[list[Symbol]],
         wild_key: str = "wild",
-        multiplier_key="multiplier",
-        multiplier_strategy="symbol",
+        global_multiplier: int = 1,
+        multiplier_key: str = "multiplier",
+        multiplier_strategy: str = "symbol",
     ):
         """Ways calculation with possibility for global multiplier application."""
         return_data = {
             "totalWin": 0,
             "wins": [],
         }
-        assert multiplier_strategy in ["symbol", "global"]
-        global_mult_count = 0
+        assert multiplier_strategy in ["symbol", "board", "global"]
+        board_mult_count = 0
         potential_wins = defaultdict()
         wilds = [[] for _ in range(len(board))]
         for reel, _ in enumerate(board):
@@ -48,7 +49,6 @@ class Ways:
         for symbol in potential_wins:
             kind, ways, cumulative_sym_mult = (0, 1, 0)
             for reel, _ in enumerate(potential_wins[symbol]):
-                wild_mult = 0
                 if len(potential_wins[symbol][reel]) > 0 or len(wilds[reel]) > 0:
                     kind += 1
                     reel_sym_count = 0
@@ -72,19 +72,21 @@ class Ways:
                                 reel_sym_count += 1
                                 if (
                                     board[s["reel"]][s["row"]].check_attribute(multiplier_key)
-                                    and multiplier_strategy == "global"
+                                    and multiplier_strategy == "board"
                                 ):
                                     gm = board[s["reel"]][s["row"]].get_attribute(multiplier_key)
-                                    global_mult_count += gm * (gm > 1)
+                                    board_mult_count += gm * (gm > 1)
 
                     if len(wilds[reel]) > 0:
                         for sym in wilds[reel]:
-                            if board[sym["reel"]][sym["row"]].check_attribute(multiplier_key):
+                            if board[sym["reel"]][sym["row"]].check_attribute(
+                                multiplier_key
+                            ) and multiplier_strategy in ["board", "symbol"]:
                                 wild_mult_val = board[sym["reel"]][sym["row"]].get_attribute(multiplier_key)
                                 cumulative_sym_mult += wild_mult_val * (wild_mult_val > 1)
-                                if multiplier_strategy == "global":
+                                if multiplier_strategy == "board":
                                     reel_sym_count += 1
-                                    global_mult_count += wild_mult_val * (wild_mult_val > 1)
+                                    board_mult_count += wild_mult_val * (wild_mult_val > 1)
                                 else:
                                     reel_sym_count += wild_mult_val
                             else:
@@ -94,6 +96,14 @@ class Ways:
 
                 else:
                     break
+
+            match multiplier_strategy:
+                case "global":
+                    win_multiplier = global_multiplier
+                case "board":
+                    win_multiplier = max(board_mult_count, 1)
+                case "symbol":
+                    win_multiplier = 1
 
             if (kind, symbol) in config.paytable:
                 positions = []
@@ -108,7 +118,7 @@ class Ways:
                     board=board,
                     strategy="global",
                     win_amount=win,
-                    global_multiplier=(global_mult_count if multiplier_strategy == "global" else 1),
+                    global_multiplier=win_multiplier,
                 )
                 if multiplier_strategy == "symbol":
                     assert win_amt == win

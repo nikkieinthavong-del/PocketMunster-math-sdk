@@ -110,13 +110,28 @@ def test_symbol_multiplier_strategy(gamestate):
     assert windata["totalWin"] == expected_win, f"Expected {expected_win}, got {windata['totalWin']}"
 
 
-def test_global_multiplier_strategy(gamestate):
+def test_board_multiplier_strategy(gamestate):
     board = setup_test_board(gamestate, wild_mults=(2, 2))
-    windata = Ways.get_ways_data(config=gamestate.config, board=board, multiplier_strategy="global")
+    windata = Ways.get_ways_data(config=gamestate.config, board=board, multiplier_strategy="board")
 
     expected_ways = 1 * 2 * 2
     base_win = gamestate.config.paytable[(3, "H1")] * expected_ways
     global_mult = 2 + 2  # 4x total multiplier (additive)
+
+    expected_win = base_win * global_mult
+
+    assert windata["totalWin"] == expected_win, f"Expected {expected_win}, got {windata['totalWin']}"
+
+
+def test_global_multiplier_strategy(gamestate):
+    global_mult = 5
+    board = setup_test_board(gamestate, wild_mults=(2, 2))
+    windata = Ways.get_ways_data(
+        config=gamestate.config, board=board, global_multiplier=global_mult, multiplier_strategy="global"
+    )
+
+    expected_ways = 1 * 2 * 2
+    base_win = gamestate.config.paytable[(3, "H1")] * expected_ways
 
     expected_win = base_win * global_mult
 
