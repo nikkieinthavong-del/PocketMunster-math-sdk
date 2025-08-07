@@ -19,7 +19,7 @@ class Ways:
         config: Config,
         board: list[list[Symbol]],
         wild_key: str = "wild",
-        global_mult: int = 1,
+        global_multiplier: int = 1,
         multiplier_key: str = "multiplier",
         multiplier_strategy: str = "symbol",
     ):
@@ -79,7 +79,9 @@ class Ways:
 
                     if len(wilds[reel]) > 0:
                         for sym in wilds[reel]:
-                            if board[sym["reel"]][sym["row"]].check_attribute(multiplier_key):
+                            if board[sym["reel"]][sym["row"]].check_attribute(
+                                multiplier_key
+                            ) and multiplier_strategy in ["board", "symbol"]:
                                 wild_mult_val = board[sym["reel"]][sym["row"]].get_attribute(multiplier_key)
                                 cumulative_sym_mult += wild_mult_val * (wild_mult_val > 1)
                                 if multiplier_strategy == "board":
@@ -97,9 +99,9 @@ class Ways:
 
             match multiplier_strategy:
                 case "global":
-                    win_multiplier = global_mult
+                    win_multiplier = global_multiplier
                 case "board":
-                    win_multiplier = board_mult_count
+                    win_multiplier = max(board_mult_count, 1)
                 case "symbol":
                     win_multiplier = 1
 
