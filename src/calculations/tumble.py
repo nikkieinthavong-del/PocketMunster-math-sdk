@@ -42,7 +42,7 @@ class Tumble(Board):
                     self.reelstrip[reel][(self.reel_positions[reel] - 1) % len(self.reelstrip[reel])]
                 )
                 self.top_symbols[reel] = self.create_symbol(padding_name)
-                self.new_symbols_from_tumble[reel].insert(0, self.create_symbol(padding_name))
+                self.new_symbols_from_tumble[reel].insert(0, self.top_symbols[reel])
 
         self.board = static_board
         self.get_special_symbols_on_board()
