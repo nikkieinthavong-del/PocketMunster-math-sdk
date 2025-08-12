@@ -236,7 +236,7 @@ Completes a round, triggering a payout and ending all activity for that round.
 ### Request
 
 ```http
-POST /wallet/endround
+POST /wallet/end-round
 ```
 
 ```json
