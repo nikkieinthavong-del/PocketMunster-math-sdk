@@ -372,7 +372,6 @@ fn print_information(
                 .join("library")
                 .join("optimization_files")
                 .join(format!("{}_0_{}.csv", bet_type, pig_index + 1));
-            // let mut file = File::create(file_path).expect("Failed to create file");
             let mut file = BufWriter::new(File::create(file_path).unwrap());
             for (_index, value) in succuss_vals.iter().enumerate() {
                 if _index == succuss_vals.len() - 1 {
@@ -435,7 +434,6 @@ fn print_information(
                     .join("publish_files")
                     .join(format!("lookUpTable_{}_0.csv", bet_type));
 
-                // let mut file = File::create(file_path).expect("Failed to create file");
                 let mut file = BufWriter::new(File::create(file_path).unwrap());
                 for index in &sorted_indexes {
                     let entry = lookup_table.get(index).unwrap();
@@ -451,7 +449,6 @@ fn print_information(
                 .join("library")
                 .join("optimization_files")
                 .join(format!("{}_0_{}.csv", bet_type, pig_index + 1));
-            // let mut file = File::create(file_path).expect("Failed to create file");
             let mut file = BufWriter::new(File::create(file_path).unwrap());
             write!(file, "Name,Pig{}\n", (pig_index + 1)).expect("Failed to write to file");
             write!(file, "Score,{}\n", show_pigs[pig_index].success_score)
@@ -542,10 +539,12 @@ fn recreate_show_pig(
     let mut non_win_type_count: usize = 0;
     for fence in fences {
         if fence.win_type {
-            if let Some(index) = win_dist_index_map.get(&F64Wrapper(fence.avg_win)) {
-                weights[*index] += 1.0 / fence.hr;
-                // norm_factor += 1.0/fence.hr;
-            }
+            let index = win_dist_index_map
+                .get(&F64Wrapper(fence.avg_win))
+                .expect("no value found within win_dist satisfying fence.avg_win");
+            
+            weights[*index] += 1.0 / fence.hr;
+           
         } else {
             random_weights_to_apply[non_win_type_count].push(vec![
                 0.0;
@@ -671,10 +670,10 @@ fn create_show_pigs(
         let mut non_win_type_count: usize = 0;
         for fence in fences {
             if fence.win_type {
-                if let Some(index) = win_dist_index_map.get(&F64Wrapper(fence.avg_win)) {
+                let index = win_dist_index_map
+                .get(&F64Wrapper(fence.avg_win))
+                .expect("fence.avg_win does not exist in win_dist_index_map");
                     weights[*index] += 1.0 / fence.hr;
-                    // norm_factor += 1.0/fence.hr;
-                }
             } else {
                 if p == 0 {
                     random_weights_to_apply[non_win_type_count].push(vec![
