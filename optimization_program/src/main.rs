@@ -340,6 +340,7 @@ fn print_information(
 
     for win in sorted_wins {
         win_dist_index_map.insert(F64Wrapper(win.clone()), count);
+        count += 1;
     }
     let num_pigs = 10;
 
