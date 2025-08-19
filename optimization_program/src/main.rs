@@ -4,6 +4,7 @@ use rand::prelude::*;
 use rand::Rng;
 use rand_distr::{Distribution, WeightedIndex};
 use rayon::prelude::*;
+use core::panic;
 use std::env;
 use std::hash::{Hash, Hasher};
 use std::mem;
@@ -270,9 +271,7 @@ fn run_farm(
                     .collect()
             });
             pig_pens.push(fence_pigs);
-        } else {
-            sorted_wins.push(fence.avg_win)
-        }
+        }  
     }
 
     sorted_wins.sort_by(|a, b| a.partial_cmp(&b).unwrap());
@@ -341,7 +340,6 @@ fn print_information(
 
     for win in sorted_wins {
         win_dist_index_map.insert(F64Wrapper(win.clone()), count);
-        count += 1;
     }
     let num_pigs = 10;
 
@@ -539,12 +537,9 @@ fn recreate_show_pig(
     let mut non_win_type_count: usize = 0;
     for fence in fences {
         if fence.win_type {
-            let index = win_dist_index_map
-                .get(&F64Wrapper(fence.avg_win))
-                .expect("no value found within win_dist satisfying fence.avg_win");
-            
-            weights[*index] += 1.0 / fence.hr;
-           
+            if let Some(index) = win_dist_index_map.get(&F64Wrapper(fence.avg_win)) {
+                weights[*index] += 1.0 / fence.hr;
+            }
         } else {
             random_weights_to_apply[non_win_type_count].push(vec![
                 0.0;
@@ -670,10 +665,9 @@ fn create_show_pigs(
         let mut non_win_type_count: usize = 0;
         for fence in fences {
             if fence.win_type {
-                let index = win_dist_index_map
-                .get(&F64Wrapper(fence.avg_win))
-                .expect("fence.avg_win does not exist in win_dist_index_map");
+                if let Some(index) = win_dist_index_map.get(&F64Wrapper(fence.avg_win)) {
                     weights[*index] += 1.0 / fence.hr;
+                }
             } else {
                 if p == 0 {
                     random_weights_to_apply[non_win_type_count].push(vec![
