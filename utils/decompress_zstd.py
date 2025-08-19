@@ -17,9 +17,10 @@ def decompress(input_path: str, save_output: bool = False):
 
     decompressor = zstd.ZstdDecompressor()
     with open(input_path, "rb") as f:
-        decompressed_data = decompressor.decompress(f.read()).decode("UTF-8")
+        with decompressor.stream_reader(f) as reader:
+            decompressed_data = reader.read().decode("utf-8")
 
-    all_sims = decompressed_data.strip().split("\n")
+    all_sims = decompressed_data.split("\n")
     for sim in all_sims:
         if sim.strip():
             json_validate(sim)
@@ -31,5 +32,5 @@ def decompress(input_path: str, save_output: bool = False):
 
 if __name__ == "__main__":
 
-    test_file = "books_base.jsonl.zst"
+    test_file = "utils/books_base.jsonl.zst"
     decompress(test_file, save_output=True)
