@@ -84,7 +84,7 @@ pub struct ConfigData {
 }
 
 // LOOK UP TABLE STRUCT
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone, Copy)]
 pub(crate) struct LookUpTableEntry {
     pub id: u32,
     pub weight: u64,

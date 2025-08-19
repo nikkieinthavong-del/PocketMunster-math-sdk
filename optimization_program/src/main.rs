@@ -199,6 +199,7 @@ fn run_farm(
             return;
         }
     };
+    let init_lookup = lookup_table.clone();
     // NOW WE WANT TO GET A VECTOR CONTAINING ALL THE SORTED WINS
     let mut sorted_wins: Vec<f64> = Vec::new();
     let bet_amount = config_file.bet_modes[bet_mode_index].cost;
@@ -271,7 +272,16 @@ fn run_farm(
                     .collect()
             });
             pig_pens.push(fence_pigs);
-        }  
+        } else {
+            const EPSILON: f64 = 1e-9;
+            if !init_lookup.values().any(|entry| (entry.win - fence.avg_win).abs() < EPSILON) {
+                panic!(
+                    "fence.avg_win {} not found in lookup table",
+                    fence.avg_win
+                );
+            }
+}           
+            sorted_wins.push(fence.avg_win);
     }
 
     sorted_wins.sort_by(|a, b| a.partial_cmp(&b).unwrap());
@@ -668,7 +678,7 @@ fn create_show_pigs(
             if fence.win_type {
                 if let Some(index) = win_dist_index_map.get(&F64Wrapper(fence.avg_win)) {
                     weights[*index] += 1.0 / fence.hr;
-                }
+                } 
             } else {
                 if p == 0 {
                     random_weights_to_apply[non_win_type_count].push(vec![
