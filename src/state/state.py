@@ -34,6 +34,7 @@ class GeneralGameState(ABC):
         self.criteria = ""
         self.book = Book(self.sim, self.criteria)
         self.repeat = True
+        self.repeat_count = 0
         self.win_data = {
             "totalWin": 0,
             "wins": [],
@@ -87,6 +88,7 @@ class GeneralGameState(ABC):
         """Reset rng seed to simulation number for reproducibility."""
         random.seed(sim + 1)
         self.sim = sim
+        self.repeat_count = 0
 
     def reset_fs_spin(self) -> None:
         """Use if using repeat during freespin games."""
@@ -122,6 +124,13 @@ class GeneralGameState(ABC):
             if d._criteria == self.criteria:
                 return d._conditions
         return RuntimeError("Could not locate betmode conditions")
+
+    def check_current_repeat_count(self, warn_after_count: int = 1000):
+        """Alert user to high repeat count."""
+        if self.repeat_count >= warn_after_count and (self.repeat_count % warn_after_count) == 0:
+            warn(
+                f"\nHigh repeat count:\n Current Count: {self.repeat_count} \n Criteria: {self.criteria} \n Simulation: {self.sim}"
+            )
 
     def record(self, description: dict) -> None:
         """
@@ -206,6 +215,9 @@ class GeneralGameState(ABC):
 
             if self.get_current_distribution_conditions()["force_freegame"] and not (self.triggered_freegame):
                 self.repeat = True
+
+        self.repeat_count += 1
+        self.check_current_repeat_count()
 
     @abstractmethod
     def run_spin(self, sim):

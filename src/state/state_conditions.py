@@ -20,7 +20,7 @@ class Conditions(GeneralGameState):
 
     def is_wincap(self):
         """checks if current basegame + freegame wins are >= max-win"""
-        if self.running_bet_win >= self.config.wincap:
+        if self.win_manager.running_bet_win >= self.config.wincap:
             return True
         return False
 
