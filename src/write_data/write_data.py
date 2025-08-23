@@ -168,7 +168,9 @@ def output_lookup_and_force_files(
                     if filename.endswith(".jsonl"):
                         outfile.write(file_data)
                     elif filename.endswith(".json"):
-                        if id == 0:
+                        if id == 0 and len(file_list) == 1:
+                            outfile.write(file_data)
+                        elif id == 0 and len(file_list) > 1:
                             outfile.write(file_data[:-1])  # don't write final ']'
                         elif id != len(file_list) - 1:
                             outfile.write("," + file_data[1:-1])  # don't write first or last '[/]'
