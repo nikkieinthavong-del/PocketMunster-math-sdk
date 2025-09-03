@@ -64,7 +64,6 @@ For example, to place a $1 bet, pass `"1000000"` as the amount.
 Currency impacts **only** the display layer; it does not affect gameplay logic.
 
 ## Supported Currencies
-{: #supported-currencies}
 
 | Currency               | Abbreviation | Display  | Example  |
 | ---------------------- | ------------ | -------- | -------- |
