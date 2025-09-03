@@ -64,26 +64,113 @@ For example, to place a $1 bet, pass `"1000000"` as the amount.
 Currency impacts **only** the display layer; it does not affect gameplay logic.
 
 ## Supported Currencies
+{: #supported-currencies}
 
-- USD (United States Dollar)
-- CAD (Canadian Dollar)
-- JPY (Japanese Yen)
-- EUR (Euro)
-- RUB (Russian Ruble)
-- CNY (Chinese Yuan)
-- PHP (Philippine Peso)
-- INR (Indian Rupee)
-- IDR (Indonesian Rupiah)
-- KRW (South Korean Won)
-- BRL (Brazilian Real)
-- MXN (Mexican Peso)
-- DKK (Danish Krone)
-- PLN (Polish Złoty)
-- VND (Vietnamese Đồng)
-- TRY (Turkish Lira)
-- CLP (Chilean Peso)
-- ARS (Argentine Peso)
-- PEN (Peruvian Sol)
+| Currency               | Abbreviation | Display  | Example  |
+| ---------------------- | ------------ | -------- | -------- |
+| United States Dollar   | USD          | $        | $10.00   |
+| Canadian Dollar        | CAD          | CA$      | CA$10.00 |
+| Japanese Yen           | JPY          | ¥        | ¥10      |
+| Euro                   | EUR          | €        | €10.00   |
+| Russian Ruble          | RUB          | ₽        | ₽10.00   |
+| Chinese Yuan           | CNY          | CN¥      | CN¥10.00 |
+| Philippine Peso        | PHP          | ₱        | ₱10.00   |
+| Indian Rupee           | INR          | ₹        | ₹10.00   |
+| Indonesian Rupiah      | IDR          | Rp       | Rp10     |
+| South Korean Won       | KRW          | ₩        | ₩10      |
+| Brazilian Real         | BRL          | R$       | R$10.00  |
+| Mexican Peso           | MXN          | MX$      | MX$10.00 |
+| Danish Krone           | DKK          | KR       | 10.00 KR |
+| Polish Złoty           | PLN          | zł       | 10.00 zł |
+| Vietnamese Đồng        | VND          | ₫        | 10 ₫     |
+| Turkish Lira           | TRY          | ₺        | ₺10.00   |
+| Chilean Peso           | CLP          | CLP      | 10 CLP   |
+| Argentine Peso         | ARS          | ARS      | 10.00 ARS|
+| Peruvian Sol           | PEN          | S/       | S/10.00  |
+| Stake Gold Coin        | XGC          | GC       | 10.00 GC |
+| Stake Cash             | XSC          | SC       | 10.00 SC |
+
+Here are some functions that will help you achieve the display format for the currencies.
+
+```javascript
+/**
+ * Available currency codes for Stake Engine
+ */
+type Currency =
+  | 'USD' // (United States Dollar)
+  | 'CAD' // (Canadian Dollar)
+  | 'JPY' // (Japanese Yen)
+  | 'EUR' // (Euro)
+  | 'RUB' // (Russian Ruble)
+  | 'CNY' // (Chinese Yuan)
+  | 'PHP' // (Philippine Peso)
+  | 'INR' // (Indian Rupee)
+  | 'IDR' // (Indonesian Rupiah)
+  | 'KRW' // (South Korean Won)
+  | 'BRL' // (Brazilian Real)
+  | 'MXN' // (Mexican Peso)
+  | 'DKK' // (Danish Krone)
+  | 'PLN' // (Polish Złoty)
+  | 'VND' // (Vietnamese Đồng)
+  | 'TRY' // (Turkish Lira)
+  | 'CLP' // (Chilean Peso)
+  | 'ARS' // (Argentine Peso)
+  | 'PEN' // (Peruvian Sol)
+  | 'XGC' // Stake US Gold Coin
+  | 'XSC'; // Stake US Stake Cash
+
+/**
+ * Currency metadata: symbol, default decimals, symbol placement
+ * 
+ */
+const CurrencyMeta: Record<
+  Currency,
+  { symbol: string; decimals: number; symbolAfter?: boolean }
+> = {
+  USD: { symbol: '$', decimals: 2 },
+  CAD: { symbol: 'CA$', decimals: 2 },
+  JPY: { symbol: '¥', decimals: 0 },
+  EUR: { symbol: '€', decimals: 2 },
+  RUB: { symbol: '₽', decimals: 2 },
+  CNY: { symbol: 'CN¥', decimals: 2 },
+  PHP: { symbol: '₱', decimals: 2 },
+  INR: { symbol: '₹', decimals: 2 },
+  IDR: { symbol: 'Rp', decimals: 0 },
+  KRW: { symbol: '₩', decimals: 0 },
+  BRL: { symbol: 'R$', decimals: 2 },
+  MXN: { symbol: 'MX$', decimals: 2 },
+  DKK: { symbol: 'KR', decimals: 2, symbolAfter: true },
+  PLN: { symbol: 'zł', decimals: 2, symbolAfter: true },
+  VND: { symbol: '₫', decimals: 0, symbolAfter: true },
+  TRY: { symbol: '₺', decimals: 2 },
+  CLP: { symbol: 'CLP', decimals: 0, symbolAfter: true },
+  ARS: { symbol: 'ARS', decimals: 2, symbolAfter: true },
+  PEN: { symbol: 'S/', decimals: 2, symbolAfter: true },
+  XGC: { symbol: 'GC', decimals: 2 },
+  XSC: { symbol: 'SC', decimals: 2 },
+};
+
+/**
+ * Formats a number with its currency symbol, respecting default decimals and symbol placement.
+ * The function is intended to be used for displaying balances.
+ */
+function DisplayBalance(balance: Balance): string {
+  // Grabs the currency, if it doesn't exist in the list then it will display
+  // the currency code behind the balance value.
+  const meta = CurrencyMeta[balance.currency] ?? {
+    symbol: balance.currency,
+    decimals: 2,
+    symbolAfter: true,
+  };
+  const formattedAmount = balance.amount.toFixed(meta.decimals);
+
+  if (meta.symbolAfter) {
+    return `${formattedAmount} ${meta.symbol}`;
+  } else {
+    return `${meta.symbol}${formattedAmount}`;
+  }
+}
+```
 
 ### Social Casino Currencies
 
