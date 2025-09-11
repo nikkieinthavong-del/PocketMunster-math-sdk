@@ -1,0 +1,26 @@
+{
+  "rtp": 0.0,
+  "total_spins": 50000,
+  "total_win": 0,
+  "total_bet": 50000.0,
+  "hit_frequency": 0.0,
+  "volatility": 0.0,
+  "max_win": 0,
+  "simulation_time": 58.6358802318573,
+  "spins_per_second": 852.7202082119445,
+  "feature_frequencies": {
+    "evolutionary_frenzy": 0,
+    "catch_em_all": 0,
+    "battle_arena": 0,
+    "max_win": 0
+  },
+  "evolution_frequency": 0.00196,
+  "bonus_frequencies": {
+    "catch_em_all": 0.01942
+  },
+  "pok\u00e9dex_stats": {
+    "average_completion": 3.80153642384106,
+    "max_completion": 10.596026490066226,
+    "min_completion": 0.0
+  }
+}
