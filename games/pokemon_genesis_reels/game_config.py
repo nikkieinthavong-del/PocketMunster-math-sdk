@@ -43,65 +43,65 @@ class GameConfig(ConfigBase):
         # Base payout table - these will be enhanced by evolution multipliers
         pay_group = {}
         
-        # Tier 1 - Common Pokemon (lowest payouts)
+        # Tier 1 - Common Pokemon (lowest payouts) - Scaled down for proper RTP
         tier_1_pokemon = [name for name, data in self.pokemon_data.items() if data['tier'] == 1]
         for pokemon in tier_1_pokemon:
-            pay_group[(tier_1, pokemon)] = 0.1
-            pay_group[(tier_2, pokemon)] = 0.3
-            pay_group[(tier_3, pokemon)] = 0.8
-            pay_group[(tier_4, pokemon)] = 2.0
-            pay_group[(tier_5, pokemon)] = 5.0
-            pay_group[(tier_6, pokemon)] = 15.0
+            pay_group[(tier_1, pokemon)] = 0.05
+            pay_group[(tier_2, pokemon)] = 0.15
+            pay_group[(tier_3, pokemon)] = 0.40
+            pay_group[(tier_4, pokemon)] = 1.00
+            pay_group[(tier_5, pokemon)] = 2.50
+            pay_group[(tier_6, pokemon)] = 7.50
 
         # Tier 2 - Uncommon Pokemon
         tier_2_pokemon = [name for name, data in self.pokemon_data.items() if data['tier'] == 2]
         for pokemon in tier_2_pokemon:
-            pay_group[(tier_1, pokemon)] = 0.2
-            pay_group[(tier_2, pokemon)] = 0.6
-            pay_group[(tier_3, pokemon)] = 1.5
-            pay_group[(tier_4, pokemon)] = 4.0
-            pay_group[(tier_5, pokemon)] = 10.0
-            pay_group[(tier_6, pokemon)] = 30.0
+            pay_group[(tier_1, pokemon)] = 0.10
+            pay_group[(tier_2, pokemon)] = 0.30
+            pay_group[(tier_3, pokemon)] = 0.75
+            pay_group[(tier_4, pokemon)] = 2.00
+            pay_group[(tier_5, pokemon)] = 5.00
+            pay_group[(tier_6, pokemon)] = 15.00
 
         # Tier 3 - Rare Pokemon
         tier_3_pokemon = [name for name, data in self.pokemon_data.items() if data['tier'] == 3]
         for pokemon in tier_3_pokemon:
-            pay_group[(tier_1, pokemon)] = 0.4
-            pay_group[(tier_2, pokemon)] = 1.2
-            pay_group[(tier_3, pokemon)] = 3.0
-            pay_group[(tier_4, pokemon)] = 8.0
-            pay_group[(tier_5, pokemon)] = 20.0
-            pay_group[(tier_6, pokemon)] = 60.0
+            pay_group[(tier_1, pokemon)] = 0.20
+            pay_group[(tier_2, pokemon)] = 0.60
+            pay_group[(tier_3, pokemon)] = 1.50
+            pay_group[(tier_4, pokemon)] = 4.00
+            pay_group[(tier_5, pokemon)] = 10.00
+            pay_group[(tier_6, pokemon)] = 30.00
 
         # Tier 4 - Ultra Rare Pokemon
         tier_4_pokemon = [name for name, data in self.pokemon_data.items() if data['tier'] == 4]
         for pokemon in tier_4_pokemon:
-            pay_group[(tier_1, pokemon)] = 0.8
-            pay_group[(tier_2, pokemon)] = 2.5
-            pay_group[(tier_3, pokemon)] = 6.0
-            pay_group[(tier_4, pokemon)] = 15.0
-            pay_group[(tier_5, pokemon)] = 40.0
-            pay_group[(tier_6, pokemon)] = 120.0
+            pay_group[(tier_1, pokemon)] = 0.40
+            pay_group[(tier_2, pokemon)] = 1.25
+            pay_group[(tier_3, pokemon)] = 3.00
+            pay_group[(tier_4, pokemon)] = 7.50
+            pay_group[(tier_5, pokemon)] = 20.00
+            pay_group[(tier_6, pokemon)] = 60.00
 
         # Tier 5 - Epic Pokemon
         tier_5_pokemon = [name for name, data in self.pokemon_data.items() if data['tier'] == 5]
         for pokemon in tier_5_pokemon:
-            pay_group[(tier_1, pokemon)] = 1.5
-            pay_group[(tier_2, pokemon)] = 5.0
-            pay_group[(tier_3, pokemon)] = 12.0
-            pay_group[(tier_4, pokemon)] = 30.0
-            pay_group[(tier_5, pokemon)] = 80.0
-            pay_group[(tier_6, pokemon)] = 250.0
+            pay_group[(tier_1, pokemon)] = 0.75
+            pay_group[(tier_2, pokemon)] = 2.50
+            pay_group[(tier_3, pokemon)] = 6.00
+            pay_group[(tier_4, pokemon)] = 15.00
+            pay_group[(tier_5, pokemon)] = 40.00
+            pay_group[(tier_6, pokemon)] = 125.00
 
         # Tier 6 - Legendary Pokemon (highest payouts)
         tier_6_pokemon = [name for name, data in self.pokemon_data.items() if data['tier'] == 6]
         for pokemon in tier_6_pokemon:
-            pay_group[(tier_1, pokemon)] = 3.0
-            pay_group[(tier_2, pokemon)] = 10.0
-            pay_group[(tier_3, pokemon)] = 25.0
-            pay_group[(tier_4, pokemon)] = 60.0
-            pay_group[(tier_5, pokemon)] = 150.0
-            pay_group[(tier_6, pokemon)] = 500.0
+            pay_group[(tier_1, pokemon)] = 1.50
+            pay_group[(tier_2, pokemon)] = 5.00
+            pay_group[(tier_3, pokemon)] = 12.50
+            pay_group[(tier_4, pokemon)] = 30.00
+            pay_group[(tier_5, pokemon)] = 75.00
+            pay_group[(tier_6, pokemon)] = 250.00
 
         self.paytable = self.convert_range_table(pay_group)
 
@@ -213,6 +213,16 @@ class GameConfig(ConfigBase):
             "Spearow": {"tier": 1, "evolves_to": "Fearow", "evolution_stage": 0, "type": ["Normal", "Flying"]},
             "Ekans": {"tier": 1, "evolves_to": "Arbok", "evolution_stage": 0, "type": ["Poison"]},
             "Sandshrew": {"tier": 1, "evolves_to": "Sandslash", "evolution_stage": 0, "type": ["Ground"]},
+            "Oddish": {"tier": 1, "evolves_to": "Gloom", "evolution_stage": 0, "type": ["Grass", "Poison"]},
+            "Gloom": {"tier": 1, "evolves_to": "Vileplume", "evolution_stage": 1, "type": ["Grass", "Poison"]},
+            "Paras": {"tier": 1, "evolves_to": "Parasect", "evolution_stage": 0, "type": ["Bug", "Grass"]},
+            "Venonat": {"tier": 1, "evolves_to": "Venomoth", "evolution_stage": 0, "type": ["Bug", "Poison"]},
+            "Diglett": {"tier": 1, "evolves_to": "Dugtrio", "evolution_stage": 0, "type": ["Ground"]},
+            "Meowth": {"tier": 1, "evolves_to": "Persian", "evolution_stage": 0, "type": ["Normal"]},
+            "Psyduck": {"tier": 1, "evolves_to": "Golduck", "evolution_stage": 0, "type": ["Water"]},
+            "Mankey": {"tier": 1, "evolves_to": "Primeape", "evolution_stage": 0, "type": ["Fighting"]},
+            "Poliwag": {"tier": 1, "evolves_to": "Poliwhirl", "evolution_stage": 0, "type": ["Water"]},
+            "Poliwhirl": {"tier": 1, "evolves_to": "Poliwrath", "evolution_stage": 1, "type": ["Water", "Fighting"]},
 
             # Tier 2 - Uncommon Pokemon (Evolved forms, less common encounters)
             "Butterfree": {"tier": 2, "evolves_to": None, "evolution_stage": 2, "type": ["Bug", "Flying"]},
@@ -230,6 +240,42 @@ class GameConfig(ConfigBase):
             "Vulpix": {"tier": 2, "evolves_to": "Ninetales", "evolution_stage": 0, "type": ["Fire"]},
             "Jigglypuff": {"tier": 2, "evolves_to": "Wigglytuff", "evolution_stage": 0, "type": ["Normal", "Fairy"]},
             "Zubat": {"tier": 2, "evolves_to": "Golbat", "evolution_stage": 0, "type": ["Poison", "Flying"]},
+            "Vileplume": {"tier": 2, "evolves_to": None, "evolution_stage": 2, "type": ["Grass", "Poison"]},
+            "Parasect": {"tier": 2, "evolves_to": None, "evolution_stage": 1, "type": ["Bug", "Grass"]},
+            "Venomoth": {"tier": 2, "evolves_to": None, "evolution_stage": 1, "type": ["Bug", "Poison"]},
+            "Dugtrio": {"tier": 2, "evolves_to": None, "evolution_stage": 1, "type": ["Ground"]},
+            "Persian": {"tier": 2, "evolves_to": None, "evolution_stage": 1, "type": ["Normal"]},
+            "Golduck": {"tier": 2, "evolves_to": None, "evolution_stage": 1, "type": ["Water"]},
+            "Primeape": {"tier": 2, "evolves_to": None, "evolution_stage": 1, "type": ["Fighting"]},
+            "Growlithe": {"tier": 2, "evolves_to": "Arcanine", "evolution_stage": 0, "type": ["Fire"]},
+            "Abra": {"tier": 2, "evolves_to": "Kadabra", "evolution_stage": 0, "type": ["Psychic"]},
+            "Kadabra": {"tier": 2, "evolves_to": "Alakazam", "evolution_stage": 1, "type": ["Psychic"]},
+            "Machop": {"tier": 2, "evolves_to": "Machoke", "evolution_stage": 0, "type": ["Fighting"]},
+            "Machoke": {"tier": 2, "evolves_to": "Machamp", "evolution_stage": 1, "type": ["Fighting"]},
+            "Bellsprout": {"tier": 2, "evolves_to": "Weepinbell", "evolution_stage": 0, "type": ["Grass", "Poison"]},
+            "Weepinbell": {"tier": 2, "evolves_to": "Victreebel", "evolution_stage": 1, "type": ["Grass", "Poison"]},
+            "Tentacool": {"tier": 2, "evolves_to": "Tentacruel", "evolution_stage": 0, "type": ["Water", "Poison"]},
+            "Geodude": {"tier": 2, "evolves_to": "Graveler", "evolution_stage": 0, "type": ["Rock", "Ground"]},
+            "Graveler": {"tier": 2, "evolves_to": "Golem", "evolution_stage": 1, "type": ["Rock", "Ground"]},
+            "Ponyta": {"tier": 2, "evolves_to": "Rapidash", "evolution_stage": 0, "type": ["Fire"]},
+            "Slowpoke": {"tier": 2, "evolves_to": "Slowbro", "evolution_stage": 0, "type": ["Water", "Psychic"]},
+            "Magnemite": {"tier": 2, "evolves_to": "Magneton", "evolution_stage": 0, "type": ["Electric", "Steel"]},
+            "Doduo": {"tier": 2, "evolves_to": "Dodrio", "evolution_stage": 0, "type": ["Normal", "Flying"]},
+            "Seel": {"tier": 2, "evolves_to": "Dewgong", "evolution_stage": 0, "type": ["Water"]},
+            "Grimer": {"tier": 2, "evolves_to": "Muk", "evolution_stage": 0, "type": ["Poison"]},
+            "Gastly": {"tier": 2, "evolves_to": "Haunter", "evolution_stage": 0, "type": ["Ghost", "Poison"]},
+            "Haunter": {"tier": 2, "evolves_to": "Gengar", "evolution_stage": 1, "type": ["Ghost", "Poison"]},
+            "Drowzee": {"tier": 2, "evolves_to": "Hypno", "evolution_stage": 0, "type": ["Psychic"]},
+            "Krabby": {"tier": 2, "evolves_to": "Kingler", "evolution_stage": 0, "type": ["Water"]},
+            "Voltorb": {"tier": 2, "evolves_to": "Electrode", "evolution_stage": 0, "type": ["Electric"]},
+            "Exeggcute": {"tier": 2, "evolves_to": "Exeggutor", "evolution_stage": 0, "type": ["Grass", "Psychic"]},
+            "Cubone": {"tier": 2, "evolves_to": "Marowak", "evolution_stage": 0, "type": ["Ground"]},
+            "Horsea": {"tier": 2, "evolves_to": "Seadra", "evolution_stage": 0, "type": ["Water"]},
+            "Goldeen": {"tier": 2, "evolves_to": "Seaking", "evolution_stage": 0, "type": ["Water"]},
+            "Staryu": {"tier": 2, "evolves_to": "Starmie", "evolution_stage": 0, "type": ["Water"]},
+            "Magikarp": {"tier": 2, "evolves_to": "Gyarados", "evolution_stage": 0, "type": ["Water"]},
+            "Omanyte": {"tier": 2, "evolves_to": "Omastar", "evolution_stage": 0, "type": ["Rock", "Water"]},
+            "Kabuto": {"tier": 2, "evolves_to": "Kabutops", "evolution_stage": 0, "type": ["Rock", "Water"]},
 
             # Tier 3 - Rare Pokemon (Strong evolved forms, starter pokemon)
             "Bulbasaur": {"tier": 3, "evolves_to": "Ivysaur", "evolution_stage": 0, "type": ["Grass", "Poison"]},
@@ -244,6 +290,45 @@ class GameConfig(ConfigBase):
             "Ninetales": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Fire"]},
             "Wigglytuff": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Normal", "Fairy"]},
             "Golbat": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Poison", "Flying"]},
+            "Poliwrath": {"tier": 3, "evolves_to": None, "evolution_stage": 2, "type": ["Water", "Fighting"]},
+            "Arcanine": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Fire"]},
+            "Victreebel": {"tier": 3, "evolves_to": None, "evolution_stage": 2, "type": ["Grass", "Poison"]},
+            "Tentacruel": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Water", "Poison"]},
+            "Rapidash": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Fire"]},
+            "Slowbro": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Water", "Psychic"]},
+            "Magneton": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Electric", "Steel"]},
+            "Farfetchd": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Normal", "Flying"]},
+            "Dodrio": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Normal", "Flying"]},
+            "Dewgong": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Water", "Ice"]},
+            "Muk": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Poison"]},
+            "Shellder": {"tier": 3, "evolves_to": "Cloyster", "evolution_stage": 0, "type": ["Water"]},
+            "Cloyster": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Water", "Ice"]},
+            "Hypno": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Psychic"]},
+            "Kingler": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Water"]},
+            "Electrode": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Electric"]},
+            "Exeggutor": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Grass", "Psychic"]},
+            "Marowak": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Ground"]},
+            "Hitmonlee": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Fighting"]},
+            "Hitmonchan": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Fighting"]},
+            "Lickitung": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Normal"]},
+            "Weezing": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Poison"]},
+            "Rhyhorn": {"tier": 3, "evolves_to": "Rhydon", "evolution_stage": 0, "type": ["Ground", "Rock"]},
+            "Rhydon": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Ground", "Rock"]},
+            "Chansey": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Normal"]},
+            "Tangela": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Grass"]},
+            "Kangaskhan": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Normal"]},
+            "Seadra": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Water"]},
+            "Seaking": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Water"]},
+            "Starmie": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Water", "Psychic"]},
+            "Mr_Mime": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Psychic", "Fairy"]},
+            "Scyther": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Bug", "Flying"]},
+            "Jynx": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Ice", "Psychic"]},
+            "Electabuzz": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Electric"]},
+            "Magmar": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Fire"]},
+            "Pinsir": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Bug"]},
+            "Tauros": {"tier": 3, "evolves_to": None, "evolution_stage": 0, "type": ["Normal"]},
+            "Omastar": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Rock", "Water"]},
+            "Kabutops": {"tier": 3, "evolves_to": None, "evolution_stage": 1, "type": ["Rock", "Water"]},
 
             # Tier 4 - Ultra Rare Pokemon (Final evolutions of starters, powerful Pokemon)
             "Venusaur": {"tier": 4, "evolves_to": None, "evolution_stage": 2, "type": ["Grass", "Poison"]},
@@ -255,11 +340,15 @@ class GameConfig(ConfigBase):
             "Gengar": {"tier": 4, "evolves_to": None, "evolution_stage": 2, "type": ["Ghost", "Poison"]},
             "Gyarados": {"tier": 4, "evolves_to": None, "evolution_stage": 1, "type": ["Water", "Flying"]},
             "Lapras": {"tier": 4, "evolves_to": None, "evolution_stage": 0, "type": ["Water", "Ice"]},
+            "Ditto": {"tier": 4, "evolves_to": None, "evolution_stage": 0, "type": ["Normal"]},
+            "Porygon": {"tier": 4, "evolves_to": None, "evolution_stage": 0, "type": ["Normal"]},
             "Snorlax": {"tier": 4, "evolves_to": None, "evolution_stage": 0, "type": ["Normal"]},
 
             # Tier 5 - Epic Pokemon (Rare single forms, pseudo-legendaries)
             "Aerodactyl": {"tier": 5, "evolves_to": None, "evolution_stage": 0, "type": ["Rock", "Flying"]},
+            "Dragonair": {"tier": 5, "evolves_to": "Dragonite", "evolution_stage": 1, "type": ["Dragon"]},
             "Dragonite": {"tier": 5, "evolves_to": None, "evolution_stage": 2, "type": ["Dragon", "Flying"]},
+            "Dratini": {"tier": 5, "evolves_to": "Dragonair", "evolution_stage": 0, "type": ["Dragon"]},
             "Eevee": {"tier": 5, "evolves_to": "Multiple", "evolution_stage": 0, "type": ["Normal"]},
             "Vaporeon": {"tier": 5, "evolves_to": None, "evolution_stage": 1, "type": ["Water"]},
             "Jolteon": {"tier": 5, "evolves_to": None, "evolution_stage": 1, "type": ["Electric"]},
