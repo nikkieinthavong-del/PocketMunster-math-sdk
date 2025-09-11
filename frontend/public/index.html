@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stake Engine Frontend SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .game-engine {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .game-engine-loading {
+            text-align: center;
+            padding: 40px;
+        }
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .game-info {
+            display: flex;
+            gap: 20px;
+        }
+        .game-controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .balance-display, .bet-control {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .balance-display span, .bet-control input {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #555;
+            background: #333;
+            color: white;
+        }
+        .spin-button {
+            padding: 12px 24px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .spin-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        .spin-button:hover:not(:disabled) {
+            background: #45a049;
+        }
+        .game-display {
+            margin: 20px 0;
+        }
+        .reels {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .reel {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background: #333;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        .symbol {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #444;
+            border-radius: 4px;
+            font-size: 24px;
+        }
+        .wins {
+            background: #2d4a2b;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .win {
+            margin: 5px 0;
+            padding: 5px;
+            background: #3a5d38;
+            border-radius: 3px;
+        }
+        .total-win {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 10px;
+            padding: 10px;
+            background: #4a7c47;
+            border-radius: 4px;
+        }
+        .connection-status {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background: #333;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Stake Engine Frontend SDK</h1>
+            <p>Math Engine + Frontend Integration Demo</p>
+        </div>
+        
+        <div id="root">
+            <div class="game-engine-loading">
+                <h2>Loading Game Engine...</h2>
+                <p>Initializing workspace integration...</p>
+                <p><em>This is a demo page. The actual game engine would be loaded here via React components.</em></p>
+            </div>
+        </div>
+
+        <div class="game-engine">
+            <div class="game-header">
+                <h2>Demo Game Interface</h2>
+                <div class="game-info">
+                    <span>RTP: 97.00%</span>
+                    <span>Max Win: 5000x</span>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <div class="balance-display">
+                    <label>Balance:</label>
+                    <span>$100.00</span>
+                </div>
+
+                <div class="bet-control">
+                    <label>Bet:</label>
+                    <input type="number" value="1.00" min="0.01" max="100" step="0.01">
+                </div>
+
+                <button class="spin-button">SPIN</button>
+            </div>
+
+            <div class="game-display">
+                <h3>Demo Reels:</h3>
+                <div class="reels">
+                    <div class="reel">
+                        <div class="symbol">🍒</div>
+                        <div class="symbol">🍋</div>
+                        <div class="symbol">🍊</div>
+                    </div>
+                    <div class="reel">
+                        <div class="symbol">🍇</div>
+                        <div class="symbol">🔔</div>
+                        <div class="symbol">💎</div>
+                    </div>
+                    <div class="reel">
+                        <div class="symbol">⭐</div>
+                        <div class="symbol">🍀</div>
+                        <div class="symbol">👑</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="connection-status">
+                Status: 🟡 Demo Mode - Frontend SDK Ready
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('Stake Engine Frontend SDK loaded');
+        console.log('Workspace structure initialized');
+        console.log('To integrate with actual games, use the React components from the SDK');
+    </script>
+</body>
+</html>

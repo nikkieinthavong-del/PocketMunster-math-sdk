@@ -25,3 +25,26 @@ __pycache__
 
 **/site/*
 
+
+# Frontend workspace
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/coverage/
+frontend/*.log
+frontend/.env*
+
+# Additional build artifacts
+*.xlsx
+*.json.gz
+*.zst
+*.tmp
+.tmp/
+temp/
+logs/
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*~

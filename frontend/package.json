@@ -1,0 +1,56 @@
+{
+  "name": "stake-engine-frontend-sdk",
+  "version": "1.0.0",
+  "description": "Frontend SDK integration for Stake Engine Math SDK",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack serve --mode development",
+    "test": "jest",
+    "lint": "eslint src/**/*.{js,ts}",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@stake/web-sdk": "^1.0.0",
+    "@stake/frontend-sdk": "^1.0.0", 
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.0.0",
+    "axios": "^1.6.0",
+    "socket.io-client": "^4.7.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/jest": "^29.5.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.0",
+    "webpack-dev-server": "^4.15.0",
+    "ts-loader": "^9.4.0",
+    "eslint": "^8.45.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "jest": "^29.6.0",
+    "ts-jest": "^29.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nikkieinthavong-del/math-sdk.git",
+    "directory": "frontend"
+  },
+  "keywords": [
+    "stake",
+    "engine", 
+    "frontend",
+    "sdk",
+    "games",
+    "math"
+  ],
+  "author": "CarrotRGS",
+  "license": "MIT"
+}

@@ -9,6 +9,14 @@ from utils.rgs_verification import execute_all_tests
 from src.state.run_sims import create_books
 from src.write_data.write_configs import generate_configs
 
+# Import frontend integration
+try:
+    from src.write_data.write_frontend_integration import write_frontend_integration
+    FRONTEND_INTEGRATION_AVAILABLE = True
+except ImportError:
+    FRONTEND_INTEGRATION_AVAILABLE = False
+    print("Warning: Frontend integration module not available")
+
 if __name__ == "__main__":
 
     num_threads = 10
@@ -27,6 +35,7 @@ if __name__ == "__main__":
         "run_optimization": True,
         "run_analysis": True,
         "run_format_checks": True,
+        "generate_frontend_integration": True,  # New option for frontend integration
     }
     target_modes = ["base", "bonus"]
 
@@ -58,3 +67,13 @@ if __name__ == "__main__":
 
     if run_conditions["run_format_checks"]:
         execute_all_tests(config)
+    
+    # Generate frontend integration files
+    if run_conditions["generate_frontend_integration"] and FRONTEND_INTEGRATION_AVAILABLE:
+        try:
+            import os
+            game_path = os.path.dirname(os.path.abspath(__file__))
+            write_frontend_integration(game_path, config)
+            print("Frontend integration files generated successfully")
+        except Exception as e:
+            print(f"Warning: Failed to generate frontend integration files: {e}")

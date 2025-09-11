@@ -1,0 +1,27 @@
+{
+  "name": "stake-engine-math-sdk",
+  "version": "1.0.0",
+  "description": "Complete Stake Engine Math SDK with Frontend Integration",
+  "workspaces": {
+    "math-engine": {
+      "path": "./",
+      "type": "python",
+      "description": "Math engine for game calculations and simulations"
+    },
+    "frontend": {
+      "path": "./frontend",
+      "type": "javascript", 
+      "description": "Frontend SDK integration with Stake web SDK"
+    }
+  },
+  "scripts": {
+    "setup": "make setup && cd frontend && npm install",
+    "build": "make setup && cd frontend && npm run build",
+    "test": "make test && cd frontend && npm test",
+    "dev": "make setup && cd frontend && npm run dev"
+  },
+  "dependencies": {
+    "math-engine": "./",
+    "frontend": "./frontend"
+  }
+}
