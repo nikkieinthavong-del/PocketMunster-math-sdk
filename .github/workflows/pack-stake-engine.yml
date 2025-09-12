@@ -1,0 +1,60 @@
+name: Pack Stake Engine Artifact
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Artifact base name"
+        required: false
+        default: "pocketmon-stake-engine"
+  push:
+    branches:
+      - copilot/**
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-pack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Frontend install and audit
+        working-directory: stake-engine-pocketmon/frontend
+        run: |
+          npm ci || npm install
+          npm audit --omit=dev || true
+
+      - name: Build frontend
+        working-directory: stake-engine-pocketmon/frontend
+        run: npm run build
+
+      - name: Package artifact
+        working-directory: stake-engine-pocketmon/deploy
+        run: |
+          chmod +x package.sh
+          if [ -n "${{ inputs.name }}" ]; then \
+            bash package.sh --skip-build --name "${{ inputs.name }}"; \
+          else \
+            bash package.sh --skip-build; \
+          fi
+
+      - name: Upload artifact zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: stake-engine-artifact
+          path: |
+            stake-engine-pocketmon/deploy/artifacts/*.zip
+            stake-engine-pocketmon/deploy/artifacts/*.zip.sha256
