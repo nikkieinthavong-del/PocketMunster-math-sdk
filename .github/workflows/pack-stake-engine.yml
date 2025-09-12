@@ -60,10 +60,27 @@ jobs:
             bash package.sh --skip-build --name "pocketmon-stake-engine-${SHORT_SHA}"; \
           fi
 
+      - name: Validate artifact metadata
+        run: |
+          set -euo pipefail
+          FILE=$(ls -1 stake-engine-pocketmon/deploy/artifacts/*.artifact.json | head -n1)
+          echo "Validating $FILE"
+          jq -e '.schema_version and .name and .checksums.sha256 and .size_bytes' "$FILE" >/dev/null
+
+      - name: Compute artifact name suffix
+        id: namesuffix
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            echo "suffix=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          else
+            echo "suffix=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Upload artifact zip
         uses: actions/upload-artifact@v4
         with:
-          name: stake-engine-artifact
+          name: stake-engine-artifact-${{ steps.namesuffix.outputs.suffix }}
+          retention-days: 14
           path: |
             stake-engine-pocketmon/deploy/artifacts/*.zip
             stake-engine-pocketmon/deploy/artifacts/*.zip.sha256

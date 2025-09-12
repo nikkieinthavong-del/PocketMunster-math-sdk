@@ -84,6 +84,7 @@ PY_VER="$(python3 --version 2>/dev/null | awk '{print $2}' || echo n/a)"
 
 cat > "$tmp_pack_dir/artifact.json" <<META
 {
+  "schema_version": "1.0",
   "name": "${NAME}",
   "created_at": "${NOW_ISO}",
   "paths": {
@@ -122,6 +123,49 @@ fi
 echo "[pack] Generating checksum..."
 CHECK_PATH="$OUT_ZIP.sha256"
 $SHA256_CMD "$OUT_ZIP" > "$CHECK_PATH"
+
+ZIP_SHA256="$(awk '{print $1}' "$CHECK_PATH")"
+# zip size (portable stat across linux/macos)
+ZIP_SIZE="$(stat -c%s "$OUT_ZIP" 2>/dev/null || stat -f%z "$OUT_ZIP" 2>/dev/null || echo 0)"
+
+# Enrich artifact.json with checksum and size, update inside zip, and export sidecar
+cat > "$tmp_pack_dir/artifact.json" <<META
+{
+  "schema_version": "1.0",
+  "name": "${NAME}",
+  "created_at": "${NOW_ISO}",
+  "paths": {
+    "frontend": "frontend/dist",
+    "math": "math/"
+  },
+  "git": {
+    "commit": "${GIT_COMMIT}",
+    "short": "${GIT_SHORT}",
+    "ref": "${GIT_REF}",
+    "tag": "${GIT_TAG}"
+  },
+  "ci": {
+    "run_id": "${CI_RUN_ID}",
+    "run_number": "${CI_RUN_NUMBER}",
+    "workflow": "${CI_WORKFLOW}"
+  },
+  "tools": {
+    "node": "${NODE_VER}",
+    "npm": "${NPM_VER}",
+    "python": "${PY_VER}",
+    "checksum_cmd": "${SHA256_CMD}"
+  },
+  "checksums": {
+    "sha256": "${ZIP_SHA256}"
+  },
+  "size_bytes": ${ZIP_SIZE}
+}
+META
+
+# Refresh the artifact.json inside the zip to include checksum/size
+pushd "$tmp_pack_dir" >/dev/null
+zip -u "$OUT_ZIP" artifact.json >/dev/null
+popd >/dev/null
 
 echo "[pack] Exporting metadata sidecar..."
 META_PATH="$ARTIFACTS_DIR/${NAME}.artifact.json"

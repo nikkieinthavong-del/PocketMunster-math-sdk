@@ -114,14 +114,19 @@ Each package includes an `artifact.json` at the root with provenance details:
 
 ```json
 {
+  "schema_version": "1.0",
   "name": "pocketmon-stake-engine-v1.0.0",
   "created_at": "2025-09-12T04:55:54+00:00",
   "paths": { "frontend": "frontend/dist", "math": "math/" },
   "git": { "commit": "<sha>", "short": "<short>", "ref": "<ref>", "tag": "<tag>" },
   "ci": { "run_id": "<id>", "run_number": "<num>", "workflow": "<name>" },
-  "tools": { "node": "v20.x", "npm": "x.y.z", "python": "3.11.x", "checksum_cmd": "sha256sum" }
+  "tools": { "node": "v20.x", "npm": "x.y.z", "python": "3.11.x", "checksum_cmd": "sha256sum" },
+  "checksums": { "sha256": "<zip-sha256>" },
+  "size_bytes": 12345678
 }
 ```
+
+The `schema_version` allows us to evolve the metadata format while keeping consumers compatible.
 
 Inspect without extracting:
 
