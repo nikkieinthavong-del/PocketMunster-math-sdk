@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist-run"
+  },
+  "include": ["src/js/**/*.ts", "scripts/**/*.ts"]
+}
