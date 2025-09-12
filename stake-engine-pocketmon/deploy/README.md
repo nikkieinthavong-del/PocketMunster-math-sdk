@@ -100,3 +100,10 @@ Release artifact filenames include the tag for easy identification, e.g.:
 pocketmon-stake-engine-v1.0.0.zip
 pocketmon-stake-engine-v1.0.0.zip.sha256
 ```
+
+For non-tag builds (e.g., branch pushes), artifact filenames include the short commit SHA, e.g.:
+
+```
+pocketmon-stake-engine-abc1234.zip
+pocketmon-stake-engine-abc1234.zip.sha256
+```
