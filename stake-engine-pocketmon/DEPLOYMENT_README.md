@@ -66,6 +66,23 @@ bash package.sh --skip-build
 bash package.sh --name pocketmon-v1.0.0 --no-ci
 ```
 
+## Verify artifact checksums
+
+To verify the integrity of produced artifacts, use the generated `.sha256` files:
+
+```bash
+cd stake-engine-pocketmon/deploy/artifacts
+sha256sum -c pocketmon-v1.0.0.zip.sha256
+```
+
+Or verify all artifacts at once using the helper script:
+
+```bash
+cd stake-engine-pocketmon/deploy
+bash verify.sh                         # verify all
+bash verify.sh pocketmon-v1.0.0.zip    # verify one
+```
+
 ## Math — Validate
 ```bash
 cd stake-engine-pocketmon/math
