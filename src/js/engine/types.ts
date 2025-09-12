@@ -24,7 +24,8 @@ export interface SpinEvent {
     | 'raidStart'
     | 'raidResolve'
     | 'featureEnter'
-    | 'spinEnd';
+    | 'spinEnd'
+    | 'scatters';
   payload?: any;
 }
 
