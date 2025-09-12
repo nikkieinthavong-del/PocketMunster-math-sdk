@@ -1,0 +1,699 @@
+{
+  "pocketmon_genesis_sprites": {
+    "version": "1.0.0",
+    "last_updated": "2025-09-12",
+    "total_assets": 60,
+    "actual_inventory": {
+      "legendary": [
+        {
+          "name": "articuno",
+          "filename": "articuno.png",
+          "path": "assets/sprites/legendary/articuno.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "mewtwo",
+          "filename": "mewtwo.png",
+          "path": "assets/sprites/legendary/mewtwo.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "moltres",
+          "filename": "moltres.png",
+          "path": "assets/sprites/legendary/moltres.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "zapdos",
+          "filename": "zapdos.png",
+          "path": "assets/sprites/legendary/zapdos.png",
+          "exists": false,
+          "size_bytes": 0
+        }
+      ],
+      "rare": [
+        {
+          "name": "aerodactyl",
+          "filename": "aerodactyl.png",
+          "path": "assets/sprites/rare/aerodactyl.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "chansey",
+          "filename": "chansey.png",
+          "path": "assets/sprites/rare/chansey.png",
+          "exists": true,
+          "size_bytes": 38
+        },
+        {
+          "name": "ditto",
+          "filename": "ditto.png",
+          "path": "assets/sprites/rare/ditto.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "electabuzz",
+          "filename": "electabuzz.png",
+          "path": "assets/sprites/rare/electabuzz.png",
+          "exists": true,
+          "size_bytes": 41
+        },
+        {
+          "name": "farfetchd",
+          "filename": "farfetchd.png",
+          "path": "assets/sprites/rare/farfetchd.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "hitmonchan",
+          "filename": "hitmonchan.png",
+          "path": "assets/sprites/rare/hitmonchan.png",
+          "exists": true,
+          "size_bytes": 41
+        },
+        {
+          "name": "hitmonlee",
+          "filename": "hitmonlee.png",
+          "path": "assets/sprites/rare/hitmonlee.png",
+          "exists": true,
+          "size_bytes": 40
+        },
+        {
+          "name": "jynx",
+          "filename": "jynx.png",
+          "path": "assets/sprites/rare/jynx.png",
+          "exists": true,
+          "size_bytes": 35
+        },
+        {
+          "name": "kangaskhan",
+          "filename": "kangaskhan.png",
+          "path": "assets/sprites/rare/kangaskhan.png",
+          "exists": true,
+          "size_bytes": 41
+        },
+        {
+          "name": "lapras",
+          "filename": "lapras.png",
+          "path": "assets/sprites/rare/lapras.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "lickitung",
+          "filename": "lickitung.png",
+          "path": "assets/sprites/rare/lickitung.png",
+          "exists": true,
+          "size_bytes": 40
+        },
+        {
+          "name": "magmar",
+          "filename": "magmar.png",
+          "path": "assets/sprites/rare/magmar.png",
+          "exists": true,
+          "size_bytes": 37
+        },
+        {
+          "name": "mew",
+          "filename": "mew.png",
+          "path": "assets/sprites/rare/mew.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "mr_mime",
+          "filename": "mr_mime.png",
+          "path": "assets/sprites/rare/mr_mime.png",
+          "exists": true,
+          "size_bytes": 38
+        },
+        {
+          "name": "onix",
+          "filename": "onix.png",
+          "path": "assets/sprites/rare/onix.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "pinsir",
+          "filename": "pinsir.png",
+          "path": "assets/sprites/rare/pinsir.png",
+          "exists": true,
+          "size_bytes": 37
+        },
+        {
+          "name": "porygon",
+          "filename": "porygon.png",
+          "path": "assets/sprites/rare/porygon.png",
+          "exists": true,
+          "size_bytes": 38
+        },
+        {
+          "name": "scyther",
+          "filename": "scyther.png",
+          "path": "assets/sprites/rare/scyther.png",
+          "exists": true,
+          "size_bytes": 38
+        },
+        {
+          "name": "snorlax",
+          "filename": "snorlax.png",
+          "path": "assets/sprites/rare/snorlax.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "tangela",
+          "filename": "tangela.png",
+          "path": "assets/sprites/rare/tangela.png",
+          "exists": true,
+          "size_bytes": 38
+        },
+        {
+          "name": "tauros",
+          "filename": "tauros.png",
+          "path": "assets/sprites/rare/tauros.png",
+          "exists": true,
+          "size_bytes": 37
+        }
+      ],
+      "evolution": [
+        {
+          "name": "arbok",
+          "filename": "arbok.png",
+          "path": "assets/sprites/evolution/arbok.png",
+          "exists": true,
+          "size_bytes": 35
+        },
+        {
+          "name": "beedrill",
+          "filename": "beedrill.png",
+          "path": "assets/sprites/evolution/beedrill.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "blastoise",
+          "filename": "blastoise.png",
+          "path": "assets/sprites/evolution/blastoise.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "butterfree",
+          "filename": "butterfree.png",
+          "path": "assets/sprites/evolution/butterfree.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "charizard",
+          "filename": "charizard.png",
+          "path": "assets/sprites/evolution/charizard.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "charmeleon",
+          "filename": "charmeleon.png",
+          "path": "assets/sprites/evolution/charmeleon.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "clefable",
+          "filename": "clefable.png",
+          "path": "assets/sprites/evolution/clefable.png",
+          "exists": true,
+          "size_bytes": 38
+        },
+        {
+          "name": "dragonite",
+          "filename": "dragonite.png",
+          "path": "assets/sprites/evolution/dragonite.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "fearow",
+          "filename": "fearow.png",
+          "path": "assets/sprites/evolution/fearow.png",
+          "exists": true,
+          "size_bytes": 36
+        },
+        {
+          "name": "gyarados",
+          "filename": "gyarados.png",
+          "path": "assets/sprites/evolution/gyarados.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "ivysaur",
+          "filename": "ivysaur.png",
+          "path": "assets/sprites/evolution/ivysaur.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "kakuna",
+          "filename": "kakuna.png",
+          "path": "assets/sprites/evolution/kakuna.png",
+          "exists": true,
+          "size_bytes": 36
+        },
+        {
+          "name": "metapod",
+          "filename": "metapod.png",
+          "path": "assets/sprites/evolution/metapod.png",
+          "exists": true,
+          "size_bytes": 37
+        },
+        {
+          "name": "nidoking",
+          "filename": "nidoking.png",
+          "path": "assets/sprites/evolution/nidoking.png",
+          "exists": true,
+          "size_bytes": 38
+        },
+        {
+          "name": "nidoqueen",
+          "filename": "nidoqueen.png",
+          "path": "assets/sprites/evolution/nidoqueen.png",
+          "exists": true,
+          "size_bytes": 39
+        },
+        {
+          "name": "pidgeot",
+          "filename": "pidgeot.png",
+          "path": "assets/sprites/evolution/pidgeot.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "pidgeotto",
+          "filename": "pidgeotto.png",
+          "path": "assets/sprites/evolution/pidgeotto.png",
+          "exists": true,
+          "size_bytes": 39
+        },
+        {
+          "name": "raichu",
+          "filename": "raichu.png",
+          "path": "assets/sprites/evolution/raichu.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "raticate",
+          "filename": "raticate.png",
+          "path": "assets/sprites/evolution/raticate.png",
+          "exists": true,
+          "size_bytes": 38
+        },
+        {
+          "name": "sandslash",
+          "filename": "sandslash.png",
+          "path": "assets/sprites/evolution/sandslash.png",
+          "exists": true,
+          "size_bytes": 39
+        },
+        {
+          "name": "venusaur",
+          "filename": "venusaur.png",
+          "path": "assets/sprites/evolution/venusaur.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "wartortle",
+          "filename": "wartortle.png",
+          "path": "assets/sprites/evolution/wartortle.png",
+          "exists": false,
+          "size_bytes": 0
+        }
+      ],
+      "basic": [
+        {
+          "name": "bulbasaur",
+          "filename": "bulbasaur.png",
+          "path": "assets/sprites/basic/bulbasaur.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "caterpie",
+          "filename": "caterpie.png",
+          "path": "assets/sprites/basic/caterpie.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "charmander",
+          "filename": "charmander.png",
+          "path": "assets/sprites/basic/charmander.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "eevee",
+          "filename": "eevee.png",
+          "path": "assets/sprites/basic/eevee.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "ekans",
+          "filename": "ekans.png",
+          "path": "assets/sprites/basic/ekans.png",
+          "exists": true,
+          "size_bytes": 35
+        },
+        {
+          "name": "pidgey",
+          "filename": "pidgey.png",
+          "path": "assets/sprites/basic/pidgey.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "pikachu",
+          "filename": "pikachu.png",
+          "path": "assets/sprites/basic/pikachu.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "rattata",
+          "filename": "rattata.png",
+          "path": "assets/sprites/basic/rattata.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "spearow",
+          "filename": "spearow.png",
+          "path": "assets/sprites/basic/spearow.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "squirtle",
+          "filename": "squirtle.png",
+          "path": "assets/sprites/basic/squirtle.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "weedle",
+          "filename": "weedle.png",
+          "path": "assets/sprites/basic/weedle.png",
+          "exists": false,
+          "size_bytes": 0
+        }
+      ],
+      "special": [
+        {
+          "name": "masterball",
+          "filename": "masterball.png",
+          "path": "assets/sprites/special/masterball.png",
+          "exists": false,
+          "size_bytes": 0
+        },
+        {
+          "name": "pokeball",
+          "filename": "pokeball.png",
+          "path": "assets/sprites/special/pokeball.png",
+          "exists": false,
+          "size_bytes": 0
+        }
+      ]
+    },
+    "sprite_categories": {
+      "legendary": {
+        "count": 4,
+        "priority": "critical",
+        "preload": true,
+        "tier": 5,
+        "description": "Legendary Pokemon with premium animations and effects",
+        "sprites": [
+          "assets/sprites/legendary/articuno.png",
+          "assets/sprites/legendary/mewtwo.png",
+          "assets/sprites/legendary/moltres.png",
+          "assets/sprites/legendary/zapdos.png"
+        ]
+      },
+      "rare": {
+        "count": 21,
+        "priority": "high",
+        "preload": true,
+        "tier": 4,
+        "description": "Rare and unique Pokemon with special abilities",
+        "sprites": [
+          "assets/sprites/rare/aerodactyl.png",
+          "assets/sprites/rare/chansey.png",
+          "assets/sprites/rare/ditto.png",
+          "assets/sprites/rare/electabuzz.png",
+          "assets/sprites/rare/farfetchd.png",
+          "assets/sprites/rare/hitmonchan.png",
+          "assets/sprites/rare/hitmonlee.png",
+          "assets/sprites/rare/jynx.png",
+          "assets/sprites/rare/kangaskhan.png",
+          "assets/sprites/rare/lapras.png",
+          "assets/sprites/rare/lickitung.png",
+          "assets/sprites/rare/magmar.png",
+          "assets/sprites/rare/mew.png",
+          "assets/sprites/rare/mr_mime.png",
+          "assets/sprites/rare/onix.png",
+          "assets/sprites/rare/pinsir.png",
+          "assets/sprites/rare/porygon.png",
+          "assets/sprites/rare/scyther.png",
+          "assets/sprites/rare/snorlax.png",
+          "assets/sprites/rare/tangela.png",
+          "assets/sprites/rare/tauros.png"
+        ]
+      },
+      "evolution": {
+        "count": 22,
+        "priority": "medium",
+        "preload": false,
+        "tier": "2-3",
+        "description": "Evolution forms (Stage 1 and Stage 2)",
+        "load_on_demand": true,
+        "sprites": [
+          "assets/sprites/evolution/arbok.png",
+          "assets/sprites/evolution/beedrill.png",
+          "assets/sprites/evolution/blastoise.png",
+          "assets/sprites/evolution/butterfree.png",
+          "assets/sprites/evolution/charizard.png",
+          "assets/sprites/evolution/charmeleon.png",
+          "assets/sprites/evolution/clefable.png",
+          "assets/sprites/evolution/dragonite.png",
+          "assets/sprites/evolution/fearow.png",
+          "assets/sprites/evolution/gyarados.png",
+          "assets/sprites/evolution/ivysaur.png",
+          "assets/sprites/evolution/kakuna.png",
+          "assets/sprites/evolution/metapod.png",
+          "assets/sprites/evolution/nidoking.png",
+          "assets/sprites/evolution/nidoqueen.png",
+          "assets/sprites/evolution/pidgeot.png",
+          "assets/sprites/evolution/pidgeotto.png",
+          "assets/sprites/evolution/raichu.png",
+          "assets/sprites/evolution/raticate.png",
+          "assets/sprites/evolution/sandslash.png",
+          "assets/sprites/evolution/venusaur.png",
+          "assets/sprites/evolution/wartortle.png"
+        ]
+      },
+      "basic": {
+        "count": 11,
+        "priority": "low",
+        "preload": false,
+        "tier": 1,
+        "description": "Basic Pokemon forms",
+        "load_batch_size": 15,
+        "sprites": [
+          "assets/sprites/basic/bulbasaur.png",
+          "assets/sprites/basic/caterpie.png",
+          "assets/sprites/basic/charmander.png",
+          "assets/sprites/basic/eevee.png",
+          "assets/sprites/basic/ekans.png",
+          "assets/sprites/basic/pidgey.png",
+          "assets/sprites/basic/pikachu.png",
+          "assets/sprites/basic/rattata.png",
+          "assets/sprites/basic/spearow.png",
+          "assets/sprites/basic/squirtle.png",
+          "assets/sprites/basic/weedle.png"
+        ]
+      },
+      "special": {
+        "count": 2,
+        "priority": "critical",
+        "preload": true,
+        "tier": 0,
+        "description": "Game mechanic symbols (Pokeball, Masterball)",
+        "sprites": [
+          "assets/sprites/special/masterball.png",
+          "assets/sprites/special/pokeball.png"
+        ]
+      }
+    },
+    "loading_strategy": {
+      "preload_order": [
+        "special",
+        "legendary",
+        "rare"
+      ],
+      "batch_loading": {
+        "enabled": true,
+        "batch_size": 10,
+        "concurrent_loads": 3,
+        "timeout_ms": 5000
+      },
+      "fallback_handling": {
+        "default_sprite": "assets/sprites/special/pokeball.png",
+        "loading_placeholder": "assets/ui/loading_pokeball.gif",
+        "error_sprite": "assets/ui/error_sprite.png"
+      }
+    },
+    "tier_specifications": {
+      "tier_5_legendary": {
+        "dimensions": {
+          "width": 128,
+          "height": 128
+        },
+        "scale": 1.2,
+        "animation": true,
+        "effects": [
+          "legendary_shine",
+          "particle_system"
+        ],
+        "pokemon": [
+          "articuno",
+          "mewtwo",
+          "moltres",
+          "zapdos"
+        ]
+      },
+      "tier_4_rare": {
+        "dimensions": {
+          "width": 128,
+          "height": 128
+        },
+        "scale": 1.1,
+        "animation": true,
+        "effects": [
+          "mythical_glow",
+          "special_particles"
+        ],
+        "pokemon": [
+          "aerodactyl",
+          "chansey",
+          "ditto",
+          "electabuzz",
+          "farfetchd",
+          "hitmonchan",
+          "hitmonlee",
+          "jynx",
+          "kangaskhan",
+          "lapras",
+          "lickitung",
+          "magmar",
+          "mew",
+          "mr_mime",
+          "onix",
+          "pinsir",
+          "porygon",
+          "scyther",
+          "snorlax",
+          "tangela",
+          "tauros"
+        ]
+      },
+      "tier_3_evolution": {
+        "dimensions": {
+          "width": 112,
+          "height": 112
+        },
+        "scale": 1.05,
+        "animation": "limited",
+        "effects": [
+          "evolution_glow"
+        ],
+        "description": "Stage 2 final evolution forms"
+      },
+      "tier_2_evolution": {
+        "dimensions": {
+          "width": 80,
+          "height": 80
+        },
+        "scale": 0.9,
+        "animation": "basic",
+        "effects": [
+          "subtle_glow"
+        ],
+        "description": "Stage 1 intermediate forms"
+      },
+      "tier_1_basic": {
+        "dimensions": {
+          "width": 64,
+          "height": 64
+        },
+        "scale": 0.8,
+        "animation": false,
+        "effects": [
+          "none"
+        ],
+        "pokemon": [
+          "bulbasaur",
+          "caterpie",
+          "charmander",
+          "eevee",
+          "ekans",
+          "pidgey",
+          "pikachu",
+          "rattata",
+          "spearow",
+          "squirtle",
+          "weedle"
+        ]
+      },
+      "tier_0_special": {
+        "dimensions": {
+          "width": 96,
+          "height": 96
+        },
+        "scale": 1.0,
+        "animation": true,
+        "effects": [
+          "scatter_glow",
+          "wild_effects",
+          "multiplier_effects"
+        ],
+        "symbols": [
+          "masterball",
+          "pokeball"
+        ]
+      }
+    },
+    "integration_notes": {
+      "existing_sprites": "5 Pokemon sprites copied from original project",
+      "placeholder_count": 55,
+      "real_sprites": [
+        "mewtwo",
+        "bulbasaur",
+        "pikachu",
+        "ivysaur",
+        "venusaur"
+      ],
+      "deployment_ready": true,
+      "stake_engine_compatible": true
+    }
+  }
+}

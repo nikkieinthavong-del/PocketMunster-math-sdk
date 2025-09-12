@@ -1,0 +1,39 @@
+{
+  "pocketmon_symbols": {
+    "tier1": [
+      {
+        "name": "Venusaur",
+        "number": 3,
+        "tier": "tier1",
+        "file_path": "assets/sprites/pocketmon/tier1/Venusaur.png"
+      },
+      {
+        "name": "Bulbasaur",
+        "number": 1,
+        "tier": "tier1",
+        "file_path": "assets/sprites/pocketmon/tier1/Bulbasaur.png"
+      },
+      {
+        "name": "Ivysaur",
+        "number": 2,
+        "tier": "tier1",
+        "file_path": "assets/sprites/pocketmon/tier1/Ivysaur.png"
+      },
+      {
+        "name": "Pikachu",
+        "number": 25,
+        "tier": "tier1",
+        "file_path": "assets/sprites/pocketmon/tier1/Pikachu.png"
+      }
+    ],
+    "tier5": [
+      {
+        "name": "Mewtwo",
+        "number": 150,
+        "tier": "tier5",
+        "file_path": "assets/sprites/pocketmon/tier5/Mewtwo.png"
+      }
+    ]
+  },
+  "total_count": 5
+}

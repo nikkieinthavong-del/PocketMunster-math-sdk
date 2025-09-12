@@ -1,0 +1,214 @@
+{
+  "pocketmon_genesis_sprites": {
+    "version": "1.0.0",
+    "total_assets": 153,
+    "sprite_categories": {
+      "legendary": {
+        "count": 4,
+        "priority": "high",
+        "preload": true,
+        "sprites": [
+          "assets/sprites/legendary/mewtwo.png",
+          "assets/sprites/legendary/articuno.png", 
+          "assets/sprites/legendary/zapdos.png",
+          "assets/sprites/legendary/moltres.png"
+        ]
+      },
+      "rare": {
+        "count": 6,
+        "priority": "high", 
+        "preload": true,
+        "sprites": [
+          "assets/sprites/rare/mew.png",
+          "assets/sprites/rare/snorlax.png",
+          "assets/sprites/rare/lapras.png",
+          "assets/sprites/rare/aerodactyl.png",
+          "assets/sprites/rare/ditto.png",
+          "assets/sprites/rare/farfetchd.png",
+          "assets/sprites/rare/onix.png"
+        ]
+      },
+      "evolution": {
+        "count": 75,
+        "priority": "medium",
+        "preload": false,
+        "load_on_demand": true,
+        "stage_2_evolutions": [
+          "assets/sprites/evolution/venusaur.png",
+          "assets/sprites/evolution/charizard.png", 
+          "assets/sprites/evolution/blastoise.png",
+          "assets/sprites/evolution/butterfree.png",
+          "assets/sprites/evolution/beedrill.png",
+          "assets/sprites/evolution/pidgeot.png",
+          "assets/sprites/evolution/raichu.png",
+          "assets/sprites/evolution/dragonite.png",
+          "assets/sprites/evolution/gyarados.png"
+        ],
+        "stage_1_evolutions": [
+          "assets/sprites/evolution/ivysaur.png",
+          "assets/sprites/evolution/charmeleon.png",
+          "assets/sprites/evolution/wartortle.png"
+        ]
+      },
+      "basic": {
+        "count": 66,
+        "priority": "low",
+        "preload": false,
+        "load_batch_size": 20,
+        "starter_pokemon": [
+          "assets/sprites/basic/bulbasaur.png",
+          "assets/sprites/basic/charmander.png", 
+          "assets/sprites/basic/squirtle.png"
+        ],
+        "popular_pokemon": [
+          "assets/sprites/basic/pikachu.png",
+          "assets/sprites/basic/eevee.png"
+        ]
+      },
+      "special": {
+        "count": 2,
+        "priority": "critical",
+        "preload": true,
+        "sprites": [
+          "assets/sprites/special/pokeball.png",
+          "assets/sprites/special/masterball.png"
+        ]
+      }
+    },
+    "animation_assets": {
+      "legendary_animations": {
+        "mewtwo": {
+          "frames": 8,
+          "fps": 5,
+          "files": [
+            "assets/sprites/legendary/mewtwo_frame_0.png",
+            "assets/sprites/legendary/mewtwo_frame_1.png",
+            "assets/sprites/legendary/mewtwo_frame_2.png",
+            "assets/sprites/legendary/mewtwo_frame_3.png",
+            "assets/sprites/legendary/mewtwo_frame_4.png",
+            "assets/sprites/legendary/mewtwo_frame_5.png",
+            "assets/sprites/legendary/mewtwo_frame_6.png",
+            "assets/sprites/legendary/mewtwo_frame_7.png"
+          ]
+        },
+        "articuno": {
+          "frames": 6,
+          "fps": 4,
+          "files": [
+            "assets/sprites/legendary/articuno_frame_0.png",
+            "assets/sprites/legendary/articuno_frame_1.png",
+            "assets/sprites/legendary/articuno_frame_2.png",
+            "assets/sprites/legendary/articuno_frame_3.png",
+            "assets/sprites/legendary/articuno_frame_4.png",
+            "assets/sprites/legendary/articuno_frame_5.png"
+          ]
+        },
+        "zapdos": {
+          "frames": 6,
+          "fps": 5,
+          "files": [
+            "assets/sprites/legendary/zapdos_frame_0.png",
+            "assets/sprites/legendary/zapdos_frame_1.png",
+            "assets/sprites/legendary/zapdos_frame_2.png",
+            "assets/sprites/legendary/zapdos_frame_3.png",
+            "assets/sprites/legendary/zapdos_frame_4.png",
+            "assets/sprites/legendary/zapdos_frame_5.png"
+          ]
+        },
+        "moltres": {
+          "frames": 8,
+          "fps": 6,
+          "files": [
+            "assets/sprites/legendary/moltres_frame_0.png",
+            "assets/sprites/legendary/moltres_frame_1.png",
+            "assets/sprites/legendary/moltres_frame_2.png",
+            "assets/sprites/legendary/moltres_frame_3.png",
+            "assets/sprites/legendary/moltres_frame_4.png",
+            "assets/sprites/legendary/moltres_frame_5.png",
+            "assets/sprites/legendary/moltres_frame_6.png",
+            "assets/sprites/legendary/moltres_frame_7.png"
+          ]
+        }
+      },
+      "special_animations": {
+        "pokeball": {
+          "frames": 8,
+          "fps": 5,
+          "loop": true,
+          "files": [
+            "assets/sprites/special/pokeball_frame_0.png",
+            "assets/sprites/special/pokeball_frame_1.png",
+            "assets/sprites/special/pokeball_frame_2.png",
+            "assets/sprites/special/pokeball_frame_3.png",
+            "assets/sprites/special/pokeball_frame_4.png",
+            "assets/sprites/special/pokeball_frame_5.png",
+            "assets/sprites/special/pokeball_frame_6.png",
+            "assets/sprites/special/pokeball_frame_7.png"
+          ]
+        },
+        "masterball": {
+          "frames": 10,
+          "fps": 6,
+          "loop": true,
+          "files": [
+            "assets/sprites/special/masterball_frame_0.png",
+            "assets/sprites/special/masterball_frame_1.png",
+            "assets/sprites/special/masterball_frame_2.png",
+            "assets/sprites/special/masterball_frame_3.png",
+            "assets/sprites/special/masterball_frame_4.png",
+            "assets/sprites/special/masterball_frame_5.png",
+            "assets/sprites/special/masterball_frame_6.png",
+            "assets/sprites/special/masterball_frame_7.png",
+            "assets/sprites/special/masterball_frame_8.png",
+            "assets/sprites/special/masterball_frame_9.png"
+          ]
+        }
+      }
+    },
+    "loading_configuration": {
+      "preload_priority": ["special", "legendary", "rare"],
+      "batch_loading": {
+        "batch_size": 15,
+        "concurrent_loads": 3,
+        "timeout_ms": 5000
+      },
+      "fallback_sprites": {
+        "default": "assets/sprites/basic/pokeball_simple.png",
+        "loading": "assets/sprites/ui/loading_pokeball.gif",
+        "error": "assets/sprites/ui/error_sprite.png"
+      },
+      "optimization": {
+        "sprite_compression": "webp_fallback_png",
+        "max_texture_size": 2048,
+        "mipmap_generation": true,
+        "cache_duration_minutes": 30
+      }
+    },
+    "sprite_dimensions": {
+      "legendary": {"width": 128, "height": 128, "scale": 1.2},
+      "rare": {"width": 128, "height": 128, "scale": 1.1},
+      "evolution_stage2": {"width": 112, "height": 112, "scale": 1.05},
+      "evolution_stage1": {"width": 80, "height": 80, "scale": 0.9},
+      "basic": {"width": 64, "height": 64, "scale": 0.8},
+      "special": {"width": 96, "height": 96, "scale": 1.0}
+    },
+    "effects_manifest": {
+      "particle_effects": [
+        "assets/effects/particles/psychic_aura.json",
+        "assets/effects/particles/ice_crystals.json",
+        "assets/effects/particles/lightning_bolts.json",
+        "assets/effects/particles/fire_embers.json",
+        "assets/effects/particles/pink_sparkles.json",
+        "assets/effects/particles/transform_sparkles.json",
+        "assets/effects/particles/capture_beam.json"
+      ],
+      "glow_effects": [
+        "assets/effects/glows/legendary_shine.json",
+        "assets/effects/glows/mythical_glow.json", 
+        "assets/effects/glows/scatter_glow.json",
+        "assets/effects/glows/multiplier_glow.json",
+        "assets/effects/glows/wild_symbol_glow.json"
+      ]
+    }
+  }
+}

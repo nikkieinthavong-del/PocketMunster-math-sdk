@@ -1,0 +1,17 @@
+PocketMon Asset Import Report
+==================================================
+
+Successfully processed: 5 files
+Errors encountered: 0 files
+
+Files by Tier:
+--------------------
+tier1: 4 files
+  #001: Bulbasaur.png
+  #002: Ivysaur.png
+  #003: Venusaur.png
+  #025: Pikachu.png
+
+tier5: 1 files
+  #150: Mewtwo.png
+
