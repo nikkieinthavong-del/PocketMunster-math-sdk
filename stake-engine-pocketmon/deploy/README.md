@@ -41,6 +41,7 @@ Triggers:
 - Manual via Actions UI (`workflow_dispatch`)
 - `push` to branches matching `copilot/**`
 - `pull_request` targeting `main`
+ - Tag push matching `v*` (publishes a GitHub Release)
 
 ## Downloading Artifacts via CLI
 
@@ -79,3 +80,16 @@ bash stake-engine-pocketmon/deploy/verify.sh ./downloaded-artifacts/stake-engine
 ```
 
 The verification script reads the expected hash from the `.sha256` file and computes the hash of the adjacent `.zip`, ensuring verification works even when the original absolute path embedded in the checksum differs (e.g., CI paths).
+
+## Release on Tag
+
+Pushing a tag that matches `v*` will create a GitHub Release and attach the packaged zip and its checksum.
+
+Create and push a tag:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Then visit the repository Releases page to download the assets. Pre-release tags like `v1.1.0-rc.1` will be marked as prereleases automatically.

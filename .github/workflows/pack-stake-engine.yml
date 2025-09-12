@@ -10,9 +10,14 @@ on:
   push:
     branches:
       - copilot/**
+    tags:
+      - v*
   pull_request:
     branches:
       - main
+
+permissions:
+  contents: write
 
 jobs:
   build-and-pack:
@@ -56,5 +61,17 @@ jobs:
         with:
           name: stake-engine-artifact
           path: |
+            stake-engine-pocketmon/deploy/artifacts/*.zip
+            stake-engine-pocketmon/deploy/artifacts/*.zip.sha256
+
+      - name: Create GitHub Release (on tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-rc') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
+          files: |
             stake-engine-pocketmon/deploy/artifacts/*.zip
             stake-engine-pocketmon/deploy/artifacts/*.zip.sha256
