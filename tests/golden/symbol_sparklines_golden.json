@@ -1,0 +1,22 @@
+{
+  "_golden_placeholder": true,
+  "_note": "This is a placeholder golden file. Run 'update_golden.py --approve' to set the baseline.",
+  "_source_description": "Symbol sparkline generation results",
+  "_created_at": "2024-12-12",
+  "placeholder_match_any": true,
+  
+  "_expected_structure": {
+    "analysis_summary": {
+      "total_files_analyzed": "number",
+      "unique_symbols": "number", 
+      "total_symbol_instances": "number"
+    },
+    "sparklines": {
+      "top_symbols": {
+        "sparkline": "string",
+        "description": "string"
+      }
+    },
+    "insights": "array"
+  }
+}

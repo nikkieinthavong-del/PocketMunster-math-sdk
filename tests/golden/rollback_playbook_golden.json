@@ -1,0 +1,24 @@
+{
+  "_golden_placeholder": true,
+  "_note": "This is a placeholder golden file. Run 'update_golden.py --approve' to set the baseline.", 
+  "_source_description": "Rollback playbook generation results",
+  "_created_at": "2024-12-12",
+  "placeholder_match_any": true,
+  
+  "_expected_structure": {
+    "playbook_id": "string",
+    "version": "string",
+    "configuration": {
+      "auto_rollback_enabled": "boolean",
+      "backup_retention_days": "number"
+    },
+    "system_snapshot": {
+      "metadata": {
+        "total_files": "number",
+        "total_size_bytes": "number"
+      }
+    },
+    "rollback_procedures": "array",
+    "failure_detection_rules": "array"
+  }
+}

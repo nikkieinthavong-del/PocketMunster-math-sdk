@@ -1,0 +1,21 @@
+{
+  "_golden_placeholder": true,
+  "_note": "This is a placeholder golden file. Run 'update_golden.py --approve' to set the baseline.",
+  "_source_description": "Embedding duplicate analysis results",
+  "_created_at": "2024-12-12", 
+  "placeholder_match_any": true,
+  
+  "_expected_structure": {
+    "analysis": {
+      "total_assets": "number",
+      "duplicate_groups_count": "number",
+      "duplicate_rate": "number"
+    },
+    "duplicate_groups": "array",
+    "consolidation_proposals": "array",
+    "summary": {
+      "total_proposals": "number",
+      "total_potential_savings_mb": "number"
+    }
+  }
+}

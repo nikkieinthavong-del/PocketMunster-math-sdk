@@ -1,0 +1,23 @@
+{
+  "_golden_placeholder": true,
+  "_note": "This is a placeholder golden file. Run 'update_golden.py --approve' to set the baseline.",
+  "_source_description": "Performance profile output from asset pipeline orchestrator",
+  "_created_at": "2024-12-12",
+  "placeholder_match_any": true,
+  
+  "_expected_structure": {
+    "pipeline_config": {
+      "max_processing_time": "number",
+      "max_memory_usage": "number", 
+      "cpu_threshold": "number"
+    },
+    "runtime_metrics": {
+      "stage": "string",
+      "elapsed_time_seconds": "number",
+      "memory_usage_mb": "number",
+      "cpu_percent": "number"
+    },
+    "profiling_enabled": "boolean",
+    "stage_duration_seconds": "number"
+  }
+}

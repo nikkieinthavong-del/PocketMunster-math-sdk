@@ -1,0 +1,200 @@
+{
+  "version": "1.0",
+  "description": "Golden test mapping for asset pipeline validation",
+  "last_updated": "2024-12-12",
+  
+  "config": {
+    "tolerance": {
+      "json_float_precision": 6,
+      "timestamp_tolerance_seconds": 5,
+      "size_tolerance_percent": 1.0,
+      "percentage_tolerance": 0.001
+    },
+    "ignore_fields": [
+      "timestamp", 
+      "created_at", 
+      "datetime", 
+      "generated_at",
+      "processing_time", 
+      "system_metrics.timestamp",
+      "start_time",
+      "end_time",
+      "elapsed_time_seconds",
+      "verification_summary.datetime",
+      "signature.signed_at",
+      "signature.signed_datetime"
+    ],
+    "comparison_methods": {
+      "json": "semantic_compare",
+      "txt": "line_compare", 
+      "csv": "structured_compare"
+    },
+    "test_timeout_seconds": 300,
+    "fixture_generation_timeout": 60
+  },
+  
+  "tests": {
+    "performance_profile": {
+      "description": "Performance profiling output validation",
+      "input_generator": "generate_test_performance_data",
+      "pipeline_command": "python scripts/assets_pipeline_all.py --policy tests/config/test_policy.json --output-dir ./test_output --dry-run",
+      "output_file": "test_output/performance_profile.json",
+      "golden_file": "tests/golden/performance_profile_golden.json",
+      "comparison_type": "json",
+      "enabled": true,
+      "priority": "high"
+    },
+    
+    "policy_guard_report": {
+      "description": "Policy guard evaluation validation",
+      "input_generator": "generate_test_policy_data",
+      "pipeline_command": "python scripts/policy_guard_evaluator.py --config tests/config/test_policy.json --target tests/fixtures --output ./test_output/policy_guard_report.json",
+      "output_file": "test_output/policy_guard_report.json", 
+      "golden_file": "tests/golden/policy_guard_report_golden.json",
+      "comparison_type": "json",
+      "enabled": true,
+      "priority": "high"
+    },
+    
+    "embedding_duplicates": {
+      "description": "Embedding duplicate analysis validation",
+      "input_generator": "generate_test_embedding_data",
+      "pipeline_command": "python scripts/embedding_duplicate_proposals.py --config tests/config/test_policy.json --input tests/fixtures --output ./test_output/embedding_duplicate_groups.json",
+      "output_file": "test_output/embedding_duplicate_groups.json",
+      "golden_file": "tests/golden/embedding_duplicate_groups_golden.json", 
+      "comparison_type": "json",
+      "enabled": true,
+      "priority": "medium"
+    },
+    
+    "budget_recommendations": {
+      "description": "Adaptive budget optimization validation",
+      "input_generator": "generate_test_budget_data",
+      "pipeline_command": "python scripts/adaptive_budget_optimizer.py --config tests/config/test_policy.json --output ./test_output/budget_recommendations.json",
+      "output_file": "test_output/budget_recommendations.json",
+      "golden_file": "tests/golden/budget_recommendations_golden.json",
+      "comparison_type": "json", 
+      "enabled": true,
+      "priority": "medium"
+    },
+    
+    "symbol_sparklines": {
+      "description": "Symbol sparkline generation validation",
+      "input_generator": "generate_test_symbol_data", 
+      "pipeline_command": "python scripts/generate_symbol_sparklines.py --input tests/fixtures --output ./test_output/symbol_sparklines.json",
+      "output_file": "test_output/symbol_sparklines.json",
+      "golden_file": "tests/golden/symbol_sparklines_golden.json",
+      "comparison_type": "json",
+      "enabled": true,
+      "priority": "low"
+    },
+    
+    "rollback_playbook": {
+      "description": "Rollback playbook generation validation",
+      "input_generator": null,
+      "pipeline_command": "python scripts/rollback_playbook.py --config tests/config/test_policy.json --target-dirs tests/fixtures --output ./test_output/rollback_playbook.json",
+      "output_file": "test_output/rollback_playbook.json",
+      "golden_file": "tests/golden/rollback_playbook_golden.json",
+      "comparison_type": "json",
+      "enabled": true,
+      "priority": "medium"
+    },
+    
+    "integrity_signing": {
+      "description": "Manifest signing and verification validation",
+      "input_generator": null,
+      "pipeline_command": "python scripts/sign_manifest.py --input-dir tests/fixtures --output ./test_output/integrity_manifest.json",
+      "output_file": "test_output/integrity_manifest.json", 
+      "golden_file": "tests/golden/integrity_manifest_golden.json",
+      "comparison_type": "json",
+      "enabled": false,
+      "priority": "low",
+      "disabled_reason": "Signature includes timestamp and is non-deterministic"
+    },
+    
+    "cli_interface": {
+      "description": "CLI interface validation",
+      "input_generator": null,
+      "pipeline_command": "python -m pocketmon_pipeline --help",
+      "output_file": null,
+      "golden_file": null,
+      "comparison_type": "txt",
+      "enabled": false,
+      "priority": "low",
+      "disabled_reason": "Help text validation not critical for pipeline functionality"
+    }
+  },
+  
+  "test_suites": {
+    "smoke": {
+      "description": "Basic smoke tests for critical functionality", 
+      "tests": ["performance_profile", "policy_guard_report"],
+      "run_order": "parallel"
+    },
+    
+    "full": {
+      "description": "Complete test suite for all functionality",
+      "tests": [
+        "performance_profile", 
+        "policy_guard_report", 
+        "embedding_duplicates",
+        "budget_recommendations", 
+        "symbol_sparklines",
+        "rollback_playbook"
+      ],
+      "run_order": "sequential"
+    },
+    
+    "core": {
+      "description": "Core pipeline functionality tests",
+      "tests": [
+        "performance_profile", 
+        "policy_guard_report", 
+        "budget_recommendations"
+      ],
+      "run_order": "parallel"
+    }
+  },
+  
+  "environments": {
+    "ci": {
+      "description": "Continuous integration environment",
+      "timeout_multiplier": 2.0,
+      "parallel_execution": true,
+      "max_parallel_tests": 3,
+      "retry_failed_tests": 1,
+      "generate_fixtures": true
+    },
+    
+    "dev": {
+      "description": "Development environment", 
+      "timeout_multiplier": 1.0,
+      "parallel_execution": false,
+      "max_parallel_tests": 1,
+      "retry_failed_tests": 0,
+      "generate_fixtures": true
+    },
+    
+    "prod": {
+      "description": "Production validation environment",
+      "timeout_multiplier": 3.0,
+      "parallel_execution": false,
+      "max_parallel_tests": 1,
+      "retry_failed_tests": 2,
+      "generate_fixtures": false
+    }
+  },
+  
+  "notifications": {
+    "on_failure": {
+      "enabled": false,
+      "channels": ["email", "webhook"],
+      "recipients": ["devteam@company.com"]
+    },
+    
+    "on_success": {
+      "enabled": false,
+      "channels": ["webhook"]
+    }
+  }
+}
