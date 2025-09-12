@@ -6,6 +6,8 @@
     { "label": "Simulate (base)", "type": "shell", "command": "npm run simulate -- --spins=2000", "problemMatcher": [] },
     { "label": "Simulate (bonus)", "type": "shell", "command": "npm run simulate:bonus -- --spins=20000", "problemMatcher": [] },
     { "label": "Quick sim (base)", "type": "shell", "command": "npm run simulate -- --spins=200", "problemMatcher": [] },
+    { "label": "Simulate (bonus 500k)", "type": "shell", "command": "npm run simulate:bonus:500k", "problemMatcher": [] },
+    { "label": "Simulate (bonus 1M)", "type": "shell", "command": "npm run simulate:bonus:1m", "problemMatcher": [] },
     { "label": "Calibrate total RTP", "type": "shell", "command": "npm run calibrate:total", "problemMatcher": [] }
   ]
 }

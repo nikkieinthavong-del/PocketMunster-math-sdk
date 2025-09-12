@@ -29,27 +29,34 @@ Alternatively, visit our [Setup and Installation page](https://stakeengine.githu
 Developer shortcuts are wired via VS Code tasks and npm scripts.
 
 - Build runtime bundle
-	- Task: “Build (demo)”
+  - Task: “Build (demo)”
 
 - Base simulation (RTP + hit rate)
-	- Task: “Simulate (base)” (defaults to 2,000 spins)
-	- CLI:
-		- npm run build:demo
-		- node dist-run/scripts/simulate.js --spins=2000
+  - Task: “Simulate (base)” (defaults to 2,000 spins)
+  - CLI:
+    - npm run build:demo
+    - node dist-run/scripts/simulate.js --spins=2000
 
 - Base + bonus simulation (total RTP, trigger rate)
-	- Task: “Simulate (bonus)” (defaults to 20,000 spins)
-	- CLI:
-		- npm run build:demo
-		- node dist-run/scripts/simulate_bonus.js --spins=20000
+  - Task: “Simulate (bonus)” (defaults to 20,000 spins)
+  - CLI:
+    - npm run build:demo
+    - node dist-run/scripts/simulate_bonus.js --spins=20000
+
+  - Larger runs:
+    - Task: “Simulate (bonus 500k)” or “Simulate (bonus 1M)”
+    - CLI:
+      - npm run simulate:bonus:500k
+      - npm run simulate:bonus:1m
 
 - Calibrate total RTP (base + bonus)
-	- Task: “Calibrate total RTP” (writes recommended baseFactor to config.json; target 0.95 by default)
-	- CLI:
-		- npm run build:demo
-		- node dist-run/scripts/calibrate_total.js --spins=200000 --targetRTP=0.95 --write
+  - Task: “Calibrate total RTP” (writes recommended baseFactor to config.json; target 0.95 by default)
+  - CLI:
+    - npm run build:demo
+    - node dist-run/scripts/calibrate_total.js --spins=200000 --targetRTP=0.95 --write
 
 Notes
+
 - Use the “Quick sim (base)” task (200 spins) for fast iteration.
 - For tighter estimates, increase --spins to 500k–1M.
 
