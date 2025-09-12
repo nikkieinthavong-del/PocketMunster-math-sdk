@@ -1,0 +1,26 @@
+{
+  "test_config": {
+    "test_name": "performance_profile",
+    "generated_at": "2025-09-12 08:21:35",
+    "seed": 42
+  },
+  "mock_assets": [
+    {
+      "name": "config.json",
+      "size": 1024,
+      "type": "config"
+    },
+    {
+      "name": "data.csv",
+      "size": 5120,
+      "type": "data"
+    },
+    {
+      "name": "symbols.json",
+      "size": 512,
+      "type": "symbols"
+    }
+  ],
+  "expected_processing_time": 1.5,
+  "expected_memory_usage": 64
+}
