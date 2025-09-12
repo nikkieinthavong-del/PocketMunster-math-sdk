@@ -10,7 +10,8 @@
     "test": "vitest run",
     "simulate": "npm run build:demo && node dist-run/scripts/simulate.js --spins=5000",
     "simulate:bonus": "npm run build:demo && node dist-run/scripts/simulate_bonus.js --spins=10000",
-    "calibrate": "npm run build:demo && node dist-run/scripts/calibrate.js --spins=200000 --targetRTP=0.95"
+    "calibrate": "npm run build:demo && node dist-run/scripts/calibrate.js --spins=200000 --targetRTP=0.95",
+    "calibrate:total": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=200000 --targetRTP=0.95 --write"
   },
   "devDependencies": {
     "typescript": "^5.5.0",
