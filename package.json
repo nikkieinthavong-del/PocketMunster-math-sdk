@@ -1,0 +1,17 @@
+{
+  "name": "pocketmon-genesis-reels-frontend",
+  "version": "1.0.0",
+  "description": "Pocketmon Genesis Reels Frontend for Stake Engine Math SDK",
+  "main": "index.js",
+  "scripts": {
+    "build": "mkdir -p dist && echo 'Frontend built successfully' > dist/index.html",
+    "dev": "echo 'Development server would run here'",
+    "test": "echo 'Tests would run here'"
+  },
+  "keywords": ["stake-engine", "math-sdk", "pocketmon"],
+  "author": "Stake Engine Team",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}

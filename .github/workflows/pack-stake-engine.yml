@@ -1,0 +1,64 @@
+name: Pack Stake Engine Artifact
+
+on:
+  push:
+    branches: [ "main", "copilot/*" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-pack:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11
+    
+    - name: Install Node.js dependencies
+      run: |
+        npm ci || npm install
+        npm audit --omit=dev || true
+      
+    - name: Build frontend
+      run: npm run build
+    
+    - name: Package artifact
+      run: |
+        cd stake-engine-pocketmon/deploy
+        chmod +x package.sh
+        if [[ "${GITHUB_REF}" == refs/tags/* ]]; then \
+          bash package.sh --skip-build --name "pocketmon-stake-engine-${GITHUB_REF_NAME}"; \
+        elif [ -n "${{ github.event.inputs.artifact_name }}" ]; then \
+          bash package.sh --skip-build --name "${{ github.event.inputs.artifact_name }}"; \
+        else \
+          SHORT_SHA=$(git rev-parse --short HEAD); \
+          bash package.sh --skip-build --name "pocketmon-stake-engine-${SHORT_SHA}"; \
+        fi
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: pocketmon-stake-engine
+        path: stake-engine-pocketmon/deploy/artifacts/
+        retention-days: 30
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v2
+      with:
+        files: stake-engine-pocketmon/deploy/artifacts/*
+        generate_release_notes: true
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
