@@ -1,0 +1,10 @@
+import { BatchableSprite } from '../../sprite/BatchableSprite';
+import type { Renderer } from '../../../rendering/renderers/types';
+/** @internal */
+export declare class BatchableText extends BatchableSprite {
+    private readonly _renderer;
+    currentKey: string;
+    constructor(renderer: Renderer);
+    resolutionChange(): void;
+    destroy(): void;
+}

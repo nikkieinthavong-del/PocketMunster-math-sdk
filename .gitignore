@@ -1,10 +1,17 @@
+# Python caches
 __pycache__
-*/.pyc
+*.pyc
 *.prof
+*$py.class
+*.pyo
+*.pyd
+
+# Setup and packaging metadata
 */setup.txt
 *.egg-info/
 */SOURCES.txt
 
+# Project-specific directories
 **/library/**
 **/configs/*
 **/forces/*
@@ -13,15 +20,59 @@ __pycache__
 **/books_compressed/*
 **temp_multi_threaded_files
 
-
+# Build/target artifacts
 **/target/*
 **/debug/*
 **release/*
 **/optimization_files/**
+build/
+dist/
+wheels/
+*.egg
+.eggs/
+pip-wheel-metadata/
 
+# Environments and tooling
 /env
+env/
+.venv/
+venv/
+.tox/
+.nox/
+
+# Coverage
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Test caches
+.pytest_cache/
+
+# Type/checker caches
+.mypy_cache/
+.pytype/
+.ruff_cache/
+.hypothesis/
+
+# Logs
+*.log
+logs/
+
+# Jupyter
+.ipynb_checkpoints/
+# If you want to ignore all notebooks, uncomment the next line
+# *.ipynb
+
+# IDE/project files
+.idea/
+.vscode/
+.ropeproject/
+
+# OS/env files
 *.env
 *.DS_Store
 
+# Site builds
 **/site/*
 

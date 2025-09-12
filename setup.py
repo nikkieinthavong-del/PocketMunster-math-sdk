@@ -1,9 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="stakeengine",
+    name="pocketmon-genesis",  # avoid collision with external 'stakeengine' distribution
     version="0.0.0",
     python_requires=">=3.12",
     author="CarrotRGS",
-    packages=find_packages(),
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
 )

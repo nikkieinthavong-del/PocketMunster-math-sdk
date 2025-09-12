@@ -1,0 +1,9 @@
+````
+````txt
+<vscode_codeblock_uri>file:///c%3A/Users/kevin/Desktop/PocketMon%20Genesis/src/js/features/.gitkeep</vscode_codeblock_uri>````
+````txt
+<vscode_codeblock_uri>file:///c%3A/Users/kevin/Desktop/PocketMon%20Genesis/src/js/ui/.gitkeep</vscode_codeblock_uri>````
+
+Start the dev server:
+````powershell
+npm run dev

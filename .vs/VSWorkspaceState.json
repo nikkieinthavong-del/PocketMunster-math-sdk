@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\config",
+    "\\src\\events",
+    "\\src\\executables",
+    "\\src\\state",
+    "\\src\\wins",
+    "\\src\\write_data",
+    "\\tests",
+    "\\tests\\win_calculations"
+  ],
+  "SelectedNode": "\\games\\fifty_fifty\\gamestate.py",
+  "PreviewInSolutionExplorer": false
+}

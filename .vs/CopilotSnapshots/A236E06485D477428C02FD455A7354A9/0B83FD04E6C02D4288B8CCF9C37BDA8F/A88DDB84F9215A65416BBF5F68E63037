@@ -1,0 +1,8 @@
+﻿-e git+https://github.com/StakeEngine/math-sdk.git@0842bb244cb8c15e63af541054710a8082901e2f#egg=stakeengine
+boto3==1.35.97
+numpy==2.2.5
+packaging==25.0
+python-dateutil==2.9.0.post0
+python-dotenv==1.1.0
+xlsxwriter==3.2.0
+zstandard==0.23.0

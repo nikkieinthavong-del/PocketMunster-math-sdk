@@ -1,0 +1,14 @@
+{
+  "betLevels": [0.2, 0.5, 1, 2, 5, 10, 20],
+  "grid": { "rows": 7, "cols": 7 },
+  "symbolWeights": {
+    "tier1": 50, "tier2": 30, "tier3": 15, "tier4": 4, "tier5": 1,
+    "wild": 2, "egg": 2, "pokeballScatter": 1, "pikachuScatter": 1, "trainerScatter": 1
+  },
+  "features": {
+    "hunt": { "throwsByScatters": { "4": 8, "5": 10, "6": 12, "7": 15 }, "weights": { "poke": 50, "great": 30, "ultra": 15, "master": 5 } },
+    "arena": { "bossHp": { "brock": 500, "misty": 750, "surge": 1000 }, "weights": { "attack": 60, "power": 25, "special": 10, "potion": 5 } },
+    "freespins": { "spinsByScatters": { "4": 10, "5": 12, "6": 15, "7": 20 }, "retriggerSpins": 5 }
+  },
+  "multipliers": { "cellMax": 8192 }
+}
