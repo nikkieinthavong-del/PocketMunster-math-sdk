@@ -50,7 +50,9 @@ jobs:
         working-directory: stake-engine-pocketmon/deploy
         run: |
           chmod +x package.sh
-          if [ -n "${{ inputs.name }}" ]; then \
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then \
+            bash package.sh --skip-build --name "pocketmon-stake-engine-${GITHUB_REF_NAME}"; \
+          elif [ -n "${{ inputs.name }}" ]; then \
             bash package.sh --skip-build --name "${{ inputs.name }}"; \
           else \
             bash package.sh --skip-build; \

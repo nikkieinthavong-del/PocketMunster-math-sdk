@@ -93,3 +93,10 @@ git push origin v1.0.0
 ```
 
 Then visit the repository Releases page to download the assets. Pre-release tags like `v1.1.0-rc.1` will be marked as prereleases automatically.
+
+Release artifact filenames include the tag for easy identification, e.g.:
+
+```
+pocketmon-stake-engine-v1.0.0.zip
+pocketmon-stake-engine-v1.0.0.zip.sha256
+```
