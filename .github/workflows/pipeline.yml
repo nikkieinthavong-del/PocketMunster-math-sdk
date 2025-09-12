@@ -1,0 +1,484 @@
+name: Asset Governance Pipeline
+
+on:
+  push:
+    branches: [main, develop, feature/asset-governance-pipeline]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      policy_file:
+        description: 'Policy file to use'
+        required: false
+        default: 'config/assets_quality_policy.json'
+      run_full_pipeline:
+        description: 'Run full pipeline'
+        type: boolean
+        required: false
+        default: true
+
+env:
+  PYTHON_VERSION: '3.11'
+  POCKETMON_SIGN_SECRET: ${{ secrets.POCKETMON_SIGN_SECRET || 'default_dev_key_not_for_production' }}
+
+jobs:
+  setup:
+    name: Setup Environment
+    runs-on: ubuntu-latest
+    outputs:
+      python-version: ${{ steps.setup.outputs.python-version }}
+      policy-file: ${{ steps.setup.outputs.policy-file }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Python
+      id: setup-python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+    
+    - name: Setup outputs
+      id: setup
+      run: |
+        echo "python-version=${{ env.PYTHON_VERSION }}" >> $GITHUB_OUTPUT
+        echo "policy-file=${{ github.event.inputs.policy_file || 'config/assets_quality_policy.json' }}" >> $GITHUB_OUTPUT
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+        pip install pytest pytest-cov
+    
+    - name: Validate configuration
+      run: |
+        python -c "import json; json.load(open('${{ steps.setup.outputs.policy-file }}'))"
+        echo "Configuration validation passed"
+
+  lint-and-test:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+    needs: setup
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ needs.setup.outputs.python-version }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+        pip install pytest pytest-cov black isort flake8
+    
+    - name: Code formatting check
+      run: |
+        black --check --diff .
+        isort --check-only --diff .
+    
+    - name: Linting
+      run: |
+        flake8 pocketmon_pipeline/ scripts/ --max-line-length=88 --extend-ignore=E203,W503
+    
+    - name: Run unit tests
+      run: |
+        pytest tests/ -v --cov=pocketmon_pipeline --cov-report=xml --cov-report=term
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+
+  fixture-generation:
+    name: Generate Test Fixtures
+    runs-on: ubuntu-latest
+    needs: setup
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ needs.setup.outputs.python-version }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+    
+    - name: Generate test fixtures
+      run: |
+        python tests/fixtures/generate_fixture_assets.py --verbose --output fixtures_summary.json
+    
+    - name: Upload fixtures
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-fixtures
+        path: |
+          tests/fixtures/
+          fixtures_summary.json
+        retention-days: 1
+
+  policy-guard:
+    name: Policy Guard Evaluation
+    runs-on: ubuntu-latest
+    needs: [setup, fixture-generation]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ needs.setup.outputs.python-version }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+    
+    - name: Download fixtures
+      uses: actions/download-artifact@v4
+      with:
+        name: test-fixtures
+        path: ./
+    
+    - name: Run policy guard evaluation
+      run: |
+        python scripts/policy_guard_evaluator.py \
+          --config ${{ needs.setup.outputs.policy-file }} \
+          --target . \
+          --output policy_guard_report.json \
+          --verbose
+    
+    - name: Upload policy report
+      uses: actions/upload-artifact@v4
+      with:
+        name: policy-guard-report
+        path: policy_guard_report.json
+        retention-days: 7
+    
+    - name: Check policy violations
+      run: |
+        python -c "
+        import json, sys
+        with open('policy_guard_report.json') as f:
+            report = json.load(f)
+        summary = report['evaluation_summary']
+        print(f'Policy Status: {summary[\"status\"]}')
+        print(f'Compliance Score: {summary[\"compliance_score\"]:.1f}%')
+        print(f'Violations: {summary[\"total_violations\"]}')
+        if summary['status'] == 'CRITICAL_VIOLATIONS':
+            print('CRITICAL POLICY VIOLATIONS DETECTED!')
+            sys.exit(19)
+        elif summary['total_violations'] > 0:
+            print('Policy violations found but not critical')
+            sys.exit(1)
+        "
+
+  performance-analysis:
+    name: Performance Analysis
+    runs-on: ubuntu-latest
+    needs: [setup, fixture-generation]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ needs.setup.outputs.python-version }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+    
+    - name: Download fixtures
+      uses: actions/download-artifact@v4
+      with:
+        name: test-fixtures
+        path: ./
+    
+    - name: Run performance analysis
+      run: |
+        python scripts/adaptive_budget_optimizer.py \
+          --config ${{ needs.setup.outputs.policy-file }} \
+          --output budget_recommendations.json \
+          --verbose
+    
+    - name: Generate symbol sparklines
+      run: |
+        python scripts/generate_symbol_sparklines.py \
+          --input tests/fixtures \
+          --output symbol_sparklines.json \
+          --verbose
+    
+    - name: Upload performance artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: performance-analysis
+        path: |
+          budget_recommendations.json
+          symbol_sparklines.json
+        retention-days: 7
+
+  full-pipeline:
+    name: Full Pipeline Execution
+    runs-on: ubuntu-latest
+    needs: [setup, fixture-generation, policy-guard]
+    if: ${{ github.event.inputs.run_full_pipeline != 'false' }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ needs.setup.outputs.python-version }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+    
+    - name: Download fixtures
+      uses: actions/download-artifact@v4
+      with:
+        name: test-fixtures
+        path: ./
+    
+    - name: Run full pipeline orchestrator
+      run: |
+        python scripts/assets_pipeline_all.py \
+          --policy ${{ needs.setup.outputs.policy-file }} \
+          --output-dir ./pipeline_output \
+          --verbose
+      timeout-minutes: 30
+    
+    - name: Generate integrity manifest
+      run: |
+        python scripts/sign_manifest.py \
+          --input-dir ./pipeline_output \
+          --output ./pipeline_output/integrity_manifest.json \
+          --verbose
+    
+    - name: Verify integrity
+      run: |
+        python scripts/verify_manifest.py \
+          --manifest ./pipeline_output/integrity_manifest.json \
+          --output ./pipeline_output/integrity_verification.json \
+          --verbose
+    
+    - name: Upload pipeline artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: pipeline-output
+        path: pipeline_output/
+        retention-days: 30
+    
+    - name: Generate pipeline summary
+      run: |
+        python -c "
+        import json, os, time
+        from pathlib import Path
+        
+        artifacts = []
+        output_dir = Path('./pipeline_output')
+        
+        if output_dir.exists():
+            for file in output_dir.glob('*.json'):
+                stat = file.stat()
+                artifacts.append({
+                    'name': file.name,
+                    'size_bytes': stat.st_size,
+                    'size_mb': round(stat.st_size / 1024 / 1024, 2)
+                })
+        
+        summary = {
+            'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+            'workflow_run_id': '${{ github.run_id }}',
+            'artifacts': artifacts,
+            'total_artifacts': len(artifacts),
+            'total_size_mb': sum(a['size_mb'] for a in artifacts)
+        }
+        
+        with open('./pipeline_output/workflow_summary.json', 'w') as f:
+            json.dump(summary, f, indent=2)
+        
+        print(f'Pipeline completed with {len(artifacts)} artifacts')
+        print(f'Total size: {summary[\"total_size_mb\"]} MB')
+        "
+
+  golden-tests:
+    name: Golden Tests
+    runs-on: ubuntu-latest
+    needs: [setup, fixture-generation]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ needs.setup.outputs.python-version }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+    
+    - name: Download fixtures
+      uses: actions/download-artifact@v4
+      with:
+        name: test-fixtures
+        path: ./
+    
+    - name: Run golden tests
+      run: |
+        python scripts/run_golden_tests.py \
+          --output golden_test_results.json \
+          --verbose
+    
+    - name: Upload golden test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: golden-test-results
+        path: golden_test_results.json
+        retention-days: 7
+    
+    - name: Check golden test results
+      run: |
+        python -c "
+        import json, sys
+        with open('golden_test_results.json') as f:
+            results = json.load(f)
+        summary = results['summary']
+        print(f'Golden Tests: {summary[\"passed\"]}/{summary[\"total\"]} passed')
+        if summary['failed'] > 0:
+            print(f'FAILED TESTS: {summary[\"failed\"]}')
+            for test in results['tests']:
+                if test['status'] == 'failed':
+                    print(f'  - {test[\"test_name\"]}: {test.get(\"error\", \"Unknown error\")}')
+            sys.exit(1)
+        "
+
+  security-scan:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    needs: setup
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Run Bandit security scan
+      run: |
+        pip install bandit
+        bandit -r pocketmon_pipeline/ scripts/ -f json -o bandit-report.json || true
+    
+    - name: Run safety check
+      run: |
+        pip install safety
+        safety check --json --output safety-report.json || true
+    
+    - name: Upload security reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+        retention-days: 30
+
+  report-results:
+    name: Report Results
+    runs-on: ubuntu-latest
+    needs: [lint-and-test, policy-guard, performance-analysis, full-pipeline, golden-tests, security-scan]
+    if: always()
+    
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: ./artifacts
+    
+    - name: Generate final report
+      run: |
+        python -c "
+        import json, os, time
+        from pathlib import Path
+        
+        # Collect all results
+        report = {
+            'workflow_id': '${{ github.run_id }}',
+            'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+            'branch': '${{ github.ref_name }}',
+            'commit': '${{ github.sha }}',
+            'job_results': {
+                'lint-and-test': '${{ needs.lint-and-test.result }}',
+                'policy-guard': '${{ needs.policy-guard.result }}',
+                'performance-analysis': '${{ needs.performance-analysis.result }}',
+                'full-pipeline': '${{ needs.full-pipeline.result }}',
+                'golden-tests': '${{ needs.golden-tests.result }}',
+                'security-scan': '${{ needs.security-scan.result }}'
+            },
+            'artifacts_collected': []
+        }
+        
+        # List collected artifacts
+        artifacts_dir = Path('./artifacts')
+        if artifacts_dir.exists():
+            for artifact_dir in artifacts_dir.iterdir():
+                if artifact_dir.is_dir():
+                    files = list(artifact_dir.glob('*'))
+                    report['artifacts_collected'].append({
+                        'name': artifact_dir.name,
+                        'files': [f.name for f in files],
+                        'file_count': len(files)
+                    })
+        
+        # Determine overall status
+        job_results = report['job_results']
+        failed_jobs = [job for job, result in job_results.items() if result == 'failure']
+        
+        report['overall_status'] = 'SUCCESS' if not failed_jobs else 'FAILURE'
+        report['failed_jobs'] = failed_jobs
+        
+        with open('final_report.json', 'w') as f:
+            json.dump(report, f, indent=2)
+        
+        print(f'Pipeline Status: {report[\"overall_status\"]}')
+        if failed_jobs:
+            print(f'Failed Jobs: {failed_jobs}')
+        "
+    
+    - name: Upload final report
+      uses: actions/upload-artifact@v4
+      with:
+        name: final-report
+        path: final_report.json
+        retention-days: 90

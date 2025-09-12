@@ -1,0 +1,475 @@
+name: Golden Tests
+
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'scripts/**'
+      - 'pocketmon_pipeline/**'
+      - 'tests/**'
+      - 'config/**'
+  workflow_dispatch:
+    inputs:
+      test_pattern:
+        description: 'Test pattern to run (e.g., performance_*)'
+        required: false
+        default: ''
+      update_golden:
+        description: 'Update golden files if tests fail'
+        type: boolean
+        required: false
+        default: false
+      environment:
+        description: 'Test environment'
+        type: choice
+        options:
+          - dev
+          - ci
+        default: 'ci'
+
+env:
+  PYTHON_VERSION: '3.11'
+  POCKETMON_SIGN_SECRET: 'test_secret_for_golden_tests'
+
+jobs:
+  golden-test-setup:
+    name: Golden Test Setup
+    runs-on: ubuntu-latest
+    outputs:
+      test-pattern: ${{ steps.setup.outputs.test-pattern }}
+      environment: ${{ steps.setup.outputs.environment }}
+      
+    steps:
+    - name: Setup test configuration
+      id: setup
+      run: |
+        echo "test-pattern=${{ github.event.inputs.test_pattern || '' }}" >> $GITHUB_OUTPUT
+        echo "environment=${{ github.event.inputs.environment || 'ci' }}" >> $GITHUB_OUTPUT
+
+  generate-fixtures:
+    name: Generate Test Fixtures  
+    runs-on: ubuntu-latest
+    needs: golden-test-setup
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+    
+    - name: Clean and generate fixtures
+      run: |
+        python tests/fixtures/generate_fixture_assets.py \
+          --clean \
+          --verbose \
+          --output fixtures_summary.json
+    
+    - name: Validate fixtures
+      run: |
+        python -c "
+        import json
+        from pathlib import Path
+        
+        # Check fixtures summary
+        with open('fixtures_summary.json') as f:
+            summary = json.load(f)
+        
+        print(f'Fixtures generated: {summary[\"fixtures_created\"]}')
+        print(f'Total files: {summary[\"total_files\"]}')
+        
+        # Verify key fixture files exist
+        fixtures_dir = Path('tests/fixtures')
+        required_files = [
+            'performance_test_data.json',
+            'policy_test_data.json', 
+            'embedding_test_data.json',
+            'budget_test_data.json',
+            'symbol_test_data.json'
+        ]
+        
+        missing_files = []
+        for file in required_files:
+            if not (fixtures_dir / file).exists():
+                missing_files.append(file)
+        
+        if missing_files:
+            print(f'Missing fixture files: {missing_files}')
+            exit(1)
+        else:
+            print('All required fixture files present')
+        "
+    
+    - name: Upload fixtures artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: golden-test-fixtures
+        path: |
+          tests/fixtures/
+          fixtures_summary.json
+        retention-days: 1
+
+  run-golden-tests:
+    name: Run Golden Tests
+    runs-on: ubuntu-latest
+    needs: [golden-test-setup, generate-fixtures]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+    
+    - name: Download fixtures
+      uses: actions/download-artifact@v4
+      with:
+        name: golden-test-fixtures
+        path: ./
+    
+    - name: Run golden tests
+      run: |
+        PATTERN_ARG=""
+        if [ -n "${{ needs.golden-test-setup.outputs.test-pattern }}" ]; then
+          PATTERN_ARG="--pattern ${{ needs.golden-test-setup.outputs.test-pattern }}"
+        fi
+        
+        python scripts/run_golden_tests.py \
+          $PATTERN_ARG \
+          --output golden_test_results.json \
+          --verbose
+      continue-on-error: true
+    
+    - name: Analyze test results
+      id: analyze
+      run: |
+        if [ ! -f golden_test_results.json ]; then
+          echo "Golden test results file not found"
+          echo "tests-passed=false" >> $GITHUB_OUTPUT
+          echo "needs-update=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
+        
+        python -c "
+        import json, sys
+        
+        with open('golden_test_results.json') as f:
+            results = json.load(f)
+        
+        summary = results['summary']
+        
+        print(f'=== Golden Test Summary ===')
+        print(f'Total Tests: {summary[\"total\"]}')
+        print(f'Passed: {summary[\"passed\"]}')
+        print(f'Failed: {summary[\"failed\"]}')
+        print(f'Skipped: {summary[\"skipped\"]}')
+        print(f'Errors: {summary[\"errors\"]}')
+        
+        # Check if any tests failed due to golden file issues
+        needs_update = False
+        failed_tests = [t for t in results['tests'] if t['status'] == 'failed']
+        
+        for test in failed_tests:
+            comparison = test.get('comparison_result', {})
+            if ('Golden file was missing' in comparison.get('error', '') or
+                comparison.get('status') == 'mismatch'):
+                needs_update = True
+        
+        print(f'\\n=== Analysis ===')
+        print(f'Tests Passed: {summary[\"failed\"] == 0}')
+        print(f'Needs Golden Update: {needs_update}')
+        
+        # Output for GitHub Actions
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write(f'tests-passed={summary[\"failed\"] == 0}\\n')
+            f.write(f'needs-update={needs_update}\\n')
+            f.write(f'failed-count={summary[\"failed\"]}\\n')
+            f.write(f'passed-count={summary[\"passed\"]}\\n')
+        
+        # Show failed test details
+        if failed_tests:
+            print(f'\\n=== Failed Tests ===')
+            for test in failed_tests[:5]:  # Show first 5 failed tests
+                print(f'- {test[\"test_name\"]}: {test.get(\"error\", \"Unknown error\")}')
+            
+            if len(failed_tests) > 5:
+                print(f'... and {len(failed_tests) - 5} more failed tests')
+        "
+    
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: golden-test-results
+        path: |
+          golden_test_results.json
+          test_output/
+        retention-days: 7
+    
+    - name: Comment on PR with results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          
+          if (!fs.existsSync('golden_test_results.json')) {
+            return;
+          }
+          
+          const results = JSON.parse(fs.readFileSync('golden_test_results.json', 'utf8'));
+          const summary = results.summary;
+          
+          const passed = summary.failed === 0;
+          const icon = passed ? '✅' : '❌';
+          const status = passed ? 'PASSED' : 'FAILED';
+          
+          let comment = `## ${icon} Golden Tests ${status}\n\n`;
+          comment += `| Metric | Count |\n`;
+          comment += `|--------|-------|\n`;
+          comment += `| Total Tests | ${summary.total} |\n`;
+          comment += `| Passed | ${summary.passed} |\n`;
+          comment += `| Failed | ${summary.failed} |\n`;
+          comment += `| Skipped | ${summary.skipped} |\n`;
+          comment += `| Errors | ${summary.errors} |\n\n`;
+          
+          if (summary.failed > 0) {
+            comment += `### Failed Tests\n\n`;
+            const failedTests = results.tests.filter(t => t.status === 'failed');
+            
+            failedTests.slice(0, 5).forEach(test => {
+              comment += `- **${test.test_name}**: ${test.error || 'Unknown error'}\n`;
+            });
+            
+            if (failedTests.length > 5) {
+              comment += `- ... and ${failedTests.length - 5} more failed tests\n`;
+            }
+            
+            comment += `\n> 💡 **Tip**: If these are expected changes, run the golden test update workflow to approve new baselines.\n`;
+          }
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+
+    outputs:
+      tests-passed: ${{ steps.analyze.outputs.tests-passed }}
+      needs-update: ${{ steps.analyze.outputs.needs-update }}
+      failed-count: ${{ steps.analyze.outputs.failed-count }}
+      passed-count: ${{ steps.analyze.outputs.passed-count }}
+
+  update-golden-files:
+    name: Update Golden Files
+    runs-on: ubuntu-latest
+    needs: [golden-test-setup, generate-fixtures, run-golden-tests]
+    if: ${{ github.event.inputs.update_golden == 'true' && needs.run-golden-tests.outputs.needs-update == 'true' }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        ref: ${{ github.head_ref }}
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+    
+    - name: Download fixtures
+      uses: actions/download-artifact@v4
+      with:
+        name: golden-test-fixtures
+        path: ./
+    
+    - name: Download test results
+      uses: actions/download-artifact@v4
+      with:
+        name: golden-test-results
+        path: ./results/
+    
+    - name: Update golden files
+      run: |
+        PATTERN_ARG=""
+        if [ -n "${{ needs.golden-test-setup.outputs.test-pattern }}" ]; then
+          PATTERN_ARG="--pattern ${{ needs.golden-test-setup.outputs.test-pattern }}"
+        fi
+        
+        python scripts/update_golden.py \
+          $PATTERN_ARG \
+          --approve \
+          --non-interactive \
+          --validate \
+          --output update_results.json \
+          --verbose
+    
+    - name: Check for changes
+      id: changes
+      run: |
+        if git diff --quiet tests/golden/; then
+          echo "No golden file changes to commit"
+          echo "has-changes=false" >> $GITHUB_OUTPUT
+        else
+          echo "Golden files were updated"
+          echo "has-changes=true" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Commit golden file updates
+      if: steps.changes.outputs.has-changes == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        git add tests/golden/
+        git commit -m "Update golden test baselines
+        
+        - Updated by golden-tests workflow
+        - Run ID: ${{ github.run_id }}
+        - Pattern: ${{ needs.golden-test-setup.outputs.test-pattern || 'all tests' }}"
+        
+        git push
+    
+    - name: Upload update results
+      uses: actions/upload-artifact@v4
+      with:
+        name: golden-update-results
+        path: update_results.json
+        retention-days: 7
+
+  validate-updates:
+    name: Validate Golden Updates
+    runs-on: ubuntu-latest
+    needs: [golden-test-setup, generate-fixtures, update-golden-files]
+    if: ${{ needs.update-golden-files.result == 'success' }}
+    
+    steps:
+    - name: Checkout code (updated)
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+    
+    - name: Download fixtures
+      uses: actions/download-artifact@v4
+      with:
+        name: golden-test-fixtures
+        path: ./
+    
+    - name: Re-run golden tests for validation
+      run: |
+        PATTERN_ARG=""
+        if [ -n "${{ needs.golden-test-setup.outputs.test-pattern }}" ]; then
+          PATTERN_ARG="--pattern ${{ needs.golden-test-setup.outputs.test-pattern }}"
+        fi
+        
+        python scripts/run_golden_tests.py \
+          $PATTERN_ARG \
+          --output validation_results.json \
+          --verbose
+    
+    - name: Validate test results
+      run: |
+        python -c "
+        import json, sys
+        
+        with open('validation_results.json') as f:
+            results = json.load(f)
+        
+        summary = results['summary']
+        
+        print(f'=== Validation Results ===')
+        print(f'Total Tests: {summary[\"total\"]}')
+        print(f'Passed: {summary[\"passed\"]}')
+        print(f'Failed: {summary[\"failed\"]}')
+        
+        if summary['failed'] > 0:
+            print('\\n❌ Validation FAILED - tests still failing after golden update')
+            failed_tests = [t for t in results['tests'] if t['status'] == 'failed']
+            for test in failed_tests[:3]:
+                print(f'  - {test[\"test_name\"]}: {test.get(\"error\", \"Unknown error\")}')
+            sys.exit(1)
+        else:
+            print('\\n✅ Validation PASSED - all tests now passing')
+        "
+    
+    - name: Upload validation results
+      uses: actions/upload-artifact@v4
+      with:
+        name: validation-results
+        path: validation_results.json
+        retention-days: 7
+
+  final-status:
+    name: Final Status Check
+    runs-on: ubuntu-latest
+    needs: [run-golden-tests, update-golden-files, validate-updates]
+    if: always()
+    
+    steps:
+    - name: Determine final status
+      run: |
+        echo "=== Final Golden Test Status ==="
+        
+        TESTS_PASSED="${{ needs.run-golden-tests.outputs.tests-passed }}"
+        UPDATE_REQUESTED="${{ github.event.inputs.update_golden }}"
+        UPDATE_RESULT="${{ needs.update-golden-files.result }}"
+        VALIDATION_RESULT="${{ needs.validate-updates.result }}"
+        
+        echo "Initial Tests Passed: $TESTS_PASSED"
+        echo "Update Requested: $UPDATE_REQUESTED"
+        echo "Update Result: $UPDATE_RESULT"
+        echo "Validation Result: $VALIDATION_RESULT"
+        
+        # Determine overall success
+        if [ "$TESTS_PASSED" = "true" ]; then
+          echo "✅ SUCCESS: All golden tests passed initially"
+          exit 0
+        elif [ "$UPDATE_REQUESTED" = "true" ] && [ "$VALIDATION_RESULT" = "success" ]; then
+          echo "✅ SUCCESS: Golden files updated and validation passed"
+          exit 0
+        elif [ "$UPDATE_REQUESTED" = "true" ] && [ "$UPDATE_RESULT" = "skipped" ]; then
+          echo "⚠️ WARNING: Update requested but no updates were needed"
+          exit 0
+        else
+          echo "❌ FAILURE: Golden tests failed and updates were not successful"
+          echo ""
+          echo "To fix this:"
+          echo "1. Review the failed tests in the artifacts"
+          echo "2. If changes are expected, re-run this workflow with 'update_golden' enabled"
+          echo "3. If changes are unexpected, fix the code and re-run the tests"
+          exit 1
+        fi
