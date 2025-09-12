@@ -9,6 +9,7 @@ on:
         default: "pocketmon-stake-engine"
   push:
     branches:
+      - main
       - copilot/**
     tags:
       - v*
@@ -55,7 +56,8 @@ jobs:
           elif [ -n "${{ inputs.name }}" ]; then \
             bash package.sh --skip-build --name "${{ inputs.name }}"; \
           else \
-            bash package.sh --skip-build; \
+            SHORT_SHA=$(git rev-parse --short HEAD); \
+            bash package.sh --skip-build --name "pocketmon-stake-engine-${SHORT_SHA}"; \
           fi
 
       - name: Upload artifact zip
@@ -74,6 +76,7 @@ jobs:
           tag_name: ${{ github.ref_name }}
           draft: false
           prerelease: ${{ contains(github.ref_name, '-rc') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
+          generate_release_notes: true
           files: |
             stake-engine-pocketmon/deploy/artifacts/*.zip
             stake-engine-pocketmon/deploy/artifacts/*.zip.sha256
