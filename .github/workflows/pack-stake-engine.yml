@@ -67,6 +67,7 @@ jobs:
           path: |
             stake-engine-pocketmon/deploy/artifacts/*.zip
             stake-engine-pocketmon/deploy/artifacts/*.zip.sha256
+            stake-engine-pocketmon/deploy/artifacts/*.artifact.json
 
       - name: Create GitHub Release (on tag)
         if: startsWith(github.ref, 'refs/tags/')
@@ -80,3 +81,4 @@ jobs:
           files: |
             stake-engine-pocketmon/deploy/artifacts/*.zip
             stake-engine-pocketmon/deploy/artifacts/*.zip.sha256
+            stake-engine-pocketmon/deploy/artifacts/*.artifact.json

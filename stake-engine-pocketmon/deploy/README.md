@@ -128,3 +128,15 @@ Inspect without extracting:
 ```bash
 unzip -p pocketmon-stake-engine-*.zip artifact.json | jq .
 ```
+
+Additionally, the packaging process exports a sidecar metadata file next to the zip:
+
+```
+deploy/artifacts/<NAME>.artifact.json
+```
+
+View the sidecar directly:
+
+```bash
+jq . stake-engine-pocketmon/deploy/artifacts/*.artifact.json
+```

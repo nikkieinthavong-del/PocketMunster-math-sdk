@@ -123,6 +123,11 @@ echo "[pack] Generating checksum..."
 CHECK_PATH="$OUT_ZIP.sha256"
 $SHA256_CMD "$OUT_ZIP" > "$CHECK_PATH"
 
+echo "[pack] Exporting metadata sidecar..."
+META_PATH="$ARTIFACTS_DIR/${NAME}.artifact.json"
+cp "$tmp_pack_dir/artifact.json" "$META_PATH"
+
 echo "[pack] Done"
 echo "[pack] Artifact : $OUT_ZIP"
 echo "[pack] Checksum : $CHECK_PATH"
+echo "[pack] Metadata : $META_PATH"
