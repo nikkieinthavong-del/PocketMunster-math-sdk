@@ -29,3 +29,53 @@ math/
 Notes:
 - The script uses `npm ci` if a lockfile is present; otherwise falls back to `npm install`.
 - Python bytecode and `__pycache__` folders are excluded from the math package copy.
+
+## Continuous Integration (CI)
+
+The GitHub Actions workflow `Pack Stake Engine Artifact` builds the frontend, packages the artifact, and uploads:
+
+- `deploy/artifacts/*.zip`
+- `deploy/artifacts/*.zip.sha256`
+
+Triggers:
+- Manual via Actions UI (`workflow_dispatch`)
+- `push` to branches matching `copilot/**`
+- `pull_request` targeting `main`
+
+## Downloading Artifacts via CLI
+
+Use GitHub CLI to fetch artifacts from the latest run:
+
+```bash
+# List recent runs
+gh run list --limit 5
+
+# Download artifacts from a specific run ID
+gh run download <RUN_ID> -D ./downloaded-artifacts
+```
+
+Artifacts will be placed under `./downloaded-artifacts/<artifact-name>/`.
+
+## Verifying Checksums
+
+### Verify all local artifacts (default location)
+
+```bash
+bash stake-engine-pocketmon/deploy/verify.sh
+```
+
+### Verify a specific artifact by name (in default `artifacts/`)
+
+```bash
+bash stake-engine-pocketmon/deploy/verify.sh pocketmon-stake-engine-YYYYMMDD-HHMMSS.zip
+```
+
+### Verify a downloaded artifact (arbitrary directory)
+
+Pass the path to the `.sha256` file that sits alongside your downloaded `.zip`:
+
+```bash
+bash stake-engine-pocketmon/deploy/verify.sh ./downloaded-artifacts/stake-engine-artifact/pocketmon-stake-engine-YYYYMMDD-HHMMSS.zip.sha256
+```
+
+The verification script reads the expected hash from the `.sha256` file and computes the hash of the adjacent `.zip`, ensuring verification works even when the original absolute path embedded in the checksum differs (e.g., CI paths).
