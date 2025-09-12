@@ -15,5 +15,5 @@ jobs:
       - run: npm test
       - name: Quick sims
         run: |
-          node dist-run/scripts/simulate.js --spins=2000
-          node dist-run/scripts/simulate_bonus.js --spins=2000
+          npm run simulate
+          npm run simulate:bonus
