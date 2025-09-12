@@ -69,6 +69,47 @@ mkdir -p "$tmp_pack_dir/frontend" "$tmp_pack_dir/math"
 cp -R "$FRONTEND_DIR/dist" "$tmp_pack_dir/frontend/"
 rsync -a --exclude='__pycache__' --exclude='*.pyc' --exclude='*.pyo' "$MATH_DIR/" "$tmp_pack_dir/math/"
 
+# Build artifact metadata for provenance
+NOW_ISO="$(date -Iseconds || date)"
+GIT_COMMIT="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
+GIT_SHORT="$(git rev-parse --short HEAD 2>/dev/null || echo unknown)"
+GIT_REF="${GITHUB_REF:-$(git symbolic-ref --short -q HEAD 2>/dev/null || echo unknown)}"
+GIT_TAG="${GITHUB_REF_NAME:-$(git describe --tags --exact-match 2>/dev/null || echo)}"
+CI_RUN_ID="${GITHUB_RUN_ID:-}"
+CI_RUN_NUMBER="${GITHUB_RUN_NUMBER:-}"
+CI_WORKFLOW="${GITHUB_WORKFLOW:-}"
+NODE_VER="$(node -v 2>/dev/null || echo n/a)"
+NPM_VER="$(npm -v 2>/dev/null || echo n/a)"
+PY_VER="$(python3 --version 2>/dev/null | awk '{print $2}' || echo n/a)"
+
+cat > "$tmp_pack_dir/artifact.json" <<META
+{
+  "name": "${NAME}",
+  "created_at": "${NOW_ISO}",
+  "paths": {
+    "frontend": "frontend/dist",
+    "math": "math/"
+  },
+  "git": {
+    "commit": "${GIT_COMMIT}",
+    "short": "${GIT_SHORT}",
+    "ref": "${GIT_REF}",
+    "tag": "${GIT_TAG}"
+  },
+  "ci": {
+    "run_id": "${CI_RUN_ID}",
+    "run_number": "${CI_RUN_NUMBER}",
+    "workflow": "${CI_WORKFLOW}"
+  },
+  "tools": {
+    "node": "${NODE_VER}",
+    "npm": "${NPM_VER}",
+    "python": "${PY_VER}",
+    "checksum_cmd": "${SHA256_CMD}"
+  }
+}
+META
+
 pushd "$tmp_pack_dir" >/dev/null
 zip -r "$OUT_ZIP" . >/dev/null
 popd >/dev/null
