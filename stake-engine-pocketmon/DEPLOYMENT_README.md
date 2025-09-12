@@ -39,6 +39,33 @@ npm run build
 ```
 Output will be in `frontend/dist`. Serve this with Stake Engine’s static hosting.
 
+## Package for Stake Engine
+
+Create a single zip containing the production frontend and the math package:
+
+```bash
+cd stake-engine-pocketmon/deploy
+bash package.sh
+```
+
+Artifacts are written to `deploy/artifacts/` with a timestamped name. The script also writes a `.sha256` checksum file next to the zip.
+
+Options:
+
+- `--skip-build`: Reuse existing `frontend/dist` without building
+- `--no-ci`: Use `npm install` instead of `npm ci`
+- `--name NAME`: Use a custom artifact base name (defaults to `pocketmon-stake-engine-<timestamp>`)
+
+Examples:
+
+```bash
+# Fast pack with existing dist
+bash package.sh --skip-build
+
+# Custom name and no-ci
+bash package.sh --name pocketmon-v1.0.0 --no-ci
+```
+
 ## Math — Validate
 ```bash
 cd stake-engine-pocketmon/math

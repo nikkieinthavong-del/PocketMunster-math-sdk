@@ -89,3 +89,15 @@ clean:
 
 clean-frontend:
 	cd $(FRONTEND_DIR) && rm -rf node_modules dist
+
+# Package Stake Engine artifact (zip) under deploy/artifacts
+PACK_NAME ?=
+PACK_SKIP_BUILD ?=
+pack:
+	cd stake-engine-pocketmon/deploy && \
+	\
+	CMD="bash package.sh"; \
+	if [ -n "$(PACK_NAME)" ]; then CMD="$$CMD --name $(PACK_NAME)"; fi; \
+	if [ -n "$(PACK_SKIP_BUILD)" ]; then CMD="$$CMD --skip-build"; fi; \
+	echo "Running: $$CMD"; \
+	$$CMD
