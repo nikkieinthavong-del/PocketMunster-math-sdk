@@ -7,8 +7,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "build:demo": "tsc -p tsconfig.run.json",
     "test": "vitest run",
-    "simulate": "node dist-run/scripts/simulate.js --spins=2000",
-    "simulate:bonus": "node dist-run/scripts/simulate_bonus.js --spins=2000",
+    "simulate": "npm run build:demo && node dist-run/scripts/simulate.js --spins=2000",
+    "simulate:bonus": "npm run build:demo && node dist-run/scripts/simulate_bonus.js --spins=2000",
     "calibrate:total": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=200000 --targetRTP=0.95 --write"
   },
   "devDependencies": {

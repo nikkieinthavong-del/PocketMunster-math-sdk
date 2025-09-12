@@ -1,5 +1,6 @@
 name: CI
 on: { push: {}, pull_request: {} }
+
 jobs:
   build-test-sim:
     runs-on: ubuntu-latest
