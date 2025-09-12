@@ -12,7 +12,10 @@
     "calibrate:total": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=200000 --targetRTP=0.95 --write"
   },
   "devDependencies": {
+    "typescript": "^5.9.2",
     "vitest": "^2.0.5"
   },
-  "engines": { "node": ">=20 <21" }
+  "engines": {
+    "node": ">=20 <21"
+  }
 }
