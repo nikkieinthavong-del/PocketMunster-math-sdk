@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "Build (demo)", "type": "shell", "command": "npm run build:demo", "group": "build", "problemMatcher": [] },
+    { "label": "Test (watch)", "type": "shell", "command": "npm run test:watch", "problemMatcher": [] },
+    { "label": "Simulate (base)", "type": "shell", "command": "npm run simulate -- --spins=2000", "problemMatcher": [] },
+    { "label": "Simulate (bonus)", "type": "shell", "command": "npm run simulate:bonus -- --spins=20000", "problemMatcher": [] },
+    { "label": "Quick sim (base)", "type": "shell", "command": "npm run simulate -- --spins=200", "problemMatcher": [] },
+    { "label": "Calibrate total RTP", "type": "shell", "command": "npm run calibrate:total", "problemMatcher": [] }
+  ]
+}
