@@ -15,5 +15,7 @@
         "reelset",
         "reelstop",
         "Reelstrips"
-    ]
+    ],
+    "chatgpt.openOnStartup": true,
+    "chatgpt.commentCodeLensEnabled": true
 }
