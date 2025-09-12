@@ -66,6 +66,23 @@ Run all tests:
 make test-all
 ```
 
+## Packaging and Artifacts
+
+The Stake Engine artifact (frontend production build + math package) is built in CI and uploaded as an artifact. See detailed steps in `stake-engine-pocketmon/deploy/README.md`.
+
+Quick commands to fetch and verify the latest artifact:
+
+```sh
+# List recent runs and pick the RUN_ID for "Pack Stake Engine Artifact"
+gh run list --limit 5
+
+# Download artifacts from a run
+gh run download <RUN_ID> -D ./downloaded-artifacts
+
+# Verify checksum of the downloaded artifact
+bash stake-engine-pocketmon/deploy/verify.sh ./downloaded-artifacts/stake-engine-artifact/*.zip.sha256
+```
+
 ## Workspace Structure
 
 ```
