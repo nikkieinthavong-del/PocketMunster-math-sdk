@@ -9,6 +9,7 @@
     { "label": "Simulate (bonus 500k)", "type": "shell", "command": "npm run simulate:bonus:500k", "problemMatcher": [] },
     { "label": "Simulate (bonus 1M)", "type": "shell", "command": "npm run simulate:bonus:1m", "problemMatcher": [] },
     { "label": "Calibrate total RTP", "type": "shell", "command": "npm run calibrate:total", "problemMatcher": [] },
-    { "label": "Calibrate total RTP (big)", "type": "shell", "command": "npm run calibrate:total:big", "problemMatcher": [] }
+    { "label": "Calibrate total RTP (big)", "type": "shell", "command": "npm run calibrate:total:big", "problemMatcher": [] },
+    { "label": "Calibrate total RTP (1M)", "type": "shell", "command": "npm run calibrate:total:1m", "problemMatcher": [] }
   ]
 }

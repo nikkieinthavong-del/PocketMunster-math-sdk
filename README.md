@@ -58,6 +58,10 @@ Developer shortcuts are wired via VS Code tasks and npm scripts.
     - Task: “Calibrate total RTP (big)”
     - CLI:
       - npm run calibrate:total:big
+  - Even bigger run:
+    - Task: “Calibrate total RTP (1M)”
+    - CLI:
+      - npm run calibrate:total:1m
 
 Notes
 
