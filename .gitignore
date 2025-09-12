@@ -23,8 +23,6 @@ __pycache__
 *.env
 *.DS_Store
 
-**/site/*
-
 # dependencies
 node_modules/
 

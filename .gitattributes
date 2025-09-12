@@ -3,23 +3,3 @@
 *.js eol=lf
 *.json eol=lf
 *.md eol=lf
-
-# dependencies
-node_modules/
-
-# builds
-dist/
-dist-run/
-.vite/
-coverage/
-.nyc_output/
-
-# logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# misc
-.DS_Store
-.env*
