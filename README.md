@@ -20,3 +20,16 @@ make setup
 
 Alternatively, visit our [Setup and Installation page](https://stakeengine.github.io/math-sdk/math_docs/general_overview/) for more details.
 
+# PocketMon Genesis
+
+Scripts:
+- Build: npm run build:demo
+- Tests: npm test
+- Simulate base: npm run simulate
+- Simulate bonus: npm run simulate:bonus -- --spins=50000
+- Calibrate total RTP: npm run calibrate:total -- --spins=500000 --targetRTP=0.95
+
+Notes:
+- Configure engine in config.json (winChance, baseFactor, scatterWeights).
+- CI runs typecheck, tests, and quick sims.
+
