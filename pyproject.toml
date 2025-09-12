@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pocketmon-pipeline"
+version = "0.1.0"
+description = "Asset governance pipeline for math-sdk"
+authors = [
+    {name = "CarrotRGS", email = "engineering@carrot.rgs"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    # Existing dependencies from requirements.txt
+    "boto3==1.35.97",
+    "botocore==1.35.97", 
+    "numpy==2.2.5",
+    "pytest==8.3.5",
+    "python-dotenv==1.1.0",
+    "xlsxwriter==3.2.0",
+    "zstandard==0.23.0",
+    # New dependencies for asset pipeline
+    "Pillow>=10.0.0",
+    "requests>=2.31.0",
+    "psutil>=5.9.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/nikkieinthavong-del/math-sdk"
+"Bug Reports" = "https://github.com/nikkieinthavong-del/math-sdk/issues"
+"Source" = "https://github.com/nikkieinthavong-del/math-sdk"
+
+[project.scripts]
+pocketmon-pipeline = "pocketmon_pipeline.cli:main"
+
+[tool.setuptools]
+packages = ["pocketmon_pipeline", "pocketmon_pipeline.plugins"]
+
+[tool.setuptools.package-data]
+pocketmon_pipeline = ["*.json", "*.yaml", "*.yml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''

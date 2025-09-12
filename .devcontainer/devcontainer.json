@@ -1,6 +1,6 @@
 {
   "name": "math-sdk Container",
-  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
   
   // Features to add to the dev container
   "features": {
@@ -16,11 +16,15 @@
         "ms-python.python",
         "ms-python.pylint",
         "ms-python.black-formatter",
-        "ms-toolsai.jupyter"
+        "ms-toolsai.jupyter",
+        "ms-python.isort",
+        "charliermarsh.ruff"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",
-        "python.formatting.provider": "black"
+        "python.formatting.provider": "black",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true
       }
     }
   },
@@ -29,7 +33,7 @@
   // "forwardPorts": [8000, 5000],
 
   // Use 'postCreateCommand' to run commands after the container is created
-  "postCreateCommand": "make setup",
+  "postCreateCommand": ".devcontainer/postCreate.sh",
 
   // Set the default user to vscode (non-root)
   "remoteUser": "vscode"

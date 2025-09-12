@@ -1,0 +1,52 @@
+{
+  "version": "1.0.0-test",
+  "description": "Lightweight test policy for CI/CD pipeline",
+  
+  "quality_thresholds": {
+    "min_file_size": 10,
+    "max_file_size": 1048576,
+    "allowed_formats": [".json", ".csv", ".py"],
+    "max_line_length": 120,
+    "encoding": "utf-8"
+  },
+  
+  "validation_rules": {
+    "json_schema_validation": false,
+    "csv_header_validation": false,
+    "required_metadata_fields": ["version"],
+    "duplicate_detection": false,
+    "content_hash_verification": false
+  },
+  
+  "performance_benchmarks": {
+    "max_processing_time_seconds": 30,
+    "max_memory_usage_mb": 512,
+    "cpu_utilization_threshold": 0.9,
+    "io_operations_per_second_limit": 100
+  },
+  
+  "adaptive_budget": {
+    "enabled": false,
+    "base_budget_seconds": 10,
+    "scaling_factor": 1.2,
+    "max_budget_seconds": 30
+  },
+  
+  "integrity": {
+    "signing_algorithm": "HMAC-SHA256",
+    "verification_required": false,
+    "manifest_validation": false
+  },
+  
+  "policy_guard": {
+    "enforcement_level": "permissive",
+    "audit_logging": false,
+    "violation_reporting": false
+  },
+  
+  "performance": {
+    "enable_profiling": false,
+    "regression_detection": false,
+    "baseline_comparison": false
+  }
+}

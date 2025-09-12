@@ -1,0 +1,121 @@
+{
+  "version": "1.0.0",
+  "description": "Comprehensive asset quality policy for math-sdk pipeline",
+  "last_updated": "2024-12-12",
+  
+  "quality_thresholds": {
+    "min_file_size": 1024,
+    "max_file_size": 104857600,
+    "allowed_formats": [".json", ".csv", ".jsonl", ".zst", ".py", ".md", ".yaml", ".yml"],
+    "max_line_length": 1000,
+    "encoding": "utf-8"
+  },
+  
+  "validation_rules": {
+    "json_schema_validation": true,
+    "csv_header_validation": true,
+    "required_metadata_fields": ["version", "created_at", "game_id"],
+    "duplicate_detection": true,
+    "content_hash_verification": true
+  },
+  
+  "performance_benchmarks": {
+    "max_processing_time_seconds": 300,
+    "max_memory_usage_mb": 2048,
+    "cpu_utilization_threshold": 0.8,
+    "io_operations_per_second_limit": 1000
+  },
+  
+  "adaptive_budget": {
+    "enabled": true,
+    "base_budget_seconds": 60,
+    "scaling_factor": 1.5,
+    "max_budget_seconds": 300,
+    "dynamic_adjustment": true,
+    "resource_factors": {
+      "cpu": 0.4,
+      "memory": 0.3,
+      "io": 0.3
+    }
+  },
+  
+  "embedding_duplicates": {
+    "similarity_threshold": 0.95,
+    "comparison_algorithm": "cosine_similarity", 
+    "max_embedding_dimension": 512,
+    "batch_size": 100,
+    "enable_clustering": true,
+    "cluster_threshold": 0.8
+  },
+  
+  "rollback_playbook": {
+    "auto_rollback_on_failure": true,
+    "backup_retention_days": 30,
+    "rollback_verification": true,
+    "notification_channels": ["email", "webhook"],
+    "critical_failure_patterns": [
+      "data_corruption",
+      "performance_regression",
+      "security_violation"
+    ]
+  },
+  
+  "integrity": {
+    "signing_algorithm": "HMAC-SHA256",
+    "verification_required": true,
+    "manifest_validation": true,
+    "checksum_algorithm": "SHA256",
+    "timestamp_validation": true
+  },
+  
+  "ml_plugins": {
+    "enabled_plugins": ["default_embeddings", "symbol_analyzer"],
+    "plugin_timeout_seconds": 120,
+    "parallel_execution": true,
+    "max_concurrent_plugins": 4,
+    "fallback_on_error": true
+  },
+  
+  "policy_guard": {
+    "enforcement_level": "strict",
+    "allowed_operations": [
+      "read_asset",
+      "validate_format", 
+      "generate_report",
+      "create_backup",
+      "sign_manifest"
+    ],
+    "blocked_operations": [
+      "delete_production_data",
+      "modify_core_config"
+    ],
+    "audit_logging": true,
+    "violation_reporting": true
+  },
+  
+  "performance": {
+    "enable_profiling": true,
+    "profile_output_format": "json",
+    "track_memory_usage": true,
+    "track_cpu_usage": true,
+    "track_io_operations": true,
+    "regression_detection": true,
+    "baseline_comparison": true
+  },
+  
+  "reporting": {
+    "output_formats": ["json", "html", "csv"],
+    "include_recommendations": true,
+    "severity_levels": ["low", "medium", "high", "critical"],
+    "auto_generate_summary": true,
+    "include_visualizations": true
+  },
+  
+  "notifications": {
+    "email_enabled": false,
+    "webhook_enabled": true,
+    "slack_enabled": false,
+    "severity_filter": "medium",
+    "rate_limit_minutes": 15
+  }
+}
