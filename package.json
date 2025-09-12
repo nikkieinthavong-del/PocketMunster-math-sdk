@@ -13,7 +13,8 @@
     "simulate:bonus": "npm run build:demo && node dist-run/scripts/simulate_bonus.js",
     "simulate:bonus:500k": "npm run build:demo && node dist-run/scripts/simulate_bonus.js --spins=500000",
     "simulate:bonus:1m": "npm run build:demo && node dist-run/scripts/simulate_bonus.js --spins=1000000",
-    "calibrate:total": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=200000 --targetRTP=0.95 --write"
+    "calibrate:total": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=200000 --targetRTP=0.95 --write",
+    "calibrate:total:big": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=500000 --targetRTP=0.95 --write"
   },
   "devDependencies": {
     "@types/node": "^20.19.13",
