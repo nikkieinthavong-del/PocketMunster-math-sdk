@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, appendFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spin } from '../src/js/engine/engine.js';
@@ -14,6 +14,8 @@ process.argv.slice(2).forEach((a) => {
   args.set(k, v ?? 'true');
 });
 const spins = Number(args.get('spins') ?? 10000);
+const seedBase = args.has('seed') ? Number(args.get('seed')) >>> 0 : 123456789 >>> 0;
+const jsonlPath = args.get('jsonl');
 
 // local helper (matches freespins logic)
 function countPikachuScatters(grid: any[][]) {
@@ -30,7 +32,7 @@ let triggers = 0;
 let totalAwardedSpins = 0;
 
 for (let i = 0; i < spins; i++) {
-  const seed = (123456789 + i) >>> 0;
+  const seed = (seedBase + i) >>> 0;
   const base = spin(config, 1, { seed });
 
   baseWin += base.totalWinX;
@@ -46,6 +48,10 @@ for (let i = 0; i < spins; i++) {
       st = stepFreeSpins(st, config);
       bonusWin += st.lastSpin?.winX ?? 0;
     }
+  }
+  if (jsonlPath) {
+    const line = JSON.stringify({ i, seed, baseWinX: base.totalWinX, scatters, triggered: (state0.spinsLeft ?? 0) > 0 }) + "\n";
+    appendFileSync(jsonlPath, line);
   }
 }
 
