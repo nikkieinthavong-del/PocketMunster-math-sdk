@@ -1,7 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist-run"
+    "outDir": "dist-run",
+    "noEmit": false,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
   },
-  "include": ["src/js/**/*.ts", "scripts/**/*.ts"]
+  "include": ["scripts/**/*.ts", "src/js/**/*.ts", "config.json"],
+  "exclude": ["src/web", "dist-web"]
 }

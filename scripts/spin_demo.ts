@@ -10,15 +10,15 @@ const config = JSON.parse(readFileSync(configPath, 'utf-8'));
 const seed = Date.now();
 const res = spin(config as any, 1, { seed });
 
-const wins = (res.events || []).filter(e => e.type === 'win');
+const wins = (res.events || []).filter((e: any) => e.type === 'win');
 console.log(JSON.stringify({
   seed,
   totalWinX: res.totalWinX,
-  wins: wins.map(w => ({
+  wins: wins.map((w: any) => ({
     size: w.payload?.size,
     tier: w.payload?.symbol?.tier,
     mult: w.payload?.multiplier,
     winAmount: w.payload?.winAmount
   })),
-  eventTypes: (res.events || []).map(e => e.type)
+  eventTypes: (res.events || []).map((e: any) => e.type)
 }, null, 2));
