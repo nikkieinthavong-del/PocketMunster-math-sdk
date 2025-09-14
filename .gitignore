@@ -25,3 +25,8 @@ __pycache__
 
 **/site/*
 
+# Node.js dependencies
+node_modules/
+dist/
+dist-run/
+
