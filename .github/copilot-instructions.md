@@ -1,106 +1,128 @@
-# AI coding guidance for PocketMon Genesis Slot Game
+# AI coding guidance for Stake Engine Math SDK
 
 ## Purpose
-Develop PocketMon Genesis - a HTML5 + TypeScript cluster-pays slot game with 7x7 grid, tumble mechanics, cell multipliers, and three bonus features: Poké Hunt, Free Spins, and Battle Arena. Built on the Stake Engine Math SDK architecture with Python math engine and TypeScript frontend.
+Develop and extend the Stake Engine Math SDK - a Python-based engine for defining slot game rules, simulating outcomes, and optimizing win distributions. Supports multiple game types (lines, ways, cluster, scatter) with TypeScript frontend integration.
 
 ## Big-picture architecture
-- **Math Engine (Python)**: Game logic, RNG, win evaluation, event generation in `/games/0_0_cluster/` 
-- **Frontend Engine (TypeScript)**: Client-side simulation, UI rendering in `/src/js/engine/`
-- **Game State Flow**: Python generates deterministic "books" of events → TypeScript consumes via `spin()` function
-- **Event-driven**: All game actions broken into atomic events (spinStart, win, tumble, spinEnd) for testability
-- **7x7 Grid**: Cluster pays (5+ adjacent H/V symbols), tumble mechanics, persistent cell multipliers (x1→x2→x4...→x8192)
+- **Math Engine (Python)**: Core logic in `/src/` with game logic, RNG, win evaluation, event generation
+- **Game Implementations**: Specific games in `/games/` folders (0_0_cluster, 0_0_scatter, 0_0_lines, etc.)
+- **Frontend Engine (TypeScript)**: Client-side simulation and UI rendering in `/src/js/engine/`
+- **Simulation Flow**: Python `create_books()` generates deterministic event sequences → outputs to `library/books/`
+- **Event-driven**: All game actions broken into atomic events for reproducible testing and frontend consumption
+- **Multi-game support**: Template-based system supports lines, ways, cluster pays, scatter wins with shared base classes
 
 ## Core mechanics implementation
-- **Cluster Detection**: Use `findClusters()` in `src/js/engine/cluster.js` for 4-directional adjacency
-- **Tumble Sequence**: Win → explode symbols → cascade down → refill → repeat until no wins
-- **Multiplier System**: Each winning cell doubles its multiplier on subsequent wins, inheritance on evolution
-- **Evolution**: Egg symbol + adjacent win → scan for 4x same tier symbols → upgrade tier (Charmander×4 → Charmeleon)
+- **Cluster Detection**: `src/calculations/cluster.py` provides 4-directional adjacency algorithms
+- **Win Types**: Lines (`src/calculations/lines.py`), Ways (`ways.py`), Scatter (`scatter.py`), Cluster pays
+- **Tumble System**: `src/calculations/tumble.py` handles cascade mechanics and symbol removal
+- **Game State**: Each game inherits from `GameState` base class with `run_spin()` and `run_freespin()` entry points
+- **Event Emission**: `src/events/events.py` provides standardized event generation for frontend consumption
 
 ## Math-to-Frontend integration patterns
-- **Deterministic**: `spin(config, bet, {seed})` returns exact same results for same seed
-- **Event Structure**: `{type: 'win', payload: {symbol, size, multiplier, winAmount, positions}}`
-- **State Management**: No frontend RNG - all randomness from Python math engine
-- **Configuration**: Root `config.json` contains symbol weights, paytables, feature triggers
+- **Deterministic Simulation**: `spin(config, bet, {seed})` returns identical results for same seed
+- **Event Structure**: `{type: 'win', payload: {symbol, winAmount, positions}}` standardized across games
+- **Book Generation**: Python `create_books()` → `library/books/` JSON files → frontend consumption
+- **Config System**: `game_config.py` defines symbols, paytables, reels → exported to `config.json`
+- **Multi-threading**: Simulation supports batching across threads for performance (`num_threads`, `batching_size`)
 
 ## Game-specific implementations
 
-### Base Game
-```typescript
-// Core spin contract
-const result = spin(config, bet, { seed, maxCascades: 10 });
-// Returns: {totalWinX, events: [{type, payload}], grid, multiplierMap}
-```
-
-### Evolution Mechanic  
+### Game Structure (Template Pattern)
 ```python
-# Python: games/0_0_cluster/game_executables.py
-def check_evolution(self):
-    # Scan for Egg + adjacent wins → find 4x same tier → evolve
-    pass
+# Each game in games/ follows this structure:
+def run_spin(self, sim):
+    self.reset_seed(sim)  # Deterministic RNG seeding
+    self.repeat = True
+    while self.repeat:
+        self.reset_book()  # Reset simulation variables
+        self.draw_board()  # Generate from reel strips
+        
+        # Evaluate wins (cluster/lines/ways/scatter)
+        # Update win_manager
+        # Emit events
+        
+        self.win_manager.update_gametype_wins(self.gametype)
+        if self.check_fs_condition():
+            self.run_freespin_from_base()
+        
+        self.evaluate_finalwin()
+        self.check_repeat()  # Betmode distribution validation
 ```
 
-### Bonus Features
-- **Poké Hunt**: 4+ Pokéball scatters → 3x1 reel mini-game with weighted outcomes
-- **Free Spins**: 4+ Pikachu → persistent multipliers, retrigger mechanics  
-- **Battle Arena**: 5+ Trainer → HP-based combat with move reel
+### Available Game Types
+- **0_0_cluster**: Cluster pays with tumble mechanics
+- **0_0_lines**: Traditional paylines
+- **0_0_ways**: 243+ ways to win
+- **0_0_scatter**: Scatter symbol pays
+- **0_0_expwilds**: Expanding wilds with prize collection
 
 ## Developer workflows
-- **Math Testing**: `make run GAME=0_0_cluster` generates simulation books (requires Python setup)
-- **Frontend Testing**: `npm test` runs vitest specs in `/tests/` 
-- **Demo**: `npm run demo` executes single spin with logging (requires missing TypeScript modules)
-- **Calibration**: `npm run calibrate --spins=200000 --targetRTP=0.95`
-- **Build**: `npm run build:demo` compiles TypeScript to JavaScript
+- **Setup Environment**: `make setup` creates virtual environment and installs dependencies
+- **Run Simulations**: `make run GAME=0_0_cluster` generates books for specific game
+- **Python Testing**: `make test` or `pytest tests/` runs calculation validation tests
+- **TypeScript Testing**: `npm test` runs vitest specs for frontend engine
+- **Build Optimization**: Uses Rust optimization program for win distribution tuning
+- **Documentation**: `mkdocs serve` for local doc development (comprehensive docs in `docs/`)
 
 ## File structure patterns
 ```
-games/0_0_cluster/           # Math engine for cluster game
-├── gamestate.py            # Main simulation loop
-├── game_executables.py     # Core mechanics (clusters, multipliers)  
-├── game_events.py          # Event emission functions
-└── game_config.py          # Weights, paytables, settings
+src/                            # Core SDK engine
+├── calculations/              # Win evaluation algorithms
+│   ├── cluster.py            # Cluster pay detection
+│   ├── lines.py              # Payline calculations  
+│   ├── ways.py               # Ways-to-win logic
+│   └── scatter.py            # Scatter symbol handling
+├── events/events.py          # Standardized event emission
+├── state/                    # Game state management
+└── js/engine/               # TypeScript frontend engine
 
-src/js/engine/              # Frontend engine (TypeScript)
-├── engine.ts              # Main spin() function
-├── types.js               # TypeScript type definitions (TO IMPLEMENT)
-├── rng.js                 # Seeded random number generation (TO IMPLEMENT)
-├── grid.js                # Grid generation and manipulation (TO IMPLEMENT)
-├── cluster.js             # Cluster detection logic (TO IMPLEMENT)
-├── multipliers.js         # Cell multiplier system (TO IMPLEMENT)
-└── evolution.js           # Evolution mechanic logic (TO IMPLEMENT)
+games/                        # Game implementations
+├── template/                # Base template for new games
+├── 0_0_cluster/             # Example cluster-pays game
+│   ├── gamestate.py         # Main game loop
+│   ├── game_config.py       # Symbol/reel definitions
+│   ├── game_executables.py # Game-specific logic
+│   └── run.py              # Simulation runner
+└── library/                # Generated simulation outputs
+    ├── books/              # Event sequence files
+    ├── configs/            # Exported config files
+    └── lookup_tables/      # Payout summary data
 
-scripts/                   # Build and demo scripts
-├── spin_demo.ts           # Single spin demonstration
-├── simulate.ts            # Batch simulation runner
-└── calibrate.ts           # RTP calibration tool
+tests/                       # Test suites
+├── win_calculations/       # Python calculation tests
+└── *.test.ts              # TypeScript engine tests
 ```
 
 ## Event system conventions
-- **Task Breakdown**: Complex actions split into atomic events (tumbleInit, tumbleExplode, tumbleSlide)
-- **Event Handlers**: Frontend subscribes to event types, updates UI/state accordingly
-- **Async Events**: Some events await completion (animations) before continuing sequence
-- **Meta Data**: Events include positioning data for UI overlays, particle effects
+- **Atomic Events**: Complex game actions split into discrete events (e.g., `reveal`, `winInfo`, `tumbleStart`, `tumbleEnd`)
+- **Event Emission**: Use `self.book.add_event(event_type, payload)` in Python game implementations
+- **Frontend Consumption**: TypeScript `spin()` function processes event sequences for UI updates
+- **Standardized Payloads**: Consistent event structure across all game types for frontend compatibility
+- **Reproducibility**: Event sequences must be deterministic for same seed/configuration
 
 ## Testing approach
-- **Deterministic Seeds**: All tests use fixed seeds for reproducible results
-- **Contract Validation**: Verify `spinStart`/`spinEnd` events, win sums match `totalWinX`
-- **Edge Cases**: Test evolution chains, max multipliers, feature combinations
-- **Math Validation**: Python generates books → TypeScript validates event sequences
+- **Python Tests**: `tests/win_calculations/` validates core calculation algorithms (cluster, lines, ways, scatter)
+- **TypeScript Tests**: Vitest specs validate frontend engine contract and deterministic behavior
+- **Deterministic Seeds**: All tests use fixed seeds for reproducible results across runs
+- **Game Validation**: `utils/rgs_verification` provides format checking and compliance testing
+- **Cross-validation**: Python simulation results must match TypeScript frontend engine outputs
 
 ## Performance considerations
-- **Memory Management**: Limit cascade depth, clean up event listeners
-- **RNG Efficiency**: Use `mulberry32()` seeded RNG, avoid `Math.random()`
-- **Grid Operations**: Batch symbol updates, minimize DOM manipulation
-- **Feature State**: Isolate bonus game state from base game to prevent leaks
+- **Multi-threading**: Use `num_threads` and `batching_size` parameters for large simulation runs
+- **Memory Management**: Compression available for book files (`compression = True` in run.py)
+- **Optimization Pipeline**: Rust-based optimization program for efficient win distribution tuning
+- **Profiling**: Enable `profiling = True` to generate flame graphs for performance analysis
+- **Scalability**: Template system allows rapid game creation from proven base classes
 
 ## Current implementation status
-- **Functional**: Python math engine in `games/0_0_cluster/`, basic TypeScript test framework
-- **Working**: Core `spin()` function contract, deterministic testing, event emission patterns
-- **Missing**: TypeScript support modules (types, rng, grid, cluster, multipliers, evolution)
-- **Next Steps**: Implement missing TypeScript modules to enable full frontend engine functionality
+- **Functional**: Complete Python math engine with 5 sample games, comprehensive documentation
+- **Working**: Multi-threading simulation, optimization pipeline, config generation system
+- **Development**: TypeScript frontend engine with basic spin contract and testing framework
+- **Next Steps**: Extend TypeScript engine modules, add new game types, enhance optimization features
 
 ## Integration points
-- **Config Loading**: `JSON.parse(readFileSync('config.json'))` in scripts (requires `@types/node`)
-- **Book Generation**: Python `create_books()` → outputs in `library/books/`
-- **Event Emission**: Python `gamestate.book.add_event()` → TypeScript consumption
-- **Multiplier Sync**: Ensure Python and TypeScript multiplier calculations match exactly
-- **Deterministic Contract**: Both engines must produce identical results for same seed/config
+- **Config Generation**: `generate_configs(gamestate)` produces frontend/backend/optimization configs
+- **Book Processing**: Python `create_books()` → `library/books/` → TypeScript event consumption
+- **Optimization Flow**: Lookup tables → Rust optimization → weighted simulation adjustments
+- **Cross-platform**: Python simulation results validate against TypeScript frontend implementation
+- **Extensibility**: Template-based system enables rapid development of new game mechanics
