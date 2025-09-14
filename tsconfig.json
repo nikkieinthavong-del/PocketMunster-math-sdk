@@ -1,15 +1,24 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "types": ["node"],
+    "types": ["node", "react", "react-dom"],
+    "jsx": "react-jsx",
     "resolveJsonModule": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": ["src/js/**/*.ts", "scripts/**/*.ts", "config.json"],
+  "references": [
+    { "path": "./src/web" }
+  ],
+  "include": [
+    "src/js/**/*.ts",
+    "scripts/**/*.ts",
+    "config.json",
+    "types/**/*.d.ts"
+  ],
   "exclude": ["dist", "dist-run", "dist-web", "node_modules", "src/web"]
 }

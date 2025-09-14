@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "ESNext",
+  "moduleResolution": "Node",
+  "resolveJsonModule": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["vite/client", "react", "react-dom"],
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "src/web/**/*",
+    "src/js/engine/**/*.ts",
+    "src/js/engine/**/*.tsx",
+    "src/js/engine/**/*.mts",
+    "src/js/engine/**/*.cts"
+  ]
+}

@@ -1,0 +1,46 @@
+name: Build and Package Stake Artifacts
+
+on:
+  push:
+    branches: [ main, revert-to-run ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck & Test
+        run: npm run test:run
+
+      - name: Build math and web
+        run: |
+          npm run build:demo
+          npm run build:web
+
+      - name: Package artifacts
+        run: |
+          npm run package:stake
+
+      - name: Upload web.zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-zip
+          path: artifacts/web.zip
+
+      - name: Upload math.zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: math-zip
+          path: artifacts/math.zip

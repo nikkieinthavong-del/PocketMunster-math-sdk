@@ -10,38 +10,76 @@
 
     const getParam = (key: string) => new URLSearchParams(window.location.search).get(key);
     async function getRGSResponse(endpoint: string, body: any): Promise<any> {
-        const response = await fetch(`https://${getParam('rgs_url')}${endpoint}`, {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
-        })
-        return response.json()
+        const url = `https://${getParam('rgs_url')}${endpoint}`
+        try {
+            const res = await fetch(url, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            })
+
+            if (!res.ok) {
+                const text = await res.text().catch(() => '')
+                const details = {
+                    method: 'POST',
+                    url,
+                    status: res.status,
+                    statusText: res.statusText,
+                    body
+                }
+                console.error(`API Request failed: POST ${url} - Status: ${res.status} ${res.statusText}`, { ...details, responseText: text })
+                throw Object.assign(new Error(`HTTP ${res.status} ${res.statusText}`), { ...details, responseText: text })
+            }
+
+            // Try parse JSON explicitly to catch parse errors and log context
+            try {
+                return await res.json()
+            } catch (e: any) {
+                console.error('API Request failed: JSON parse error', { url, method: 'POST', error: e?.message })
+                throw e
+            }
+        } catch (e: any) {
+            // Network error or thrown above
+            if (!e || !(e instanceof Error)) {
+                console.error('API Request failed:', { method: 'POST', url, error: e })
+            }
+            throw e
+        }
     }
 
     onMount(async () => {
-        const response = await getRGSResponse('/wallet/authenticate', {
-            sessionID: getParam('sessionID'),
-            language: getParam('language') || 'en'  
-        });
-        balance = response.balance.amount / API_MULTIPLIER
-        console.log('loaded..')
+        try {
+            const auth = await getRGSResponse('/wallet/authenticate', {
+                sessionID: getParam('sessionID'),
+                language: getParam('language') || 'en'  
+            });
+            balance = auth.balance.amount / API_MULTIPLIER
+            console.log('loaded..')
+        } catch (err) {
+            console.error('Authenticate failed', err)
+        }
     });
 
     const endRound = async () => {
-        const confirmation = await getRGSResponse('/wallet/end-round', {
-            sessionID: getParam("sessionID")
-        });
-        balance = confirmation.balance.amount / API_MULTIPLIER
-        endRoundResponse = confirmation
-        if(confirmation?.balance.amount != null) {
-          gamestate = 'rest'
+        try {
+            const confirmation = await getRGSResponse('/wallet/end-round', {
+                sessionID: getParam("sessionID")
+            });
+            balance = confirmation.balance.amount / API_MULTIPLIER
+            endRoundResponse = confirmation
+            if(confirmation?.balance.amount != null) {
+              gamestate = 'rest'
+            }
+        } catch (err) {
+            console.error('End round failed', err)
         }
     }
 
     async function getBookResponse() {
-      if(gamestate == 'rest'){
-        balance -= 1
-      }
+      try {
+        if(gamestate == 'rest'){
+          balance -= 1
+        }
         const resp = await getRGSResponse('/wallet/play', {
             mode: getParam('mode') ?? "BASE",
             currency: getParam('currency'),
@@ -60,6 +98,13 @@
         }
         console.log(lastWin)
         console.log(resp.round.state)
+      } catch (err) {
+        // Revert optimistic balance deduction on failure
+        if (gamestate === 'rest') {
+          balance += 1
+        }
+        console.error('Play failed', err)
+      }
     }
 </script>
 

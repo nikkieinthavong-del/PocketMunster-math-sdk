@@ -1,0 +1,37 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build web after tier mapping",
+			"type": "shell",
+			"command": "npm run build:web",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$eslint-stylish"
+			],
+			"group": "build"
+		},
+		{
+			"label": "dev web (PocketMon)",
+			"type": "shell",
+			"command": "npm run dev",
+			"args": [
+				"--",
+				"--host",
+				"--port",
+				"3010"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "build web after tier mapping",
+			"type": "shell",
+			"command": "npm run build:web",
+			"args": [],
+			"isBackground": false,
+			"group": "build"
+		}
+	]
+}

@@ -5,15 +5,37 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck:web": "tsc -p src/web/tsconfig.json --noEmit",
     "build:demo": "tsc -p tsconfig.run.json",
     "demo": "npm run build:demo && node dist-run/scripts/spin_demo.js",
     "test": "vitest",
     "test:run": "vitest run",
     "simulate": "npm run build:demo && node dist-run/scripts/simulate.js",
-    "calibrate": "npm run build:demo && node dist-run/scripts/calibrate.js --spins=200000 --targetRTP=0.95"
+    "calibrate": "npm run build:demo && node dist-run/scripts/calibrate.js --spins=200000 --targetRTP=0.95",
+    "dev": "vite",
+    "dev:host": "vite --host --port 3010",
+    "build:web": "vite build",
+    "preview:web": "vite preview",
+    "qa:stake": "npm run build:web && node dist-run/scripts/qa_stake.js",
+    "prepackage:stake": "npm run test:run && npm run build:demo && npm run build:web && node -e \"const fs=require('fs'); fs.mkdirSync('artifacts',{recursive:true}); ['artifacts/web.zip','artifacts/math.zip'].forEach(p=>{ try{fs.rmSync(p,{force:true})}catch{}});\"",
+    "package:stake": "bestzip artifacts/web.zip dist-web && bestzip artifacts/math.zip dist-run",
+    "release:stake": "npm run test:run && npm run build:demo && npm run build:web && node dist-run/scripts/qa_stake.js && npm run prepackage:stake && npm run package:stake"
   },
   "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.4.19",
+    "bestzip": "^2.2.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13",
     "typescript": "^5.5.0",
     "vitest": "^2.0.5"
+  },
+  "dependencies": {
+    "framer-motion": "^11.5.5",
+    "lucide-react": "^0.439.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }

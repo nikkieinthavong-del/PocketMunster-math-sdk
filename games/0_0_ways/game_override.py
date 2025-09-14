@@ -18,12 +18,20 @@ class GameStateOverride(GameExecutables):
 
     def assign_mult_property(self, symbol):
         """Assign symbol multiplier using probabilities defined in config distributions."""
-        multiplier_value = get_random_outcome(self.get_current_distribution_conditions()["mult_values"])
+        multiplier_value = get_random_outcome(
+            self.get_current_distribution_conditions()["mult_values"][self.gametype]
+        )
         symbol.assign_attribute({"multiplier": multiplier_value})
 
-    def check_game_repeat(self):
-        """Verify final simulation outcomes satisfied all distribution/criteria conditions."""
+    def check_repeat(self) -> None:
+        """Checks if the spin failed a criteria constraint at any point."""
+        super().check_repeat()
         if self.repeat is False:
             win_criteria = self.get_current_betmode_distributions().get_win_criteria()
+            # Enforce exact-match criteria if present, otherwise avoid 0-wins when no criteria set
             if win_criteria is not None and self.final_win != win_criteria:
                 self.repeat = True
+                return
+            if win_criteria is None and self.final_win == 0:
+                self.repeat = True
+                return
