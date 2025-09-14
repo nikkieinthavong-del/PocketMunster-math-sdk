@@ -14,16 +14,14 @@
     "calibrate": "npm run build:demo && node dist-run/scripts/calibrate.js --spins=200000 --targetRTP=0.95",
     "dev": "vite",
     "dev:host": "vite --host --port 3010",
-    "dev:stubApi": "cross-env VITE_STUB_API=1 vite",
     "build:web": "vite build",
     "preview:web": "vite preview",
-    "qa:stake": "node scripts/qa-stake.mjs",
-    "prepackage:stake": "npm run qa:stake",
+    "qa:stake": "npm run build:web && node dist-run/scripts/qa_stake.js",
+    "prepackage:stake": "npm run test:run && npm run build:demo && npm run build:web && node -e \"const fs=require('fs'); fs.mkdirSync('artifacts',{recursive:true}); ['artifacts/web.zip','artifacts/math.zip'].forEach(p=>{ try{fs.rmSync(p,{force:true})}catch{}});\"",
     "package:stake": "bestzip artifacts/web.zip dist-web && bestzip artifacts/math.zip dist-run",
     "release:stake": "npm run test:run && npm run build:demo && npm run build:web && node dist-run/scripts/qa_stake.js && npm run prepackage:stake && npm run package:stake"
   },
   "devDependencies": {
-    "@types/node": "^24.4.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.7.0",
