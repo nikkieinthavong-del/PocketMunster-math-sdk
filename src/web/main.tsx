@@ -11,11 +11,8 @@ initNetworkGuard({
   mode: import.meta.env.PROD ? "block" : "warn"
 });
 
-ReactDOM.createRoot(document.getElementById('root')!).render(ocument.getElementById('root')!).render(
-  <React.StrictMode><React.StrictMode>
-
-
-
-);  </React.StrictMode>    <App />    <App />
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
   </React.StrictMode>
 );

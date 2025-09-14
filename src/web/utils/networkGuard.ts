@@ -60,7 +60,7 @@ export function initNetworkGuard(opts: NetworkGuardOptions = {}) {
       } catch {
         // ignore relative
       }
-      return super.open(method as any, url, async as any, user as any, password as any);
+      return super.open(method, url, async ?? true, user, password);
     }
   }
   // @ts-ignore
