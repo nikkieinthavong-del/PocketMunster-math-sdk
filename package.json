@@ -13,6 +13,7 @@
     "calibrate": "npm run build:demo && node dist-run/scripts/calibrate.js --spins=200000 --targetRTP=0.95"
   },
   "devDependencies": {
+    "cross-env": "^10.0.0",
     "typescript": "^5.5.0",
     "vitest": "^2.0.5"
   }
