@@ -1,5 +1,6 @@
 """Test basic cluster-calculation functionality."""
 
+from typing import Any
 import pytest
 from tests.win_calculations.game_test_config import GamestateTest, create_blank_board
 from src.calculations.cluster import Cluster
