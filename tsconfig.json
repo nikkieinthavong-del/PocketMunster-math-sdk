@@ -1,13 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "strict": true,
+    "jsx": "react-jsx",
     "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "types": ["vitest/globals"],
+    "baseUrl": ".",
+    "paths": {
+      "@engine/*": ["src/js/engine/*"],
+      "@features/*": ["src/js/features/*"],
+      "@ui/*": ["src/js/ui/*"]
+    }
   },
-  "include": ["src/js/**/*.ts"]
+  "include": ["src", "tests"]
 }

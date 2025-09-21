@@ -16,7 +16,8 @@
         "ms-python.python",
         "ms-python.pylint",
         "ms-python.black-formatter",
-        "ms-toolsai.jupyter"
+        "ms-toolsai.jupyter",
+        "esbenp.prettier-vscode"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",

@@ -1,7 +1,7 @@
 """Handles generating game-boards from reelstrips"""
 
 import random
-from typing import List
+from typing import List, Dict, Any
 from src.state.state import GeneralGameState
 from src.calculations.statistics import get_random_outcome
 from src.events.events import reveal_event
@@ -12,6 +12,8 @@ class Board(GeneralGameState):
 
     def create_board_reelstrips(self) -> None:
         """Randomly selects stopping positions from a reelstrip."""
+        top_symbols: List[Any] = []
+        bottom_symbols: List[Any] = []
         if self.config.include_padding:
             top_symbols = []
             bottom_symbols = []
@@ -75,8 +77,10 @@ class Board(GeneralGameState):
             self.top_symbols = top_symbols
             self.bottom_symbols = bottom_symbols
 
-    def force_board_from_reelstrips(self, reelstrip_id: str, force_stop_positions: List[List]) -> None:
+    def force_board_from_reelstrips(self, reelstrip_id: str, force_stop_positions: Dict[int, int]) -> None:
         """Creates a gameboard from specified stopping positions."""
+        top_symbols: List[Any] = []
+        bottom_symbols: List[Any] = []
         if self.config.include_padding:
             top_symbols = []
             bottom_symbols = []
@@ -141,12 +145,12 @@ class Board(GeneralGameState):
             self.top_symbols = top_symbols
             self.bottom_symbols = bottom_symbols
 
-    def create_symbol(self, name: str) -> object:
+    def create_symbol(self, name: str) -> Any:
         """Create a new symbol and assign relevant attributes."""
         if name not in self.symbol_storage.symbols:
             raise ValueError(f"Symbol '{name}' is not registered.")
         symObject = self.symbol_storage.create_symbol_state(name)
-        if name in self.special_symbol_functions:
+        if name in getattr(self, "special_symbol_functions", {}):
             for func in self.special_symbol_functions[name]:
                 func(symObject)
 
@@ -172,7 +176,7 @@ class Board(GeneralGameState):
         """Transpose symbol names in the format displayed to the player during the game."""
         return [list(row) for row in zip(*board_string)]
 
-    def print_board(self, board: List[List[object]]) -> List[List[str]]:
+    def print_board(self, board: List[List[Any]]) -> List[List[str]]:
         "Prints transposed symbol names to the terminal."
         string_board = []
         max_sum_length = max(len(sym.name) for row in board for sym in row) + 1
@@ -185,7 +189,7 @@ class Board(GeneralGameState):
         print("\n")
         return string_board
 
-    def board_string(self, board: List[List[object]]):
+    def board_string(self, board: List[List[Any]]):
         """Prints symbol names only from gamestate.board."""
         board_str = [] * self.config.num_reels
         for reel in range(len(board)):
@@ -193,22 +197,24 @@ class Board(GeneralGameState):
         return board_str
 
     def draw_board(self, emit_event: bool = True, trigger_symbol: str = "scatter") -> None:
-        """Instead of retrying to draw a board, force the initial revel to have a
-        specific number of scatters, if the betmode criteria specifies this."""
+        """Draw a board. Optionally force a number of trigger symbols in base game."""
         if (
             self.get_current_distribution_conditions()["force_freegame"]
             and self.gametype == self.config.basegame_type
         ):
-            num_scatters = get_random_outcome(self.get_current_distribution_conditions()["scatter_triggers"])
+            num_scatters = int(get_random_outcome(self.get_current_distribution_conditions()["scatter_triggers"]))
             self.force_special_board(trigger_symbol, num_scatters)
         elif (
             not (self.get_current_distribution_conditions()["force_freegame"])
             and self.gametype == self.config.basegame_type
         ):
             self.create_board_reelstrips()
-            while self.count_special_symbols(trigger_symbol) >= min(
-                self.config.freespin_triggers[self.gametype].keys()
-            ):
+            # Avoid accidental free-spin triggers when not forcing
+            try:
+                min_trigger = min(self.config.freespin_triggers[self.gametype].keys())
+            except Exception:
+                min_trigger = float("inf")
+            while self.count_special_symbols(trigger_symbol) >= min_trigger:
                 self.create_board_reelstrips()
         else:
             self.create_board_reelstrips()
@@ -216,18 +222,9 @@ class Board(GeneralGameState):
             reveal_event(self)
 
     def force_special_board(self, force_criteria: str, num_force_syms: int) -> None:
-        """Force a board to have a specified number of symbols.
+        """
+        Force a board to have a specified number of symbols.
         Set a specific type of special symbol on a given number of reels.
-        This function is mostly used to set the board so that there is a given number
-        of scatter symbols.
-
-        Args:
-            force_criteria: The type of symbol to force on the board. (e.g. "scatter")
-            num_force_syms: The number of symbols to force on the board.
-
-        Note: If it is possible for two target symbols to appear on one reel, this method
-        will not be able to guarantee an exact number of target symbols or actually random
-        reel positions. I.e. Ensure the reels do not have stacked scatter symbols.
         """
         while True:
             self._force_special_board(force_criteria, num_force_syms)
@@ -254,10 +251,12 @@ class Board(GeneralGameState):
         sym_prob = []
         for x in range(self.config.num_reels):
             sym_prob.append(len(reelstops[x]) / len(self.config.reels[reelstrip_id][x]))
-        force_stop_positions = {}
+        force_stop_positions: Dict[int, int] = {}
         while len(force_stop_positions) != num_force_syms:
             possible_reels = [i for i in range(self.config.num_reels) if sym_prob[i] > 0]
             possible_probs = [p for p in sym_prob if p > 0]
+            if not possible_reels:
+                break  # No more reels can host the symbol
             chosen_reel = random.choices(possible_reels, possible_probs)[0]
             chosen_stop = random.choice(reelstops[chosen_reel])
             sym_prob[chosen_reel] = 0
@@ -266,10 +265,10 @@ class Board(GeneralGameState):
         force_stop_positions = dict(sorted(force_stop_positions.items(), key=lambda x: x[0]))
         self.force_board_from_reelstrips(reelstrip_id, force_stop_positions)
 
-    def get_syms_on_reel(self, reel_id: str, target_symbol: str) -> List[List]:
+    def get_syms_on_reel(self, reel_id: str, target_symbol: str) -> List[List[int]]:
         """Return reelstop positions for a specific symbol name."""
         reel = self.config.reels[reel_id]
-        reelstop_positions = [[] for _ in range(self.config.num_reels)]
+        reelstop_positions: List[List[int]] = [[] for _ in range(self.config.num_reels)]
         for r in range(self.config.num_reels):
             for s in range(len(reel[r])):
                 if (
@@ -284,7 +283,7 @@ class Board(GeneralGameState):
 
     def count_special_symbols(self, special_sym_criteria: str) -> int:
         "Returns integer number of active symbols of any 'special' kind."
-        return len(self.special_syms_on_board[special_sym_criteria])
+        return len(self.special_syms_on_board.get(special_sym_criteria, []))
 
     def count_symbols_on_board(self, symbol_name: str) -> int:
         """Count number of sumbols on the board matching the target name."""
@@ -294,3 +293,108 @@ class Board(GeneralGameState):
                 if self.board[idx][idy].name.upper() == symbol_name.upper():
                     symbol_count += 1
         return symbol_count
+
+    def assign_special_sym_function(self):
+        """
+        Load or initialize special symbol callbacks.
+        If config exposes `symbol_behaviors` as a dict[str, Callable|list[Callable]],
+        normalize and store them so `create_symbol` can apply them.
+        """
+        if not hasattr(self, "special_symbol_functions") or self.special_symbol_functions is None:
+            self.special_symbol_functions = {}
+
+        behaviors = getattr(self.config, "symbol_behaviors", None)
+        if isinstance(behaviors, dict):
+            normalized: Dict[str, List[Any]] = {}
+            for name, funcs in behaviors.items():
+                if funcs is None:
+                    continue
+                if isinstance(funcs, list):
+                    normalized[name] = [f for f in funcs if callable(f)]
+                elif callable(funcs):
+                    normalized[name] = [funcs]
+            for k, v in normalized.items():
+                if k in self.special_symbol_functions:
+                    existing = set(id(f) for f in self.special_symbol_functions[k])
+                    self.special_symbol_functions[k].extend([f for f in v if id(f) not in existing])
+                else:
+                    self.special_symbol_functions[k] = v
+
+        for special_type, names in getattr(self.config, "special_symbols", {}).items():
+            for sym_name in names:
+                self.special_symbol_functions.setdefault(sym_name, [])
+
+    def run_spin(self, sim) -> None:
+        """
+        Execute a single base game spin.
+        Stores a lightweight summary on `self.last_spin_result`.
+        If `sim` exposes a callback `on_spin_complete(state, result)`, it is invoked.
+        """
+        self.assign_special_sym_function()
+
+        original_type = getattr(self, "gametype", None)
+        base_type = getattr(self.config, "basegame_type", original_type)
+        self.gametype = base_type
+
+        self.draw_board(emit_event=True)
+
+        result = {
+            "gametype": self.gametype,
+            "reelstrip_id": getattr(self, "reelstrip_id", None),
+            "reel_positions": getattr(self, "reel_positions", None),
+            "padding_position": getattr(self, "padding_position", None),
+            "anticipation": getattr(self, "anticipation", None),
+            "special_syms": getattr(self, "special_syms_on_board", {}),
+            "board_names": self.board_string(getattr(self, "board", [])),
+        }
+
+        # Preserve result without returning it to satisfy base signature
+        self.last_spin_result = result
+
+        cb = getattr(sim, "on_spin_complete", None)
+        if callable(cb):
+            try:
+                cb(self, result)
+            except Exception:
+                pass
+
+        if original_type is not None:
+            self.gametype = original_type
+
+        return None
+
+    def run_freespin(self):
+        """
+        Execute a single free game spin using a configured free game type if present.
+        Returns a lightweight summary similar to run_spin.
+        """
+        self.assign_special_sym_function()
+
+        original_type = getattr(self, "gametype", None)
+        candidate_attrs = ["freegame_type", "freespin_type", "freespins_type", "bonus_type"]
+        free_type = None
+        for attr in candidate_attrs:
+            if hasattr(self.config, attr):
+                free_type = getattr(self.config, attr)
+                break
+        if free_type is None:
+            free_type = original_type
+
+        self.gametype = free_type
+
+        self.draw_board(emit_event=True)
+
+        result = {
+            "gametype": self.gametype,
+            "reelstrip_id": getattr(self, "reelstrip_id", None),
+            "reel_positions": getattr(self, "reel_positions", None),
+            "padding_position": getattr(self, "padding_position", None),
+            "anticipation": getattr(self, "anticipation", None),
+            "special_syms": getattr(self, "special_syms_on_board", {}),
+            "board_names": self.board_string(getattr(self, "board", [])),
+        }
+
+        if original_type is not None:
+            self.gametype = original_type
+
+        return result

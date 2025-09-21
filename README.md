@@ -20,3 +20,7 @@ make setup
 
 Alternatively, visit our [Setup and Installation page](https://stakeengine.github.io/math-sdk/math_docs/general_overview/) for more details.
 
+# PocketMon Genesis
+
+[![CI](https://github.com/nikkieinthavong-del/math-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/nikkieinthavong-del/math-sdk/actions)
+

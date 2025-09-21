@@ -1,9 +1,9 @@
-import type { Grid, MultiplierMap, SpinConfig, SpinEvent, SpinResult } from './types.js';
-import { mulberry32, splitRng } from './rng.js';
-import { generateGrid } from './grid.js';
-import { findClusters } from './cluster.js';
-import { bumpMultipliers, makeMultiplierMap, productUnderCluster } from './multipliers.js';
-import { performEvolution } from './evolution.js';
+import type { Grid, MultiplierMap, SpinConfig, SpinEvent, SpinResult } from './types';
+import { mulberry32, splitRng } from './rng';
+import { generateGrid } from './grid';
+import { findClusters } from './cluster';
+import { bumpMultipliers, makeMultiplierMap, productUnderCluster } from './multipliers';
+import { performEvolution } from './evolution';
 export interface EngineOptions {
   seed?: number;
   maxCascades?: number;
@@ -41,85 +41,79 @@ export function spin(
   bet: number,
   opts: { seed?: number; maxCascades?: number; initMultiplierMap?: MultiplierMap } = {},
 ): SpinResult {
-  const rows = configJson?.grid?.rows ?? 7;
-  const cols = configJson?.grid?.cols ?? 7;
-  let seed = (opts.seed ?? Date.now()) >>> 0;
+  const seed = opts.seed ?? Date.now();
+  const maxCascades = opts.maxCascades ?? 20;
+  const cfg = makeSpinConfig(configJson);
+  const rngBase = mulberry32(seed);
 
-  // simple seeded RNG
-  const rand = () => {
-    seed = (seed * 1664525 + 1013904223) >>> 0;
-    return seed / 0x100000000;
-  };
-
-  // build a simple grid with tiers
-  const grid: any[][] = Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => ({
-      kind: 'tier',
-      tier: 1 + Math.floor(rand() * 3), // 1..3
-    })),
-  );
-
-  // multiplier map (all x1 unless provided)
-  const multiplierMap: MultiplierMap =
-    (opts.initMultiplierMap as any) ??
-    (Array.from({ length: rows }, () => Array.from({ length: cols }, () => 1)) as MultiplierMap);
-
-  const events: SpinEvent[] = [];
-  events.push({ type: 'spinStart', payload: { seed: opts.seed } });
-
-  // Tuning knobs for demo math (now read from config)
-  const WIN_CHANCE = configJson?.engine?.demo?.winChance ?? 0.28;
-  const BASE_FACTOR = configJson?.engine?.demo?.baseFactor ?? 0.25;
-
-  // Weighted helpers
-  const pickWeighted = (pairs: Array<[number, number]>): number => {
-    const total = pairs.reduce((a, [, w]) => a + w, 0);
-    let x = rand() * total;
-    for (const [val, w] of pairs) {
-      x -= w;
-      if (x <= 0) return val;
-    }
-    return pairs[pairs.length - 1][0];
-  };
-
-  // create a demo win with controlled frequency
+  let grid: Grid = generateGrid(cfg, splitRng(seed, 'base/gen0'));
+  // initialize multiplier map
+  let mult = makeMultiplierMap(cfg.rows, cfg.cols);
+  const events: SpinEvent[] = [{ type: 'spinStart', payload: { seed } }];
   let totalWinX = 0;
-  if (rand() < WIN_CHANCE) {
-    // Favor small sizes/tiers to keep EV reasonable
-    const size = pickWeighted([[3, 70], [4, 25], [5, 5]]);
-    const tier = pickWeighted([[1, 70], [2, 25], [3, 5]]);
-    const row = Math.floor(rand() * rows);
-    const col = Math.max(0, Math.min(cols - size, Math.floor(rand() * cols)));
 
-    // positions across the row
-    const cells = Array.from({ length: size }, (_, i) => ({ row, col: col + i }));
+  let cascades = 0;
 
-    // compute a simple win
-    const baseWinX = tier * size * BASE_FACTOR;
-    const multiplier = cells.reduce((acc, p) => acc * (multiplierMap[p.row][p.col] ?? 1), 1);
-    const winAmount = baseWinX * Math.max(1, multiplier) * bet;
-    totalWinX += winAmount;
+  while (cascades < maxCascades) {
+    const clusters = findClusters(grid, 5);
+    if (clusters.length === 0) {
+      // Potential Team Rocket random event trigger (non-winning spin only)
+      if (totalWinX === 0) {
+        const rocketChance = 0.01; // 1% chance
+        if (rngBase() < rocketChance) {
+          events.push({ type: 'featureEnter', payload: { feature: 'teamRocket' } });
+          const evolutionResult = performEvolution(grid);
+          const maybeEvolvedGrid: Grid | undefined =
+            (evolutionResult as any).newGrid ?? (evolutionResult as any).grid;
+          grid = maybeEvolvedGrid ?? grid;
+          // If grid dimensions changed, update multiplier map accordingly
+          if (
+            grid.length !== mult.length ||
+            (grid[0] && mult[0] && grid[0].length !== mult[0].length)
+          ) {
+            mult = makeMultiplierMap(grid.length, grid[0].length);
+          }
+        }
+      }
+      break;
+    }
+
+    cascades++;
+    const cluster = clusters[0];
+    const clusterSize = cluster.positions.length;
+    const clusterTier = cluster.tier;
+    const clusterCells = cluster.positions;
+    const mappedCells = clusterCells.map(([row, col]) => ({ row, col }));
+    const clusterMultiplier = productUnderCluster(mult, clusterCells);
+    const winX = computeClusterBaseWinX(clusterTier, clusterSize) * bet * clusterMultiplier;
+    totalWinX += winX;
 
     events.push({
       type: 'win',
       payload: {
-        clusterId: `${row}-${col}-${size}`,
-        cells, // Array<{ row, col }>
-        symbol: { id: `tier${tier}`, tier },
-        size,
-        multiplier,
-        winAmount,
-      },
+        clusterId: `${cascades}-${clusterTier}-${clusterSize}`,
+        cells: mappedCells,
+        symbol: {
+          id: cluster.id,
+          tier: cluster.tier
+        },
+        size: clusterSize,
+        multiplier: clusterMultiplier,
+        winAmount: winX
+      }
     });
+
+    // TODO: Implement tumble/multiplier updates; stop after first win for now
+    break;
   }
 
-  events.push({ type: 'spinEnd', payload: { totalWinX } });
-
-  return {
+  // Finalize spin result
+  const result: SpinResult = {
     grid,
-    multiplierMap,
-    totalWinX,
     events,
-    uiHints: null,
-  } as SpinResult;
+    multiplierMap: mult,
+    uiHints: {},
+    totalWinX: totalWinX
+  };
+  return result;
 }
