@@ -1,0 +1,1 @@
+This file is a placeholder note: scripts/package_publish.ts is compiled by tsconfig.run.json into dist-run/scripts/package_publish.js. No changes needed here.

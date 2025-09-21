@@ -1,5 +1,6 @@
 """Evaluates and records winds for lines games."""
 
+from typing import Optional, Any, cast
 from src.calculations.symbol import Symbol
 from src.config.config import Config
 from src.wins.multiplier_strategy import apply_mult
@@ -38,12 +39,11 @@ class Lines:
             "totalWin": 0,
             "wins": [],
         }
-
-        for line_index in config.paylines.keys():
-            line = config.paylines[line_index]
+        paylines = cast(Any, config).paylines
+        for line_index, line in paylines.items():
             first_sym = board[0][line[0]]
             finished_wild_win = False if first_sym.check_attribute(wild_key) else True
-            first_non_wild = first_sym if finished_wild_win else None
+            first_non_wild: Optional[Symbol] = first_sym if finished_wild_win else None
             potential_line = [first_sym]
 
             wild_matches = 0 * (finished_wild_win) + 1 * (not (finished_wild_win))
@@ -53,6 +53,9 @@ class Lines:
             for reel in range(1, len(line)):
                 sym = board[reel][line[reel]]
                 if finished_wild_win:
+                    # When finished_wild_win is True, the first symbol cannot be wild
+                    # and first_non_wild is guaranteed to be set.
+                    assert first_non_wild is not None
                     if sym.name == first_non_wild.name or sym.check_attribute(wild_key):
                         matches += 1
                     else:
@@ -78,7 +81,11 @@ class Lines:
                 if wild_win > base_win:
                     positions = [{"reel": idx, "row": line[idx]} for idx in range(0, wild_matches)]
                     line_win, applied_mult = apply_mult(
-                        board, multiplier_method, global_multiplier=global_multiplier, win_amount=wild_win, positions=positions
+                        cast(Any, board),
+                        multiplier_method,
+                        global_multiplier=global_multiplier,
+                        win_amount=wild_win,
+                        positions=positions,
                     )
                     win_dict = Lines.line_win_info(
                         potential_line[0].name,
@@ -96,8 +103,13 @@ class Lines:
                 else:
                     positions = [{"reel": idx, "row": line[idx]} for idx in range(0, matches + wild_matches)]
                     line_win, applied_mult = apply_mult(
-                        board, multiplier_method, global_multiplier=global_multiplier, win_amount=base_win, positions=positions
+                        cast(Any, board),
+                        multiplier_method,
+                        global_multiplier=global_multiplier,
+                        win_amount=base_win,
+                        positions=positions,
                     )
+                    assert first_non_wild is not None
                     win_dict = Lines.line_win_info(
                         first_non_wild.name,
                         matches + wild_matches,
@@ -111,7 +123,6 @@ class Lines:
                             "lineMultiplier": int(applied_mult / global_multiplier),
                         },
                     )
-
                 return_data["totalWin"] += line_win
                 return_data["wins"].append(win_dict)
 

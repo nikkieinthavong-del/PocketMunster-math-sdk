@@ -10,7 +10,7 @@ class GamestateTest(GeneralGameState):
     def assign_special_sym_function(self):
         self.special_symbol_functions = {"M": [self.assign_mult_property], "WM": [self.assign_mult_property]}
 
-    def assign_mult_property(self, symbol) -> dict:
+    def assign_mult_property(self, symbol) -> None:
         symbol.assign_attribute({"multiplier": 3})
 
     def create_symbol(self, name: str) -> object:
@@ -23,7 +23,7 @@ class GamestateTest(GeneralGameState):
 
         return symObject
 
-    def run_spin(self):
+    def run_spin(self, sim):
         pass
 
     def run_freespin(self):

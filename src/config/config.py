@@ -1,6 +1,5 @@
 """Set standard gamestate configuration with default values."""
 
-from src.config.betmode import BetMode
 from src.config.paths import PATH_TO_GAMES
 import os
 
@@ -86,7 +85,7 @@ class Config:
         for idx, pair in levels.items():
             if win_amount >= pair[0] and win_amount < pair[1]:
                 return idx
-        return RuntimeError(f"winLevel not found: {win_amount}")
+        raise RuntimeError(f"winLevel not found: {win_amount}")
 
     def get_special_symbol_names(self) -> None:
         """Get names of all special symbols"""
@@ -100,9 +99,9 @@ class Config:
         """Get names of all paying symbols."""
         self.paying_symbol_names = set()
         for tup in self.paytable:
-            assert type(tup[1]) == str, "symbol name must be a string"
+            assert isinstance(tup[1], str), "symbol name must be a string"
             self.paying_symbol_names.add(tup[1])
-        self.payingSymbolnames = list(self.paying_symbol_names)
+        self.paying_symbol_names = list(self.paying_symbol_names)
 
     def validate_reel_symbols(self, reel_strip: str) -> None:
         """Verify that all symbols on the reelstrip are valid."""

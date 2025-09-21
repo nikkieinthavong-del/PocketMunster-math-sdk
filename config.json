@@ -1,7 +1,7 @@
 {
   "grid": {
-    "rows": 7,
-    "cols": 7
+    "rows": 6,
+    "cols": 5
   },
   "multipliers": {
     "cellMax": 8192
@@ -9,7 +9,7 @@
   "engine": {
     "demo": {
       "winChance": 0.28,
-      "baseFactor": 0.750738885113243
+      "baseFactor": 431.45912937543744
     }
   }
 }

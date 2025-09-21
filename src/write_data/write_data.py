@@ -7,6 +7,7 @@ import os
 import hashlib
 import json
 import ast
+from typing import Any
 import zstandard as zstd
 
 
@@ -27,7 +28,7 @@ def get_sha_256(file_to_hash: str):
     return sha256_hexRep
 
 
-def make_force_json(gamestate: object):
+def make_force_json(gamestate: Any):
     """Construct force-file from recorded description keys."""
     folder_path = gamestate.config.force_path
     force_file_path = os.path.join(folder_path, "force.json")
@@ -74,7 +75,7 @@ def get_force_options(force_results: dict):
     return {key: list(val) for key, val in force_keys.items()}
 
 
-def make_lookup_tables(gamestate: object, name: str):
+def make_lookup_tables(gamestate: Any, name: str):
     """Write lookup tables for all simulations."""
     file = open(name, "w", encoding="UTF-8")
     sims = list(gamestate.library.keys())
@@ -84,7 +85,7 @@ def make_lookup_tables(gamestate: object, name: str):
     file.close()
 
 
-def make_lookup_pay_split(gamestate: object, name: str):
+def make_lookup_pay_split(gamestate: Any, name: str):
     """Record win values from basegame and freegame types."""
     file = open(name, "w", encoding="UTF-8")
     sims = list(gamestate.library.keys())
@@ -103,7 +104,7 @@ def make_lookup_pay_split(gamestate: object, name: str):
     file.close()
 
 
-def write_library_events(gamestate: object, library: list, gametype: str):
+def write_library_events(gamestate: Any, library: list, gametype: str):
     """Write all unique events within a given mode - with one example application."""
     unique_event = []
     event_items = {}
@@ -129,7 +130,7 @@ def output_lookup_and_force_files(
     batching_size: int,
     game_id: str,
     betmode: str,
-    gamestate: object,
+    gamestate: Any,
     num_sims: int = 1000000,
     compress: bool = True,
 ):
@@ -280,7 +281,7 @@ def write_json(gamestate, filename: str):
                 f.write(json.dumps(j_regular))
 
 
-def print_recorded_wins(gamestate: object, name: str = ""):
+def print_recorded_wins(gamestate: Any, name: str = ""):
     """Temporary file generation for wins/recorded results."""
     json_object = json.dumps(str(gamestate.recorded_events), indent=4)
     file = open(name, "w", encoding="UTF-8")

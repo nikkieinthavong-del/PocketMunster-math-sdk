@@ -1,7 +1,7 @@
 """Global multipliers, symbol multipliers, combined multipliers or no actions
     All functions return [final_win_amount], [applied multiplier]"""
 
-from typing import List, Dict
+from typing import List, Dict, Any
 from src.calculations.board import Board
 
 
@@ -29,7 +29,7 @@ def apply_global_mult(win_amount: float, global_multiplier: int) -> tuple:
     return (round(win_amount * global_multiplier, 2), global_multiplier)
 
 
-def apply_added_symbol_mult(board: Board, win_amount: float, positions: List[Dict], multiplier_key: str) -> tuple:
+def apply_added_symbol_mult(board: Any, win_amount: float, positions: List[Dict], multiplier_key: str) -> tuple:
     """Get multiplier attribute from all winning positions"""
     symbol_multiplier = 0
     for pos in positions:
@@ -42,7 +42,7 @@ def apply_added_symbol_mult(board: Board, win_amount: float, positions: List[Dic
 
 
 def apply_combined_mult(
-    board: Board, win_amount: float, global_multiplier: int, positions: List[Dict], multiplier_key
+    board: Any, win_amount: float, global_multiplier: int, positions: List[Dict], multiplier_key
 ) -> tuple:
     """Apply symbol multipliers and then global multiplier"""
     win, sym_mult = apply_added_symbol_mult(board, win_amount, positions, multiplier_key)

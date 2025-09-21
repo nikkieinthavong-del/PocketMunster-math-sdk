@@ -2,12 +2,19 @@ import os
 from collections import defaultdict
 
 from src.config.paths import PATH_TO_GAMES
+from typing import Protocol
+
+
+class _GameConfigProtocol(Protocol):
+    game_id: str
+    output_regular_json: bool
+    bet_modes: list
 
 
 class OutputFiles:
     """Construct all output filename and directories."""
 
-    def __init__(self, game_config: object):
+    def __init__(self, game_config: _GameConfigProtocol):
         self.game_config = game_config
         self.setup_output_directories()
         self.assign_config_details()

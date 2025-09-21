@@ -5,14 +5,14 @@ import cProfile
 from warnings import warn
 import shutil
 import asyncio
-from typing import Dict
+from typing import Dict, Any
 
 from src.write_data.write_data import output_lookup_and_force_files
 
 
 def create_books(
-    gamestate: object,
-    config: object,
+    gamestate: Any,
+    config: Any,
     num_sim_args: dict,
     batch_size: int,
     threads: int,
@@ -62,7 +62,7 @@ def create_books(
     print("\nFinished creating books in", time.time() - startTime, "seconds.\n")
 
 
-def get_sim_splits(gamestate: object, num_sims: int, betmode_name: str) -> Dict[str, int]:
+def get_sim_splits(gamestate: Any, num_sims: int, betmode_name: str) -> Dict[str, int]:
     """Ensure assignment of criteria to all simulations numbers."""
     betmode_distributions = gamestate.get_betmode(betmode_name).get_distributions()
     num_sims_criteria = {d._criteria: max(int(num_sims * d._quota), 1) for d in betmode_distributions}
@@ -117,7 +117,7 @@ def run_multi_process_sims(
     batching_size: int,
     game_id: str,
     betmode: str,
-    gamestate: object,
+    gamestate: Any,
     num_sims: int = 1000000,
     compress: bool = True,
     write_event_list: bool = False,

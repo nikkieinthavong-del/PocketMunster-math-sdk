@@ -1,7 +1,7 @@
-# AI coding guidance for PocketMon Genesis Slot Game
+# AI coding guidance for POCKET MUNSTERS Slot Game
 
 ## Purpose
-Develop PocketMon Genesis - a HTML5 + TypeScript cluster-pays slot game with 7x7 grid, tumble mechanics, cell multipliers, and three bonus features: Poké Hunt, Free Spins, and Battle Arena. Built on the Stake Engine Math SDK architecture with Python math engine and TypeScript frontend.
+Develop POCKET MUNSTERS - a HTML5 + TypeScript cluster-pays slot game with 7x7 grid, tumble mechanics, cell multipliers, and three bonus features: Poké Hunt, Free Spins, and Battle Arena. Built on the Stake Engine Math SDK architecture with Python math engine and TypeScript frontend.
 
 ## Big-picture architecture
 - **Math Engine (Python)**: Game logic, RNG, win evaluation, event generation in `/games/0_0_cluster/` 

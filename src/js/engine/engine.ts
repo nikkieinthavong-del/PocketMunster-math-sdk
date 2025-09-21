@@ -1,125 +1,293 @@
-import type { Grid, MultiplierMap, SpinConfig, SpinEvent, SpinResult } from './types.js';
-import { mulberry32, splitRng } from './rng.js';
-import { generateGrid } from './grid.js';
-import { findClusters } from './cluster.js';
-import { bumpMultipliers, makeMultiplierMap, productUnderCluster } from './multipliers.js';
-import { performEvolution } from './evolution.js';
+import type { Grid, MultiplierMap, SpinEvent, SpinResult } from './types.ts';
+
 export interface EngineOptions {
   seed?: number;
   maxCascades?: number;
+  initMultiplierMap?: MultiplierMap;
+  inBonusMode?: 'base' | 'frenzy' | 'hunt' | 'epic';
 }
 
-export function makeSpinConfig(configJson: any): SpinConfig {
-  const rows = configJson.grid?.rows ?? 7;
-  const cols = configJson.grid?.cols ?? 7;
-  return {
-    rows,
-    cols,
-    weights: configJson.symbolWeights ?? { tier1: 1 },
-    cellMultiplierCap: configJson.multipliers?.cellMax ?? 8192,
-  };
-}
-
-function computeClusterBaseWinX(tier: number, size: number): number {
-  // Simple anchor curve (placeholder). Replace with real paytable integration.
-  const base = {
-    1: { 5: 0.2, 8: 0.8, 12: 2.5, 15: 10 },
-    2: { 5: 0.8, 8: 2.5, 12: 8, 15: 25 },
-    3: { 5: 2, 8: 10, 12: 30, 15: 100 },
-    4: { 5: 5, 8: 20, 12: 60, 15: 200 },
-    5: { 5: 20, 8: 100, 12: 500, 15: 2000 },
-  } as const;
-  const brackets = [15, 12, 8, 5];
-  for (const b of brackets) {
-    if (size >= b) return (base as any)[tier][b];
-  }
-  return 0;
-}
-
+// New 6x5 PockitMon engine with Super Cascades, additive position multipliers, Master Ball, and bonus modes
 export function spin(
   configJson: any,
   bet: number,
-  opts: { seed?: number; maxCascades?: number; initMultiplierMap?: MultiplierMap } = {},
+  opts: EngineOptions = {},
 ): SpinResult {
-  const rows = configJson?.grid?.rows ?? 7;
-  const cols = configJson?.grid?.cols ?? 7;
+  // Grid size fixed to 6x5 unless overridden
+  const rows = Math.max(1, Math.min(20, configJson?.grid?.rows ?? 6));
+  const cols = Math.max(1, Math.min(20, configJson?.grid?.cols ?? 5));
   let seed = (opts.seed ?? Date.now()) >>> 0;
+  const maxCascades = Math.max(1, Math.min(50, opts.maxCascades ?? 20));
+  const inBonus = opts.inBonusMode ?? 'base';
 
-  // simple seeded RNG
+  // Seeded RNG (LCG)
   const rand = () => {
     seed = (seed * 1664525 + 1013904223) >>> 0;
     return seed / 0x100000000;
   };
 
-  // build a simple grid with tiers
-  const grid: any[][] = Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => ({
-      kind: 'tier',
-      tier: 1 + Math.floor(rand() * 3), // 1..3
-    })),
-  );
+  // Symbols and simple base pays (adjustable via config)
+  type SymbolId =
+    | 'pikachu' | 'charizard' | 'squirtle' | 'bulbasaur'
+    | 'jigglypuff' | 'eevee' | 'mew' | 'snorlax'
+    | 'wild' | 'freeSpins' | 'pokeball' | 'masterBall';
+  type CellId = SymbolId | '__empty__';
 
-  // multiplier map (all x1 unless provided)
-  const multiplierMap: MultiplierMap =
-    (opts.initMultiplierMap as any) ??
-    (Array.from({ length: rows }, () => Array.from({ length: cols }, () => 1)) as MultiplierMap);
+  const basePays: Record<SymbolId, number> = {
+    pikachu: 10,
+    charizard: 12,
+    squirtle: 14,
+    bulbasaur: 16,
+    jigglypuff: 20,
+    eevee: 25,
+    mew: 40,
+    snorlax: 80,
+    wild: 0,
+    freeSpins: 0,
+    pokeball: 0,
+    masterBall: 0,
+  };
+
+  const weights: Record<SymbolId, number> = {
+    pikachu: configJson?.symbolWeights?.pikachu ?? 12,
+    charizard: configJson?.symbolWeights?.charizard ?? 11,
+    squirtle: configJson?.symbolWeights?.squirtle ?? 11,
+    bulbasaur: configJson?.symbolWeights?.bulbasaur ?? 11,
+    jigglypuff: configJson?.symbolWeights?.jigglypuff ?? 10,
+    eevee: configJson?.symbolWeights?.eevee ?? 9,
+    mew: configJson?.symbolWeights?.mew ?? 6,
+    snorlax: configJson?.symbolWeights?.snorlax ?? 4,
+    wild: configJson?.symbolWeights?.wild ?? 1,
+    freeSpins: configJson?.symbolWeights?.freeSpins ?? 1,
+    pokeball: configJson?.symbolWeights?.pokeball ?? 1,
+    masterBall: 0, // masterBall does not spawn via picker; it's an effect
+  };
+
+  const MULTIPLIER_VALUES = [2, 3, 4, 5, 10, 15, 20, 25, 50, 100];
+  const MASTER_BALL_MULTIPLIERS = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const chanceAddMultiplier = configJson?.engine?.chanceAddMultiplier ?? 0.3;
+  const chanceMasterBall = configJson?.engine?.chanceMasterBall ?? 0.15;
+  const cellCap = configJson?.multipliers?.cellMax ?? 8192;
+
+  // Hunt mode knobs
+  let rushProgress = 0;
+  const rushTarget = Math.max(1, Math.floor(configJson?.engine?.hunt?.rushTarget ?? 50));
+  const wildsPerCascade = Math.max(0, Math.floor(configJson?.engine?.hunt?.wildPerCascade ?? 2));
+
+  type Cell = { id: CellId };
+  const pick = (): Cell => {
+    const picker: Array<{ id: SymbolId; w: number }> = [
+      { id: 'pikachu', w: weights.pikachu },
+      { id: 'charizard', w: weights.charizard },
+      { id: 'squirtle', w: weights.squirtle },
+      { id: 'bulbasaur', w: weights.bulbasaur },
+      { id: 'jigglypuff', w: weights.jigglypuff },
+      { id: 'eevee', w: weights.eevee },
+      { id: 'mew', w: weights.mew },
+      { id: 'snorlax', w: weights.snorlax },
+      { id: 'wild', w: weights.wild },
+      { id: 'freeSpins', w: weights.freeSpins },
+      { id: 'pokeball', w: weights.pokeball },
+    ];
+    const total = picker.reduce((a, p) => a + p.w, 0);
+    let x = rand() * total;
+    for (const p of picker) { x -= p.w; if (x <= 0) return { id: p.id }; }
+    return { id: 'pikachu' };
+  };
+
+  // Build initial grid and multipliers (0 = none, else X value e.g., 2,5,10)
+  const grid: Cell[][] = Array.from({ length: rows }, () => Array.from({ length: cols }, () => pick()));
+  const multipliers: number[][] = opts.initMultiplierMap
+    ? opts.initMultiplierMap.map((row) => row.slice())
+    : Array.from({ length: rows }, () => Array.from({ length: cols }, () => 0));
 
   const events: SpinEvent[] = [];
   events.push({ type: 'spinStart', payload: { seed: opts.seed } });
 
-  // Tuning knobs for demo math (now read from config)
-  const WIN_CHANCE = configJson?.engine?.demo?.winChance ?? 0.28;
-  const BASE_FACTOR = configJson?.engine?.demo?.baseFactor ?? 0.25;
+  // Helpers
+  const inBounds = (r: number, c: number) => r >= 0 && r < rows && c >= 0 && c < cols;
+  const neighbors4 = (r: number, c: number) => [
+    [r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1],
+  ].filter(([rr, cc]) => inBounds(rr, cc)) as Array<[number, number]>;
 
-  // Weighted helpers
-  const pickWeighted = (pairs: Array<[number, number]>): number => {
-    const total = pairs.reduce((a, [, w]) => a + w, 0);
-    let x = rand() * total;
-    for (const [val, w] of pairs) {
-      x -= w;
-      if (x <= 0) return val;
+  // We'll use explicit empty marking to avoid symbol id collision
+  const markEmpty = (r: number, c: number) => ((grid[r][c] as any).id = '__empty__' as any);
+
+  // DFS cluster with wilds joining the target id
+  const findClusters = () => {
+    const seen: boolean[][] = Array.from({ length: rows }, () => Array.from({ length: cols }, () => false));
+    const clusters: Array<{ id: SymbolId; cells: Array<[number, number]> }> = [];
+    const dfs = (r: number, c: number, target: SymbolId, acc: Array<[number, number]>) => {
+      if (!inBounds(r, c) || seen[r][c]) return;
+      const cur = grid[r][c].id;
+      if (cur === '__empty__') return;
+      if (!(cur === target || cur === 'wild')) return;
+      seen[r][c] = true;
+      acc.push([r, c]);
+      for (const [nr, nc] of neighbors4(r, c)) dfs(nr, nc, target, acc);
+    };
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        if (seen[r][c]) continue;
+        const cur = grid[r][c].id;
+        if (cur === '__empty__' || cur === 'wild' || cur === 'freeSpins' || cur === 'pokeball' || cur === 'masterBall') { seen[r][c] = true; continue; }
+        const acc: Array<[number, number]> = [];
+        dfs(r, c, cur as SymbolId, acc);
+        if (acc.length >= 3) clusters.push({ id: cur as SymbolId, cells: acc });
+      }
     }
-    return pairs[pairs.length - 1][0];
+    // largest first removes more
+    clusters.sort((a, b) => b.cells.length - a.cells.length);
+    return clusters;
   };
 
-  // create a demo win with controlled frequency
-  let totalWinX = 0;
-  if (rand() < WIN_CHANCE) {
-    // Favor small sizes/tiers to keep EV reasonable
-    const size = pickWeighted([[3, 70], [4, 25], [5, 5]]);
-    const tier = pickWeighted([[1, 70], [2, 25], [3, 5]]);
-    const row = Math.floor(rand() * rows);
-    const col = Math.max(0, Math.min(cols - size, Math.floor(rand() * cols)));
+  const tumble = () => {
+    for (let c = 0; c < cols; c++) {
+      const col: Cell[] = [];
+      for (let r = rows - 1; r >= 0; r--) {
+        const cell = grid[r][c] as any;
+        if (cell && (cell as Cell).id !== '__empty__') col.push(cell);
+      }
+      for (let r = rows - 1; r >= 0; r--) {
+        if (col.length) grid[r][c] = col.shift()!; else grid[r][c] = pick();
+      }
+    }
+  };
 
-    // positions across the row
-    const cells = Array.from({ length: size }, (_, i) => ({ row, col: col + i }));
+  let totalWin = 0;
+  let cascade = 0;
+  let masterBallActiveThisCascade = false;
 
-    // compute a simple win
-    const baseWinX = tier * size * BASE_FACTOR;
-    const multiplier = cells.reduce((acc, p) => acc * (multiplierMap[p.row][p.col] ?? 1), 1);
-    const winAmount = baseWinX * Math.max(1, multiplier) * bet;
-    totalWinX += winAmount;
-
-    events.push({
-      type: 'win',
-      payload: {
-        clusterId: `${row}-${col}-${size}`,
-        cells, // Array<{ row, col }>
-        symbol: { id: `tier${tier}`, tier },
-        size,
-        multiplier,
-        winAmount,
-      },
-    });
+  // Count scatters at initial reveal for potential feature triggers
+  const scatterCounts: Record<'freeSpins' | 'pokeball', number> = { freeSpins: 0, pokeball: 0 };
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    if (grid[r][c].id === 'freeSpins') scatterCounts.freeSpins++;
+    if (grid[r][c].id === 'pokeball') scatterCounts.pokeball++;
   }
 
-  events.push({ type: 'spinEnd', payload: { totalWinX } });
+  while (cascade < maxCascades) {
+    events.push({ type: 'cascadeStart', payload: { index: cascade, chainMultiplier: 1 } });
+
+    // Optional Master Ball effect this cascade
+    if (!masterBallActiveThisCascade && rand() < chanceMasterBall) {
+      const mb = MASTER_BALL_MULTIPLIERS[Math.floor(rand() * MASTER_BALL_MULTIPLIERS.length)];
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+        if (multipliers[r][c] > 0) multipliers[r][c] = Math.min(cellCap, multipliers[r][c] * mb);
+      }
+      events.push({ type: 'masterBall', payload: { index: cascade, multiplier: mb } });
+      masterBallActiveThisCascade = true;
+    }
+
+    // Bonus: Hunt — inject wilds before cluster evaluation to influence wins
+    if (inBonus === 'hunt' && wildsPerCascade > 0) {
+      const candidates: Array<[number, number]> = [];
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+        const id = grid[r][c].id;
+        if (id !== '__empty__' && id !== 'freeSpins' && id !== 'pokeball' && id !== 'masterBall' && id !== 'wild') {
+          candidates.push([r, c]);
+        }
+      }
+      const chosen: Array<[number, number]> = [];
+      for (let k = 0; k < wildsPerCascade && candidates.length > 0; k++) {
+        const idx = Math.floor(rand() * candidates.length);
+        const [rr, cc] = candidates.splice(idx, 1)[0];
+        grid[rr][cc].id = 'wild';
+        chosen.push([rr, cc]);
+      }
+      if (chosen.length) {
+        events.push({ type: 'wildInject', payload: { index: cascade, positions: chosen.map(([r,c]) => ({ row: r, col: c })) } } as any);
+      }
+    }
+
+    const clusters = findClusters();
+    if (clusters.length === 0) { events.push({ type: 'cascadeEnd', payload: { index: cascade, removed: 0 } }); break; }
+
+    // Chance to add a new position multiplier somewhere occupied
+    if (inBonus === 'frenzy' || rand() < chanceAddMultiplier) {
+      const positions: Array<[number, number]> = [];
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) positions.push([r, c]);
+      const [rr, cc] = positions[Math.floor(rand() * positions.length)];
+      const mv = MULTIPLIER_VALUES[Math.floor(rand() * MULTIPLIER_VALUES.length)];
+      multipliers[rr][cc] = Math.max(multipliers[rr][cc], mv);
+    }
+
+    // Compute wins per cluster, then do Super Cascade removal (all-of-type)
+    const removedPositions: Array<[number, number]> = [];
+    const typesWon = new Set<SymbolId>();
+
+    for (const cl of clusters) {
+      const size = cl.cells.length;
+      const base = basePays[cl.id] * size; // simple base
+      // Additive multiplier: sum of X values on cells in cluster; if none, factor = 1
+      const addSum = cl.cells.reduce((a, [r, c]) => a + (multipliers[r][c] ?? 0), 0);
+      const factor = addSum > 0 ? addSum : 1;
+      const win = Math.floor(base * (bet || 1) * factor);
+      totalWin += win;
+      typesWon.add(cl.id);
+
+      // Double multipliers that were part of a win (cap)
+      for (const [r, c] of cl.cells) {
+        if (multipliers[r][c] > 0) multipliers[r][c] = Math.min(cellCap, multipliers[r][c] * 2);
+      }
+
+      events.push({
+        type: 'win',
+        payload: {
+          clusterId: `${cl.id}-${size}-${cascade}`,
+          cells: cl.cells.map(([r, c]) => ({ row: r, col: c })),
+          symbol: { id: cl.id, tier: 1 },
+          size,
+          multiplier: factor,
+          winAmount: win,
+        },
+      });
+    }
+
+    // Super Cascades: remove all regular symbols of the won types (ignore wild/scatters)
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const id = grid[r][c].id;
+        if (id === 'wild' || id === 'freeSpins' || id === 'pokeball' || id === 'masterBall') continue;
+        if (id !== '__empty__' && typesWon.has(id as SymbolId)) { markEmpty(r, c); removedPositions.push([r, c]); }
+      }
+    }
+
+    events.push({ type: 'cascadeEnd', payload: { index: cascade, removed: removedPositions.length } });
+
+    // Bonus: Hunt — accumulate rush progress by removed count
+    if (inBonus === 'hunt') {
+      rushProgress += removedPositions.length;
+    }
+
+    // Bonus: Epic — progressive sticky multipliers (+1 each cascade for existing)
+    if (inBonus === 'epic') {
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+        if (multipliers[r][c] > 0) multipliers[r][c] = Math.min(cellCap, multipliers[r][c] + 1);
+      }
+    }
+
+    if (removedPositions.length === 0) break;
+
+    // Gravity and refill
+    tumble();
+    cascade += 1;
+    masterBallActiveThisCascade = false; // allow again next cascade
+  }
+
+  events.push({ type: 'spinEnd', payload: { totalWinX: totalWin } });
+
+  // Emit result grid as simple objects
+  const outGrid: Grid = Array.from({ length: rows }, (_, r) => Array.from({ length: cols }, (_, c) => ({ id: grid[r][c].id })));
 
   return {
-    grid,
-    multiplierMap,
-    totalWinX,
+    grid: outGrid,
+    multiplierMap: multipliers,
+    totalWinX: totalWin,
     events,
-    uiHints: null,
+    uiHints: {
+      scatters: scatterCounts,
+      bonusHint: scatterCounts.freeSpins >= 3 ? 'frenzy' : scatterCounts.pokeball >= 4 ? 'hunt' : undefined,
+      rush: inBonus === 'hunt' ? { progress: rushProgress, target: rushTarget } : undefined,
+    },
   } as SpinResult;
 }

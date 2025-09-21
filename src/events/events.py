@@ -1,16 +1,17 @@
 """Defines reusable events"""
 
 from copy import deepcopy
+from typing import Any, Optional
 from src.events.event_constants import EventConstants
 
 
-def json_ready_sym(symbol: object, special_attributes: list = None):
+def json_ready_sym(symbol: Any, special_attributes: Optional[list] = None):
     """Converts a symbol to dictionary/JSON format."""
     assert special_attributes is not None
     print_sym = {"name": symbol.name}
     attrs = vars(symbol)
     for key, val in attrs.items():
-        if key in special_attributes and symbol.get_attribute(key) != False:
+        if key in special_attributes and symbol.get_attribute(key):
             print_sym[key] = val
     return print_sym
 
@@ -45,8 +46,8 @@ def reveal_event(gamestate):
 def fs_trigger_event(
     gamestate,
     include_padding_index=True,
-    basegame_trigger: bool = None,
-    freegame_trigger: bool = None,
+    basegame_trigger: Optional[bool] = None,
+    freegame_trigger: Optional[bool] = None,
 ):
     """Triggers feature game from the basegame."""
     assert basegame_trigger != freegame_trigger, "must set either basegame_trigger or freeSpinTrigger to = True"

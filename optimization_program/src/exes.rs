@@ -1,8 +1,7 @@
 use csv::ReaderBuilder;
 use serde::{Deserialize, Serialize};
 use serde_json;
-use std::error::Error;
-use std::path::{Path};
+use std::{error::Error, path::Path};
 use std::{collections::HashMap, fs::File};
 
 ////////////////////////////////////
@@ -17,6 +16,7 @@ pub struct SearchKey {
 }
 // FORCE RESULT STRUCTS
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[allow(non_snake_case)]
 pub struct SearchResult {
     // Each key maps to a vector of serde_json::Value to accommodate different types.
     pub search: Vec<SearchKey>,

@@ -50,7 +50,9 @@ class Scatter:
         total_win = 0.0
         for reel_idx, reel in enumerate(board):
             for row_idx, symbol in enumerate(reel):
-                if symbol.name not in config.special_symbols[wild_key]:
+                # Cast to Any to satisfy type checker for dynamic key access
+                from typing import cast, Any as _Any  # local import to avoid polluting module namespace
+                if symbol.name not in cast(_Any, config.special_symbols)[wild_key]:
                     symbols_on_board[symbol.name].append({"reel": reel_idx, "row": row_idx})
                 else:
                     wild_positions.append({"reel": reel_idx, "row": row_idx})

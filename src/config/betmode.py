@@ -1,4 +1,4 @@
-from src.config.constants import *
+from src.config.constants import *  # noqa: F401,F403
 from typing import List
 
 
@@ -40,9 +40,15 @@ class BetMode:
 
     def __repr__(self):
         return (
-            f"BetMode(name={self._name},"
-            f"cost={self._cost}, max_win={self._wincap}, rtp={self._rtp}, auto_close_disabled={self._auto_close_disabled} "
-            f"is_feature={self._is_feature}, is_buybonus={self._is_buybonus} "
+            "BetMode("
+            f"name={self._name}, "
+            f"cost={self._cost}, "
+            f"max_win={self._wincap}, "
+            f"rtp={self._rtp}, "
+            f"auto_close_disabled={self._auto_close_disabled}, "
+            f"is_feature={self._is_feature}, "
+            f"is_buybonus={self._is_buybonus}"
+            ")"
         )
 
     def set_rtp(self, rtp: float) -> None:
@@ -99,13 +105,13 @@ class BetMode:
         """Returns total BetMode RTP."""
         return self._rtp
 
-    def get_distributions(self) -> dict:
-        """Returns dictionary of all BetMode distributions."""
+    def get_distributions(self) -> list:
+        """Returns list of all BetMode distributions."""
         return self._distributions
 
     def get_distribution_conditions(self, targetCriteria: str) -> dict:
-        """Returns conditions required fro distribution simulation to be accepted."""
+        """Returns conditions required for distribution simulation to be accepted."""
         for d in self.get_distributions():
-            if d._criteria == targetCriteria:
-                return d._conditions
-        return RuntimeError(f"target criteria: {targetCriteria} not found in betmode-distributions.")
+            if getattr(d, "_criteria", None) == targetCriteria:
+                return getattr(d, "_conditions")
+        raise RuntimeError(f"target criteria: {targetCriteria} not found in betmode-distributions.")

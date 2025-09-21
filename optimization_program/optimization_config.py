@@ -1,20 +1,20 @@
 """Classes for setting up and verifying inputs for game optimization."""
 
-from typing import List, Tuple, Union
+from typing import List, Dict, Any, Optional, cast
 from warnings import warn
 
 
 class ConstructScaling:
     """Verify valid inputs for applying scaling conditions."""
 
-    def __init__(self, all_scaling: List[Tuple]):
+    def __init__(self, all_scaling: List[Dict[str, Any]]):
         for scaling in all_scaling:
             for cond in ["criteria", "scale_factor", "win_range", "probability"]:
                 assert cond in scaling.keys()
                 if cond == "criteria":
                     assert isinstance(scaling[cond], str), "Enter string type for criteria condition"
                 elif cond in ["scale_factor", "probability"]:
-                    assert isinstance(scaling[cond], Union[float, int]), "Enter float/int type for value."
+                    assert isinstance(scaling[cond], (float, int)), "Enter float/int type for value."
                     if cond == "probability" and scaling[cond] > 1:
                         warn("probabilities > 1 will have no effect on selection.")
                 elif cond == "win_range":
@@ -63,16 +63,16 @@ class ConstructConditions:
 
     def __init__(
         self,
-        rtp: float = None,
-        av_win: float = None,
-        hr: float = None,
+        rtp: Optional[float] = None,
+        av_win: Optional[float] = None,
+        hr: Optional[float] = None,
         search_conditions=None,
     ):
         if rtp is None or rtp == "x":
             assert all(
                 [av_win is not None, hr is not None]
             ), "if RTP is not specified, hit-rate (hr) and average win amount (av_win) must be given. "
-            rtp = round(av_win / hr, 5)
+            rtp = round(cast(float, av_win) / cast(float, hr), 5)
         none_count = sum([1 for x in [rtp, av_win, hr] if x is None])
         assert none_count <= 1, "Criteria RTP is ill defined."
 

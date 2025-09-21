@@ -1,6 +1,6 @@
 """Set and verify simulation parameters."""
 
-from typing import Union
+from typing import Union, Dict, List, Optional, Any
 import json
 
 
@@ -9,30 +9,31 @@ class Distribution:
 
     def __init__(
         self,
-        criteria: str = None,
+        criteria: Union[str, None] = None,
         quota: int = 0,
         win_criteria: Union[float, None] = None,
-        conditions: dict = {},
-        required_distribution_conditions: list = [
+        conditions: Union[Dict, None] = None,
+        required_distribution_conditions: List[str] = [
             "reel_weights",
         ],
-        default_distribution_conditions: dict = {"force_wincap": False, "force_freegame": False},
+    default_distribution_conditions: Optional[Dict[str, Any]] = None,
     ):
-
         assert quota > 0, "non-zero quota value must be assigned"
 
         self._quota = quota
         self._criteria = criteria
         self._required_distribution_conditions = required_distribution_conditions
+        if default_distribution_conditions is None:
+            default_distribution_conditions = {"force_wincap": False, "force_freegame": False}
         self._default_distribution_conditions = default_distribution_conditions
         self._win_criteria = win_criteria
-        self.verify_and_set_conditions(conditions)
+        self.verify_and_set_conditions(conditions or {})
 
     def verify_and_set_conditions(self, conditions):
         """Enforce required conditions for distribution setup."""
         condition_keys = list(conditions.keys())
         for rk in self._required_distribution_conditions:
-            assert rk in condition_keys, f"condition missing required key: {rk}\n condition_keys"
+            assert rk in condition_keys, f"condition missing required key: {rk}. condition_keys={condition_keys}"
 
         for rk in list(self._default_distribution_conditions.keys()):
             if rk not in condition_keys:

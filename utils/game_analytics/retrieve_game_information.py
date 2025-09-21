@@ -1,7 +1,7 @@
 import json
 import importlib
 import sys
-import os
+from typing import Any, List, Dict, Optional
 
 from .get_pay_splits import (
     return_all_filepaths,
@@ -25,7 +25,7 @@ def get_config_class(game_id):
 class GameInformation:
     """Import game configuration details."""
 
-    def __init__(self, gamestate: object, analysis_ranges=None, modes_to_analyse=None, custom_keys=None):
+    def __init__(self, gamestate: Any, analysis_ranges: Optional[List[tuple]] = None, modes_to_analyse: Optional[List[str]] = None, custom_keys: Optional[List[Dict[str, str]]] = None):
         self.game_id = gamestate.config.game_id
         self.modes_to_analyse = modes_to_analyse
         self.config_path = gamestate.output_files.configs["paths"]["be_config"]
@@ -167,13 +167,13 @@ class GameInformation:
             self.lutPath, self.all_modes, self.win_ranges
         )
 
-    def get_symbol_hit_rates(self, modes_to_analyse: list) -> None:
+    def get_symbol_hit_rates(self, modes_to_analyse: List[str]) -> None:
         """Extract symbols from config file and get statistics using optimized lookup tables."""
         self.hr_summary, self.av_win_summary, self.sim_count_summary = construct_symbol_probabilities(
             self.config, modes_to_analyse
         )
 
-    def get_custom_hit_rates(self, modes_to_analyse: list, custom_search_keys: list[dict]) -> None:
+    def get_custom_hit_rates(self, modes_to_analyse: List[str], custom_search_keys: List[Dict[str, str]]) -> None:
         """Compute hit rates of user defined search conditions."""
         assert modes_to_analyse is not None, "specify which mode/s to assess"
         assert custom_search_keys is not None

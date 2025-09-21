@@ -8,26 +8,38 @@ class OptimizationParameters:
 
     def __init__(
         self,
-        rtp: float = None,
-        av_win: float = None,
-        hr: float = None,
-        bet_cost: float = None,
+    rtp: float | str | None = None,
+    av_win: float | str | None = None,
+    hr: float | str | None = None,
+        bet_cost: float | None = None,
         search_conditions=None,
     ):
         if rtp is None or rtp == "x":
-            assert all([av_win is not None, hr is not None]), "if RTP is not specified, hit-rate (hr) "
-            rtp = round(av_win / hr, 5)
-        none_count = sum([1 for x in [rtp, av_win, hr] if x is None])
+            assert all([av_win is not None, hr is not None]), "if RTP is not specified, hit-rate (hr) must be provided"
+            assert av_win is not None and hr is not None
+            if isinstance(av_win, (int, float)) and isinstance(hr, (int, float)) and hr != 0:
+                rtp = round(float(av_win) / float(hr), 5)
+            else:
+                rtp = "x"
+        none_count = sum(1 for x in [rtp, av_win, hr] if x is None)
         assert none_count < 3, "Criteria RTP is ill defined."
         assert bet_cost is not None, "Define a bet-cost for parameter."
 
         if rtp is None:
-            rtp = round(av_win / hr, 5)
+            assert av_win is not None and hr is not None
+            if isinstance(av_win, (int, float)) and isinstance(hr, (int, float)) and hr != 0:
+                rtp = round(float(av_win) / float(hr), 5)
+            else:
+                rtp = "x"
         elif av_win is None and all([rtp is not None, hr is not None]):
-            av_win = round(rtp * hr, 5)
+            assert hr is not None and rtp is not None
+            if isinstance(rtp, (int, float)) and isinstance(hr, (int, float)):
+                av_win = round(float(rtp) * float(hr), 5)
+            else:
+                av_win = "x"
         elif hr is None:
-            if rtp != 0 and av_win is not None:
-                hr = round((av_win / rtp) / bet_cost, 5)
+            if isinstance(rtp, (int, float)) and rtp != 0 and isinstance(av_win, (int, float)) and bet_cost:
+                hr = round((float(av_win) / float(rtp)) / float(bet_cost), 5)
             else:
                 hr = "x"
 

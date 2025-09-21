@@ -120,10 +120,10 @@ class GeneralGameState(ABC):
 
     def get_current_distribution_conditions(self) -> dict:
         """Return requirements for criteria setup/acceptance."""
-        for d in self.get_betmode(self.betmode).get_distributions():
+        for d in self.get_betmode(self.betmode).get_distributions():  # type: ignore[attr-defined]
             if d._criteria == self.criteria:
                 return d._conditions
-        return RuntimeError("Could not locate betmode conditions")
+        return {}
 
     def check_current_repeat_count(self, warn_after_count: int = 1000):
         """Alert user to high repeat count."""
@@ -209,11 +209,11 @@ class GeneralGameState(ABC):
     def check_repeat(self) -> None:
         """Checks if the spin failed a criteria constraint at any point."""
         if self.repeat is False:
-            win_criteria = self.get_current_betmode_distributions().get_win_criteria()
+            win_criteria = self.get_current_betmode_distributions().get_win_criteria()  # type: ignore[attr-defined]
             if win_criteria is not None and self.final_win != win_criteria:
                 self.repeat = True
 
-            if self.get_current_distribution_conditions()["force_freegame"] and not (self.triggered_freegame):
+            if self.get_current_distribution_conditions().get("force_freegame") and not (self.triggered_freegame):
                 self.repeat = True
 
         self.repeat_count += 1

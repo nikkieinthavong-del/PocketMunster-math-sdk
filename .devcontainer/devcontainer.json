@@ -6,7 +6,8 @@
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/devcontainers/features/rust:1": {}
+    "ghcr.io/devcontainers/features/rust:1": {},
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" }
   },
 
   // Configure tool-specific properties
@@ -16,7 +17,8 @@
         "ms-python.python",
         "ms-python.pylint",
         "ms-python.black-formatter",
-        "ms-toolsai.jupyter"
+        "ms-toolsai.jupyter",
+        "esbenp.prettier-vscode"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python",
@@ -26,7 +28,7 @@
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally
-  // "forwardPorts": [8000, 5000],
+  "forwardPorts": [5173, 5180],
 
   // Use 'postCreateCommand' to run commands after the container is created
   "postCreateCommand": "make setup",

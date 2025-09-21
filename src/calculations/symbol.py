@@ -1,22 +1,22 @@
 """Handle symbol classes and initial generation."""
 
-from typing import Dict
+from typing import Dict, Any, Callable
 
 
 class SymbolStorage:
     """Initial symbol generation from configuration file."""
 
-    def __init__(self, config: object, all_symbols: list):
+    def __init__(self, config: Any, all_symbols: list):
         self.config = config
         self.symbols: Dict[str, Symbol] = {}
         for symbol in all_symbols:
             self.symbols[symbol] = Symbol(self.config, symbol)
 
-    def create_symbol_state(self, symbol_name: str) -> object:
+    def create_symbol_state(self, symbol_name: str) -> "Symbol":
         """Create new symbol class instance."""
         return Symbol(self.config, symbol_name)
 
-    def get_symbol(self, name: str) -> object:
+    def get_symbol(self, name: str) -> "Symbol":
         """Retrieve symbol class from name."""
         if name not in self.symbols:
             self.symbols[name] = Symbol(self.config, name)
@@ -26,7 +26,7 @@ class SymbolStorage:
 class Symbol:
     """Create symbol from name (string) and assign relevant attributes and special functions."""
 
-    def __init__(self, config: object, name: str) -> None:
+    def __init__(self, config: Any, name: str) -> None:
         self.name = name
         self.special_functions = []
         self.special = False
@@ -41,16 +41,16 @@ class Symbol:
 
         self.assign_paying_bool(config)
 
-    def register_special_function(self, special_function: callable) -> None:
+    def register_special_function(self, special_function: Callable[["Symbol"], None]) -> None:
         """Assign special symbol function."""
         self.special_functions.append(special_function)
 
-    def apply_special_function(self) -> callable:
+    def apply_special_function(self) -> None:
         """Apply registered symbol function."""
         for fun in self.special_functions:
             fun(self)
 
-    def assign_paying_bool(self, config) -> None:
+    def assign_paying_bool(self, config: Any) -> None:
         """Extract paytable from a given symbol."""
         paying_symbols = set()
         pay_value = []
@@ -86,7 +86,9 @@ class Symbol:
         for prop, value in attribute_dict.items():
             setattr(self, prop, value)
 
-    def __eq__(self, name: str) -> bool:
-        if self.name == name:
-            return True
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, Symbol):
+            return self.name == other.name
+        if isinstance(other, str):
+            return self.name == other
         return False

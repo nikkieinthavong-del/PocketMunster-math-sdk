@@ -1,5 +1,7 @@
 """Handle generation configuration files after simulations and optimization process have concluded."""
 
+from typing import Any
+
 import json
 import os
 import shutil
@@ -20,7 +22,8 @@ def copy_and_rename_csv(filepath: str) -> None:
     shutil.copy(filepath, new_filepath)
 
 
-def generate_configs(gamestate: object, json_padding: bool = True, assign_properties: bool = True):
+
+def generate_configs(gamestate: Any, json_padding: bool = True, assign_properties: bool = True):
     """Construct frontend, backend and optimization-required configuration files."""
     make_fe_config(
         gamestate=gamestate,
@@ -33,7 +36,7 @@ def generate_configs(gamestate: object, json_padding: bool = True, assign_proper
     # make_math_config(gamestate)
 
 
-def make_index_config(gamestate: object):
+def make_index_config(gamestate: Any):
     """
     RGS config file list verification
     This file is used to locate all published math files from AWS. Custom directory structures can be uplaoded
@@ -247,7 +250,7 @@ def make_fe_config(gamestate, json_padding=True, assign_properties=True, **kwarg
         json_info["betModes"][m_name] = bm_info[m_name]
 
     # Optionally include any custom information
-    for key, val in kwargs:
+    for key, val in kwargs.items():
         json_info[key] = val
 
     if hasattr(gamestate.config, "pay_lines") or hasattr(gamestate.config, "paylines"):

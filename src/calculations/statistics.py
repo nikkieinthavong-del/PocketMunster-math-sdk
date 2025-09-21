@@ -1,8 +1,8 @@
 import random
-from typing import Union
+from typing import Union, Optional, Tuple
 
 
-def get_random_outcome(distribution: dict, totalWeight: float = None) -> Union[float, int]:
+def get_random_outcome(distribution: dict, totalWeight: Optional[float] = None) -> Union[float, int]:
     """Returns a value from a distibution passed as a dictionary: {value : weight, ...}"""
     assert isinstance(distribution, dict), "distribution must be of type: dict "
     if totalWeight is None:
@@ -14,10 +14,10 @@ def get_random_outcome(distribution: dict, totalWeight: float = None) -> Union[f
         if cumulative >= roll:
             return value
 
-    return Exception("error drawing item from distribution")
+    raise RuntimeError("error drawing item from distribution")
 
 
-def get_mean_std_median(dist: dict) -> tuple[float, float, float]:
+def get_mean_std_median(dist: dict) -> Tuple[float, float, float]:
     """Returns mean and standard deviation from an ordered win-distribution."""
     total = 0
     count = 0

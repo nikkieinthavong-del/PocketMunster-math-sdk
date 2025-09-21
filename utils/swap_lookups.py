@@ -7,7 +7,7 @@ import os
 import json
 
 ABS_PATH = Path(__file__).parent.parent
-sys.path.append(ABS_PATH)
+sys.path.append(str(ABS_PATH))
 os.chdir(ABS_PATH)
 
 
@@ -35,8 +35,8 @@ def swap_tables(game_name: str, game_mode: str, target_file_number: int):
                     weight = int(parts[1])
                     payout = int(round(float(parts[2]) * 100, 0))
                     outfile.write(f"{idx},{weight},{payout}\n")
-                except:
-                    raise ValueError("Could not write transformed line.")
+                except Exception as e:
+                    raise ValueError("Could not write transformed line.") from e
             elif line == "Distribution":
                 start_recording = True
 
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-g", dest="game_id", type=str, help="Enter str format for game_id: '0_0_0'")
     parser.add_argument("-m", dest="game_mode", type=str, help="Enter str format: 'base', 'bonus', etc... ")
-    parser.add_argument("-n", dest="table_number")
+    parser.add_argument("-n", dest="table_number", type=int)
 
     # Alter multiple files
     parser.add_argument("-d", dest="args_dict", type=str, help="Must pass JSON string: '{'mode':num, ...}'")

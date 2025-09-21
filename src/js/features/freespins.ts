@@ -1,4 +1,4 @@
-import type { MultiplierMap } from '../engine/types.js';
+import type { MultiplierMap } from '../engine/types.ts';
 import { spin } from '../engine/engine.js';
 
 // Minimal Free Spins feature with persistent multipliers and deterministic steps
@@ -35,10 +35,11 @@ function bumpAllByOne(map: MultiplierMap) {
   for (let r = 0; r < map.length; r++) for (let c = 0; c < map[0].length; c++) map[r][c] += 1;
 }
 
-function countPikachuScatters(grid: any[][]) {
+function countFreeSpinsScatters(grid: any[][]) {
   let k = 0;
   for (let r = 0; r < grid.length; r++) for (let c = 0; c < grid[0].length; c++) {
-    if (String(grid[r][c]?.kind) === 'scatter_pikachu') k++;
+    const id = String(grid[r][c]?.id ?? grid[r][c]?.kind);
+    if (id === 'freeSpins') k++;
   }
   return k;
 }
@@ -89,9 +90,9 @@ export function stepFreeSpins(state: FreeSpinsState, configJson: any): FreeSpins
   let totalWinX = state.totalWinX + (res.totalWinX ?? 0);
   const newMap: MultiplierMap = res.multiplierMap as any;
 
-  // Retrigger on 3+ Pikachu scatters (if your grid produces them)
-  const pikachu = countPikachuScatters(res.grid as any[][]);
-  if (pikachu >= (cfg.retriggerScatterCount ?? 3)) {
+  // Retrigger on 3+ FreeSpins scatters (if your grid produces them)
+  const freeSpins = countFreeSpinsScatters(res.grid as any[][]);
+  if (freeSpins >= (cfg.retriggerScatterCount ?? 3)) {
     spinsLeft += cfg.retriggerSpins ?? 5;
     bumpAllByOne(newMap);
   }

@@ -1,10 +1,7 @@
 from collections import defaultdict
-from abc import ABC
 from typing import List, Dict
-from src.calculations.board import Board
 from src.calculations.symbol import Symbol
 from src.config.config import Config
-from src.wins.multiplier_strategy import apply_mult
 
 
 class Cluster:
@@ -51,10 +48,11 @@ class Cluster:
         """Checks if a symbol (including wilds) match cluster type."""
         if board[reel][row].check_attribute(wild_key) or og_symbol == board[reel][row].name:
             return True
+        return False
 
     @staticmethod
     def check_all_neighbours(
-        board: Board,
+        board: list[list[Symbol]],
         already_checked: list,
         local_checked: list,
         potential_cluster: list,
@@ -114,7 +112,7 @@ class Cluster:
         global_multiplier: int = 1,
         multiplier_key: str = "multiplier",
         return_data: dict = {"totalWin": 0, "wins": []},
-    ) -> type:
+    ) -> tuple[list[list[Symbol]], dict, float]:
         """Determine payout amount from cluster, including symbol multiplier and global multiplier value."""
         exploding_symbols = []
         total_win = 0
@@ -166,7 +164,7 @@ class Cluster:
         global_multiplier: int,
         multiplier_key: str = "multiplier",
         wild_key: str = "wild",
-    ) -> None:
+    ) -> dict:
         """Event-ready win information."""
         clusters = Cluster.get_clusters(board, wild_key)
         return_data = {
