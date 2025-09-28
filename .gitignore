@@ -20,7 +20,12 @@ __pycache__
 **/optimization_files/**
 
 /env
-*.env
+# Ignore real env files but keep example templates tracked
+.env
+uploads/.env
+.env*
+!.env.example
+!uploads/.env.example
 *.DS_Store
 
 # dependencies
@@ -41,5 +46,4 @@ yarn-error.log*
 
 # misc
 .DS_Store
-.env*
 
