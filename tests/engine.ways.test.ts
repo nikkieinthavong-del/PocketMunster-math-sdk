@@ -63,4 +63,31 @@ describe('ways calculation', () => {
     expect(result.wins[0].ways).toBe(10);
     expect(result.totalWays).toBeGreaterThanOrEqual(10);
   });
+
+  it('computes right-to-left adjacent ways when enabled', () => {
+    // 2 rows x 4 cols. Rightmost 3 columns have matching symbols; leftmost is a blocker.
+    // For right-to-left, consecutive columns must start from the rightmost and move left.
+    const g: Grid = [
+      [std('x'), std('tier1_pika', 1), std('tier1_pika', 1), std('tier1_pika', 1)],
+      [std('x'), std('tier1_pika', 1), std('tier1_pika', 1), std('tier1_pika', 1)],
+    ];
+
+    const paytable = { tier1_tier1_pika: { 3: 1 } } as any;
+
+    const result = calculateWaysWins(g, paytable, undefined, {
+      minSymbolsForWin: 3,
+      payLeftToRight: false,
+      payRightToLeft: true,
+      adjacentOnly: true,
+      maxWays: 1000,
+    });
+
+    // 3 consecutive columns each have 2 matches -> ways = 2 * 2 * 2 = 8
+    expect(result.wins.length).toBeGreaterThan(0);
+    const w = result.wins[0];
+    expect(w.symbol).toBe('tier1_pika');
+    expect(w.symbolCount).toBe(3);
+    expect(w.ways).toBe(8);
+    expect(w.winAmount).toBeGreaterThanOrEqual(1 * 8);
+  });
 });

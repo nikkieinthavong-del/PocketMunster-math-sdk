@@ -44,6 +44,23 @@ Thanks for taking the time to contribute!
 
 - MkDocs lives in `docs/`. Large lint/format sweeps should be separated into their own PR to reduce noise.
 
+## Troubleshooting Dev Containers (Windows)
+
+If Docker Desktop can't connect (server null / 500) or VS Code Dev Containers fails:
+
+- Ensure WSL2 is healthy: run `wsl --status` and `wsl -l -v`. Default version should be 2.
+- Check disk space on C:. Docker Desktop stores its WSL disk under `%LOCALAPPDATA%/Docker/wsl` by default.
+- If out of space or Docker is stuck:
+  1. Quit Docker Desktop.
+  2. `wsl --shutdown` (in an elevated terminal if needed).
+  3. `wsl --unregister docker-desktop` (and `docker-desktop-data` if present).
+  4. Delete `%LOCALAPPDATA%/Docker/wsl` and `%LOCALAPPDATA%/Docker/log.txt*`.
+  5. Start Docker Desktop and wait for initialization to complete.
+- Sanity test: `docker run --rm hello-world` should succeed.
+
+Tip: You can move Docker's disk image to another drive from Docker Desktop >
+Settings > Resources > WSL integration > Advanced (or switch to Hyper-V backend).
+
 ## Questions
 
 Open a discussion or PR comment and we’ll help unblock you.
