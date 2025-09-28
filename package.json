@@ -6,70 +6,15 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "build:demo": "tsc -p tsconfig.run.json",
-    "build:assets": "node scripts/build-assets.js",
-    "build:webpack": "webpack --config webpack.config.js",
-    "build": "npm run build:demo && npm run build:assets && npm run build:webpack",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "serve": "npm run build:demo && node dist-run/scripts/serve_math.js",
-    "simulate": "npm run build:demo && node dist-run/scripts/simulate.js --spins=2000",
-    "simulate:bonus": "npm run build:demo && node dist-run/scripts/simulate_bonus.js --spins=2000",
-    "simulate:bonus:500k": "npm run build:demo && node dist-run/scripts/simulate_bonus.js --spins=500000",
-    "simulate:bonus:1m": "npm run build:demo && node dist-run/scripts/simulate_bonus.js --spins=1000000",
-    "calibrate:total": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=200000 --targetRTP=0.95 --write",
-    "calibrate:total:big": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=500000 --targetRTP=0.95 --write",
-    "calibrate:total:1m": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=1000000 --targetRTP=0.95 --write",
-    "format": "prettier --write .",
-    "format:check": "prettier --check README.md package.json tsconfig.json tsconfig.run.json .github/workflows/ci.yml",
-    "lint:md": "markdownlint README.md",
-    "prepare": "husky",
-    "ci:local": "npm run format:check && npm run lint:md && npm run typecheck && npm run build:demo && npm test -- --coverage && npm run simulate && npm run simulate:bonus"
+    "demo": "npm run build:demo && node dist-run/scripts/spin_demo.js",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "simulate": "npm run build:demo && node dist-run/scripts/simulate.js",
+    "calibrate": "npm run build:demo && node dist-run/scripts/calibrate.js --spins=200000 --targetRTP=0.95"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.4",
-    "@babel/preset-env": "^7.28.3",
-    "@babel/preset-react": "^7.27.1",
-    "@esotericsoftware/spine-webgl": "^4.2.92",
-    "@storybook/addon-docs": "^8.6.14",
-    "@storybook/addon-essentials": "^8.6.14",
-    "@storybook/addon-interactions": "^8.6.14",
-    "@storybook/addon-links": "^8.6.14",
-    "@storybook/addon-webpack5-compiler-swc": "^3.0.0",
-    "@storybook/react-webpack5": "^8.6.14",
-    "@types/node": "^20.12.12",
-    "@vitest/coverage-v8": "^3.2.4",
-    "babel-loader": "^10.0.0",
-    "css-loader": "^7.1.2",
-    "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^5.6.4",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.10",
-    "markdownlint-cli": "^0.41.0",
-    "prettier": "^3.3.3",
-    "prop-types": "^15.8.1",
-    "sharp": "^0.34.4",
-    "storybook": "^8.6.14",
-    "style-loader": "^4.0.0",
-    "ts-loader": "^9.5.4",
-    "typescript": "^5.5.4",
-    "url-loader": "^4.1.1",
-    "vitest": "^3.2.4",
-    "webpack": "^5.101.3",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2"
-  },
-  "engines": {
-    "node": ">=20 <21"
-  },
-  "dependencies": {
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,css,md,mdx,json,yml,yaml}": [
-      "prettier --write"
-    ]
+    "cross-env": "^10.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.5"
   }
 }
