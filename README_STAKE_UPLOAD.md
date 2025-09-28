@@ -1,6 +1,8 @@
+# Stake Upload Guide
+
 This is useful for local development and sanity checks before uploading to Stake ACP.
 
-### Extending the mock
+## Extending the mock
 
 You can customize `scripts/rgs_mock.ts` to:
 
@@ -8,7 +10,7 @@ You can customize `scripts/rgs_mock.ts` to:
 - Change the config, balance, or event structure
   Just edit the script and restart with `npm run rgs:mock`.
 
-# Stake Upload Artifacts
+## Stake Upload Artifacts
 
 This repo produces two submission artifacts:
 

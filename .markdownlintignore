@@ -16,6 +16,9 @@ dist-publish/
 uploads/
 optimization_program/target/
 pocket_monsters_genesis_stake_upload*/
+env/
+docs/
+assets/gameplay/
 
 # Rust/cargo build outputs (if present)
 target/

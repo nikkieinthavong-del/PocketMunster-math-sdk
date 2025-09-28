@@ -22,7 +22,7 @@ This document provides a comprehensive review of the PocketMon Genesis gaming ec
 
 ### 2.1 Game Project Structure
 
-```
+```text
 games/
 ├── 0_0_ways/          # Ways-based gameplay
 ├── 0_0_scatter/       # Scatter-based gameplay

@@ -121,17 +121,17 @@ Bonus modes (frontend simulation knobs)
 - TypeScript (`engine.ts`): If a position is part of a win, the code sets 0→2 else multiplies ×2 (doubling), with a default cap 8192.
 - Recommendation: Pick a single canonical rule. For Stake parity, choose either incremental levels (1,2,3,...) or geometric doubling (x2,x4,x8,...). Update the other side and tests accordingly. Also align caps.
 
-2. RNG source
+1. RNG source
 
 - Production guidance calls for no frontend RNG; all randomness should arrive from Python books. The TS engine currently uses a local seeded LCG for demo/simulation.
 - Recommendation: In production mode, disable TS RNG and consume Python-produced event books. Keep RNG path behind a `demo` feature flag only.
 
-3. Event schema gaps
+1. Event schema gaps
 
 - Python emits an `updateGrid` event for multipliers; TS defines `evolution`, `wildInject`, and `masterBall` events specific to demo modes.
 - Recommendation: Define a unified event schema document and a validation test that replays a Python book through the TS engine without divergence.
 
-4. Evolution parity
+1. Evolution parity
 
 - TS has evolution event emission; Python parity is not yet visible in `games/0_0_cluster`. Ensure Python emits the same `evolution` events (or the TS consumer derives the same state deterministically from Python events).
 
@@ -207,10 +207,10 @@ Reliability
 ## Action items (recommended)
 
 1. Decide and unify multiplier progression (incremental vs doubling) and cap; update Python/TS and tests.
-2. Document the unified event schema and add a schema validator test against generated books.
-3. Ensure Python emits evolution events or provide sufficient state to infer them deterministically.
-4. Disable TS RNG in production builds; route through Python books only.
-5. Add a minimal integration test that replays a Python book using the TS engine and asserts parity on `totalWinX`, `multiplierMap`, and final `grid`.
+1. Document the unified event schema and add a schema validator test against generated books.
+1. Ensure Python emits evolution events or provide sufficient state to infer them deterministically.
+1. Disable TS RNG in production builds; route through Python books only.
+1. Add a minimal integration test that replays a Python book using the TS engine and asserts parity on `totalWinX`, `multiplierMap`, and final `grid`.
 
 ## Appendix — key files
 
