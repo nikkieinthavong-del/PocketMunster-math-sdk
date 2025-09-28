@@ -12,12 +12,14 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest run",
+    "test:watch": "vitest",
     "serve": "npm run build:demo && node dist-run/scripts/serve_math.js",
     "simulate": "npm run build:demo && node dist-run/scripts/simulate.js --spins=2000",
     "simulate:bonus": "npm run build:demo && node dist-run/scripts/simulate_bonus.js --spins=2000",
     "simulate:bonus:500k": "npm run build:demo && node dist-run/scripts/simulate_bonus.js --spins=500000",
     "simulate:bonus:1m": "npm run build:demo && node dist-run/scripts/simulate_bonus.js --spins=1000000",
     "calibrate:total": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=200000 --targetRTP=0.95 --write",
+    "calibrate:total:big": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=500000 --targetRTP=0.95 --write",
     "calibrate:total:1m": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=1000000 --targetRTP=0.95 --write"
   },
   "devDependencies": {
