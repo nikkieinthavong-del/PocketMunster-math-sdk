@@ -2,12 +2,28 @@
 coverage/
 dist-*/
 artifacts/
+uploads/
 __pycache__/
 *.zip
 
 # Node
 node_modules/
 package-lock.json
+.vs/
+.vscode/
 
-# Python env
+# Python/venv
 env/
+.venv/
+
+# Third-party or vendored sources
+src/stakeengine/
+stake-engine-upload/
+pocket_monsters_genesis_stake_upload/
+pocket_monsters_genesis_stake_upload 2/
+
+# Large or non-source trees
+optimization_program/target/
+
+# Problematic scripts not parseable by Prettier
+scripts/build-assets.js

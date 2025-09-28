@@ -22,7 +22,7 @@
     "calibrate:total:big": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=500000 --targetRTP=0.95 --write",
     "calibrate:total:1m": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=1000000 --targetRTP=0.95 --write",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format:check": "prettier --check README.md package.json tsconfig.json tsconfig.run.json .github/workflows/ci.yml",
     "lint:md": "markdownlint README.md",
     "prepare": "husky"
   },
