@@ -7,7 +7,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'lcov'],
       reportsDirectory: 'coverage',
-      // Only measure coverage for real source files
+      // Measure coverage for engine sources (add more submodules as tests grow)
       include: ['src/js/engine/**/*.ts', 'src/js/engine/**/*.js'],
       exclude: [
         'tests/**',
@@ -26,10 +26,10 @@ export default defineConfig({
       ],
       // Bootstrap thresholds; ratchet up as we add tests
       thresholds: {
-        lines: 15,
+        lines: 20,
         functions: 15,
         branches: 40,
-        statements: 15,
+        statements: 20,
       },
     },
   },
