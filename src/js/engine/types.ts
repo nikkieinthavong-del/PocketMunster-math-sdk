@@ -42,5 +42,12 @@ export interface SpinResult {
 
 export interface EvolutionOutcome {
   evolved: boolean;
-  steps: Array<{ fromTier: number; toTier: number; positions: Array<[number, number]> }>;
+  steps: Array<{
+    fromTier: number;
+    toTier: number;
+    positions: Array<[number, number]>;
+    species?: string;
+    nextForm?: string;
+    megaEvolution?: boolean;
+  }>;
 }

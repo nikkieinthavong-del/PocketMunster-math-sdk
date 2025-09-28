@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PocketMon Genesis - Professional Slots Game for Stake.com</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            color: white;
+        }
+
+        .game-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #gameCanvas {
+            border: 3px solid #FFD700;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(45deg, #2a2a3e, #3a3a5e);
+        }
+
+        .game-title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            z-index: 1000;
+        }
+
+        .game-subtitle {
+            position: absolute;
+            top: 65px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            text-align: center;
+            color: #CCCCCC;
+            z-index: 1000;
+        }
+
+        .demo-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .demo-button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #4FC3F7, #29B6F6);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .demo-button:active {
+            transform: translateY(0);
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #333;
+            border-top: 6px solid #FFD700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .loading-progress {
+            width: 300px;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .feature-highlight {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .feature-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .game-title { font-size: 24px; top: 10px; }
+            .game-subtitle { font-size: 14px; top: 45px; }
+            .feature-highlight { bottom: 80px; padding: 15px; }
+            .demo-controls { bottom: 10px; }
+            .demo-button { padding: 10px 20px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Initializing PocketMon Genesis</div>
+        <div class="loading-text" style="font-size: 14px; color: #CCC;">Professional Slots Game Engine</div>
+        <div class="loading-progress">
+            <div class="loading-bar" id="loadingBar"></div>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div class="game-title">POCKETMON GENESIS</div>
+        <div class="game-subtitle">Professional Slots Game • RTP: 92-96.5% • Stake.com Ready</div>
+
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+        <div class="feature-highlight">
+            <h3 style="margin-top: 0; color: #FFD700;">🎮 Advanced Game Features</h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <span class="feature-icon">🎯</span>
+                    Cluster Pays<br><small>5+ symbols</small>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🎰</span>
+                    Ways Pays<br><small>117,649 ways</small>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🧬</span>
+                    Evolution<br><small>Morphing mechanics</small>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">💫</span>
+                    Tumble<br><small>Cascade multipliers</small>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🎊</span>
+                    Free Spins<br><small>Progressive system</small>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">⚡</span>
+                    Mega Spins<br><small>Epic rewards</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-controls">
+            <button class="demo-button" onclick="runPocketMonDemo(25)">
+                🎮 Quick Demo (25 spins)
+            </button>
+            <button class="demo-button" onclick="runPocketMonDemo(100)">
+                🎯 Full Demo (100 spins)
+            </button>
+            <button class="demo-button" onclick="testRTPCompliance()">
+                🧪 Test RTP Compliance
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Loading simulation
+        let loadingProgress = 0;
+        const loadingBar = document.getElementById('loadingBar');
+        const loadingScreen = document.getElementById('loadingScreen');
+
+        const loadingSteps = [
+            'Loading RTP Optimizer...',
+            'Initializing Evolution System...',
+            'Setting up Animation Engine...',
+            'Configuring Cluster Pays...',
+            'Preparing Ways Calculator...',
+            'Optimizing Paytables...',
+            'Loading Pokemon Assets...',
+            'Final Calibration...',
+            'Ready to Play!'
+        ];
+
+        let currentStep = 0;
+
+        function updateLoading() {
+            if (currentStep < loadingSteps.length) {
+                document.querySelector('.loading-text').textContent = loadingSteps[currentStep];
+                loadingProgress = ((currentStep + 1) / loadingSteps.length) * 100;
+                loadingBar.style.width = loadingProgress + '%';
+                currentStep++;
+
+                if (currentStep >= loadingSteps.length) {
+                    setTimeout(() => {
+                        loadingScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 500);
+                    }, 500);
+                } else {
+                    setTimeout(updateLoading, 300 + Math.random() * 500);
+                }
+            }
+        }
+
+        // Start loading simulation
+        setTimeout(updateLoading, 500);
+
+        // Import and initialize the game
+        import('./index.js').then(() => {
+            console.log('🚀 PocketMon Genesis loaded successfully');
+        }).catch(error => {
+            console.error('❌ Failed to load PocketMon Genesis:', error);
+            document.querySelector('.loading-text').textContent = 'Loading failed - Check console';
+        });
+
+        // Console welcome message
+        setTimeout(() => {
+            console.log(`
+╔══════════════════════════════════════════════════════════════╗
+║                    POCKETMON GENESIS                         ║
+║              Professional Slots Game Engine                 ║
+║                                                              ║
+║  🎯 RTP Range: 92.0% - 96.5%                                ║
+║  🎰 Game Types: Cluster + Ways + Evolution + Free Spins     ║
+║  ⚡ Max Win: 5,000x bet                                      ║
+║  🎮 Features: Tumble, Morphing, Mega Spins                  ║
+║                                                              ║
+║  Ready for Stake.com integration                             ║
+║                                                              ║
+║  Available Commands:                                         ║
+║  • runPocketMonDemo(50) - Run demo simulation               ║
+║  • testRTPCompliance() - Verify RTP compliance              ║
+║  • window.pocketMonGenesis - Access game instance           ║
+╚══════════════════════════════════════════════════════════════╝
+            `);
+        }, 3000);
+    </script>
+
+    <script type="module" src="./index.js"></script>
+</body>
+</html>

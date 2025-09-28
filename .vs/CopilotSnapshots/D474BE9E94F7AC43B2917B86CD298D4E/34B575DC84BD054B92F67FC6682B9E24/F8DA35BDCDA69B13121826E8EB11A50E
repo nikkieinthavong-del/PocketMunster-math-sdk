@@ -1,0 +1,13 @@
+﻿{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist-run",
+    "types": ["./src/types/shims.d.ts"],
+    "skipLibCheck": true
+  },
+  "include": ["src/js/**/*.ts", "scripts/**/*.ts", "src/types/**/*.d.ts"],
+  "exclude": [
+    "src/js/animations/AdvancedAnimationSystem.ts",
+    "src/js/graphics/AdvancedGraphicsEngine.ts"
+  ]
+}

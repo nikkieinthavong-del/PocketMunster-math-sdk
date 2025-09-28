@@ -1,0 +1,10 @@
+{
+  "name": "pocket-munsters-genesis-math",
+  "version": "1.0.0",
+  "description": "POCKET MUNSTERS math engine",
+  "schemaVersion": 1,
+  "format": "esm",
+  "entry": "engine.js",
+  "handler": "spin",
+  "timeoutMs": 5000
+}

@@ -1,0 +1,20 @@
+{
+  "name": "pocketmon-genesis",
+  "version": "0.1.0",
+  "description": "PocketMon Genesis - Professional Slots Game for Stake.com",
+  "main": "js/index.js",
+  "type": "module",
+  "keywords": [
+    "slots",
+    "pokemon",
+    "game",
+    "casino",
+    "stake",
+    "rtp"
+  ],
+  "author": "Claude AI - Stake Engine Development",
+  "engines": {
+    "node": ">=20 <21"
+  },
+  "dependencies": {}
+}

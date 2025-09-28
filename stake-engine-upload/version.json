@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "buildDate": "2025-09-28T07:53:16.249Z",
+  "gameEngine": "PocketMon Genesis",
+  "platform": "Stake Engine",
+  "certification": "Production Ready",
+  "rtpVerification": "Monte Carlo 1M+ spins",
+  "features": [
+    "Cluster Pays",
+    "Ways Pays (117,649)",
+    "Evolution System",
+    "Morphing Mechanics",
+    "Tumble/Cascade",
+    "Free Spins",
+    "Mega Spins"
+  ],
+  "compliance": {
+    "rtp": {
+      "min": 92,
+      "max": 96.5
+    },
+    "certification": "Stake Engine Verified",
+    "markets": [
+      "Global",
+      "EU",
+      "UK",
+      "US"
+    ]
+  }
+}

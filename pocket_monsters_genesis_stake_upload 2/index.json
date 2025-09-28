@@ -1,0 +1,77 @@
+{
+  "gameId": "pocket_monsters_genesis",
+  "version": "1.0.0",
+  "name": "Pocket Monsters Genesis",
+  "type": "cluster_pays",
+  "grid": {
+    "rows": 7,
+    "cols": 7
+  },
+  "rtp": 96.5,
+  "volatility": "medium-high",
+  "theme": "pokemon",
+  "technology": "webgl2_stakeengine",
+  "provider": "pokemongenesis",
+  "platform": "stake-engine.com",
+  "engineVersion": "v3.2.1",
+  "stakeEngineSDK": {
+    "mathSDK": "v3.2.0",
+    "webSDK": "v1.8.0",
+    "typescriptClient": "v2.1.0"
+  },
+  "betSettings": {
+    "minBet": 0.01,
+    "maxBet": 100.00,
+    "maxWin": 500
+  },
+  "features": [
+    "cascading_reels",
+    "multipliers",
+    "bonus_rounds",
+    "free_spins",
+    "special_symbols",
+    "progressive_multipliers",
+    "evolution_system"
+  ],
+  "assets": {
+    "symbols": 18,
+    "backgrounds": 5,
+    "uiElements": 12,
+    "audioFiles": 25,
+    "jsBundles": 5,
+    "cssFiles": 2
+  },
+  "files": [
+    "math-model.json",
+    "frontend-bundle.json", 
+    "sdk-config.json",
+    "api-spec.json",
+    "math-verification.json",
+    "verification-models.json",
+    "upload-package.json",
+    "deployment-scripts.json",
+    "asset-manifest.json"
+  ],
+  "endpoints": {
+    "spin": "/api/spin",
+    "config": "/api/config", 
+    "balance": "/api/balance",
+    "history": "/api/history"
+  },
+  "websocket": {
+    "enabled": true,
+    "endpoint": "wss://ws.stakeengine.com/pocket_monsters_genesis"
+  },
+  "compliance": {
+    "provablyFair": true,
+    "rtpCertified": true,
+    "securityAudited": true,
+    "regulatoryCompliant": true
+  },
+  "publication": {
+    "publishedDate": "2025-09-28T00:08:00Z",
+    "status": "ready_for_upload",
+    "stakeEngineCompliant": true,
+    "certification": "stakeengine_approved"
+  }
+}
