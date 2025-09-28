@@ -1,4 +1,65 @@
-__pycache__
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.*
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Caches & coverage
+.cache/
+coverage/
+*.coverage
+
+# TypeScript
+*.tsbuildinfo
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs & temp
+*.log
+*.tmp
+
+# Build outputs / bundles
+/dist/
+/dist-*/
+/dist-web/
+/dist-math/
+/dist-publish/
+
+# Generated artifacts and uploads
+/artifacts/
+/uploads/
+/pocket_monsters_genesis_stake_upload/
+/pocket_monsters_genesis_stake_upload 2/
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# IDE/editor
+.vs/
+.idea/
+.history/
+.vscode/
+*.mpack
+
+# Storybook static build
+/storybook-static/
+
+# Misc
+library/books/__pycache__
 */.pyc
 *.prof
 */setup.txt
