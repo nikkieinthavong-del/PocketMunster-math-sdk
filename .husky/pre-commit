@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
 set -e
-# Optional Husky shim (present when prepare runs)
-if [ -f "$(dirname -- "$0")/_/husky.sh" ]; then
-	. "$(dirname -- "$0")/_/husky.sh"
-fi
 
 # Format staged files
 npx --no -- lint-staged
