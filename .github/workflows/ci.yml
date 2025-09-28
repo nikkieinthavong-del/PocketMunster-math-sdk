@@ -13,27 +13,63 @@ jobs:
   build-test-sim:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
+      # Manual checkout to support organizations with 'allowed_actions: local_only'
+      - name: Checkout repository (manual)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git version
+          git init .
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
+          # Fetch just the ref/sha for this workflow event
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            git fetch --no-tags --prune --depth=1 origin "+${{ github.sha }}:refs/remotes/origin/${{ github.ref }}"
+            git checkout --progress --force -B "${{ github.ref_name }}" "${{ github.sha }}"
+          else
+            git fetch --no-tags --prune --depth=1 origin "+${{ github.ref }}:refs/remotes/origin/${{ github.ref }}"
+            git checkout --progress --force -B "${{ github.ref_name }}" "${{ github.sha }}"
+          fi
+          git log -1 --oneline
+      - name: Use Node.js 20 (nvm)
+        run: |
+          set -euo pipefail
+          . "$NVM_DIR/nvm.sh"
+          nvm install 20
+          nvm use 20
+          node -v
+          npm -v
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          . "$NVM_DIR/nvm.sh" && nvm use 20
+          npm ci
       - name: Prettier format check
-        run: npm run format:check
+        run: |
+          . "$NVM_DIR/nvm.sh" && nvm use 20
+          npm run format:check
       - name: Markdown lint
-        run: npm run lint:md
-      - run: npm run typecheck
-      - run: npm run build:demo
-      - run: npm test -- --coverage
-      - name: Upload coverage
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: coverage
+        run: |
+          . "$NVM_DIR/nvm.sh" && nvm use 20
+          npm run lint:md
+      - name: Typecheck
+        run: |
+          . "$NVM_DIR/nvm.sh" && nvm use 20
+          npm run typecheck
+      - name: Build (demo)
+        run: |
+          . "$NVM_DIR/nvm.sh" && nvm use 20
+          npm run build:demo
+      - name: Test with coverage
+        run: |
+          . "$NVM_DIR/nvm.sh" && nvm use 20
+          npm test -- --coverage
+      # Artifact upload uses a marketplace action, which is blocked under 'local_only'.
+      # If you need artifacts, switch repository Actions policy to allow GitHub actions
+      # or vendor a local upload action.
       - name: Quick sims
         run: |
+          . "$NVM_DIR/nvm.sh" && nvm use 20
           npm run simulate
           npm run simulate:bonus
 
@@ -41,10 +77,26 @@ jobs:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm run simulate:bonus:500k
+      - name: Checkout repository (manual)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git init .
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
+          git fetch --no-tags --prune --depth=1 origin "+${{ github.ref }}:refs/remotes/origin/${{ github.ref }}"
+          git checkout --progress --force -B "${{ github.ref_name }}" "${{ github.sha }}"
+      - name: Use Node.js 20 (nvm)
+        run: |
+          set -euo pipefail
+          . "$NVM_DIR/nvm.sh"
+          nvm install 20
+          nvm use 20
+      - name: Install dependencies
+        run: |
+          . "$NVM_DIR/nvm.sh" && nvm use 20
+          npm ci
+      - name: Run large bonus simulation
+        run: |
+          . "$NVM_DIR/nvm.sh" && nvm use 20
+          npm run simulate:bonus:500k
