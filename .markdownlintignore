@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Build outputs / artifacts
+artifacts/
+dist-*/
+dist-web/
+dist-math/
+dist-publish/
+
+# IDE / workspace caches
+.vscode/
+.vs/
+
+# Large generated or packaged folders
+uploads/
+optimization_program/target/
+pocket_monsters_genesis_stake_upload*/
+
+# Rust/cargo build outputs (if present)
+target/
