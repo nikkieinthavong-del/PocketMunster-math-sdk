@@ -1,4 +1,4 @@
-/*! Pocket Munsters container embed; v1758849838 */
+/*! Pocket Munsters container embed; v1758854522 */
 (function(){
 'use strict';
 let PM_ROOT = null;
@@ -133,118 +133,234 @@ const registry = { tiers: {
   "1": [
     {
       "id": "create-me-a-better-version-of-a-pokeball (1)",
-      "path": "assets/create-me-a-better-version-of-a-pokeball (1).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-a-pokeball (1).png"
+      "path": "assets/create-me-a-better-version-of-a-pokeball (1).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-a-pokeball (1).avif"
     },
     {
       "id": "create-me-a-better-version-of-a-pokeball (2)",
-      "path": "assets/create-me-a-better-version-of-a-pokeball (2).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-a-pokeball (2).png"
+      "path": "assets/create-me-a-better-version-of-a-pokeball (2).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-a-pokeball (2).avif"
     },
     {
       "id": "create-me-a-better-version-of-a-pokeball",
-      "path": "assets/create-me-a-better-version-of-a-pokeball.png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-a-pokeball.png"
+      "path": "assets/create-me-a-better-version-of-a-pokeball.avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-a-pokeball.avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-bonus- (1)",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-bonus- (1).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-bonus- (1).png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-bonus- (1).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-bonus- (1).avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-bonus- (2)",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-bonus- (2).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-bonus- (2).png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-bonus- (2).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-bonus- (2).avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-bonus- (3)",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-bonus- (3).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-bonus- (3).png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-bonus- (3).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-bonus- (3).avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-bonus-",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-bonus-.png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-bonus-.png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-bonus-.avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-bonus-.avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-multip (1)",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-multip (1).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-multip (1).png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-multip (1).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-multip (1).avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-multip",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-multip.png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-multip.png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-multip.avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-multip.avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-sprite (1)",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-sprite (1).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-sprite (1).png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-sprite (1).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-sprite (1).avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-sprite (2)",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-sprite (2).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-sprite (2).png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-sprite (2).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-sprite (2).avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-sprite (3)",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-sprite (3).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-sprite (3).png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-sprite (3).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-sprite (3).avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-sprite",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-sprite.png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-sprite.png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-sprite.avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-sprite.avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-symbol (1)",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-symbol (1).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-symbol (1).png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-symbol (1).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-symbol (1).avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-symbol (2)",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-symbol (2).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-symbol (2).png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-symbol (2).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-symbol (2).avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-symbol (3)",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-symbol (3).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-symbol (3).png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-symbol (3).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-symbol (3).avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-symbol (4)",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-symbol (4).png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-symbol (4).png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-symbol (4).avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-symbol (4).avif"
     },
     {
       "id": "create-me-a-better-version-of-pokemon-slots-symbol",
-      "path": "assets/create-me-a-better-version-of-pokemon-slots-symbol.png",
-      "type": "png",
-      "name": "create-me-a-better-version-of-pokemon-slots-symbol.png"
+      "path": "assets/create-me-a-better-version-of-pokemon-slots-symbol.avif",
+      "type": "avif",
+      "name": "create-me-a-better-version-of-pokemon-slots-symbol.avif"
+    },
+    {
+      "id": "bonus_hunt",
+      "path": "assets/symbols/bonus_hunt.avif",
+      "type": "avif",
+      "name": "bonus_hunt.avif"
+    },
+    {
+      "id": "bulbasaur_t1",
+      "path": "assets/symbols/bulbasaur_t1.avif",
+      "type": "avif",
+      "name": "bulbasaur_t1.avif"
+    },
+    {
+      "id": "charmander_t1",
+      "path": "assets/symbols/charmander_t1.avif",
+      "type": "avif",
+      "name": "charmander_t1.avif"
+    },
+    {
+      "id": "eevee_t1",
+      "path": "assets/symbols/eevee_t1.avif",
+      "type": "avif",
+      "name": "eevee_t1.avif"
+    },
+    {
+      "id": "free_spins",
+      "path": "assets/symbols/free_spins.avif",
+      "type": "avif",
+      "name": "free_spins.avif"
+    },
+    {
+      "id": "multiplier",
+      "path": "assets/symbols/multiplier.avif",
+      "type": "avif",
+      "name": "multiplier.avif"
+    },
+    {
+      "id": "pikachu_t1",
+      "path": "assets/symbols/pikachu_t1.avif",
+      "type": "avif",
+      "name": "pikachu_t1.avif"
+    },
+    {
+      "id": "pokeball",
+      "path": "assets/symbols/pokeball.avif",
+      "type": "avif",
+      "name": "pokeball.avif"
+    },
+    {
+      "id": "squirtle_t1",
+      "path": "assets/symbols/squirtle_t1.avif",
+      "type": "avif",
+      "name": "squirtle_t1.avif"
     }
   ],
-  "2": [],
-  "3": [],
+  "2": [
+    {
+      "id": "bulbasaur_t2",
+      "path": "assets/symbols/bulbasaur_t2.avif",
+      "type": "avif",
+      "name": "bulbasaur_t2.avif"
+    },
+    {
+      "id": "charmander_t2",
+      "path": "assets/symbols/charmander_t2.avif",
+      "type": "avif",
+      "name": "charmander_t2.avif"
+    },
+    {
+      "id": "eevee_t2",
+      "path": "assets/symbols/eevee_t2.avif",
+      "type": "avif",
+      "name": "eevee_t2.avif"
+    },
+    {
+      "id": "pikachu_t2",
+      "path": "assets/symbols/pikachu_t2.avif",
+      "type": "avif",
+      "name": "pikachu_t2.avif"
+    },
+    {
+      "id": "squirtle_t2",
+      "path": "assets/symbols/squirtle_t2.avif",
+      "type": "avif",
+      "name": "squirtle_t2.avif"
+    }
+  ],
+  "3": [
+    {
+      "id": "bulbasaur_t3",
+      "path": "assets/symbols/bulbasaur_t3.avif",
+      "type": "avif",
+      "name": "bulbasaur_t3.avif"
+    },
+    {
+      "id": "charmander_t3",
+      "path": "assets/symbols/charmander_t3.avif",
+      "type": "avif",
+      "name": "charmander_t3.avif"
+    },
+    {
+      "id": "eevee_t3",
+      "path": "assets/symbols/eevee_t3.avif",
+      "type": "avif",
+      "name": "eevee_t3.avif"
+    },
+    {
+      "id": "pikachu_t3",
+      "path": "assets/symbols/pikachu_t3.avif",
+      "type": "avif",
+      "name": "pikachu_t3.avif"
+    },
+    {
+      "id": "squirtle_t3",
+      "path": "assets/symbols/squirtle_t3.avif",
+      "type": "avif",
+      "name": "squirtle_t3.avif"
+    }
+  ],
   "4": [],
   "5": []
-}, total: 18 };
+}, total: 37 };
 const adobeSVG = {
   "pokeball": "<svg viewBox=\"0 0 100 100\"><defs><radialGradient id=\"pb-top\" cx=\"0.3\" cy=\"0.3\"><stop offset=\"0%\" stop-color=\"#ff6b6b\"/><stop offset=\"40%\" stop-color=\"#e74c3c\"/><stop offset=\"100%\" stop-color=\"#c0392b\"/></radialGradient><radialGradient id=\"pb-bottom\" cx=\"0.3\" cy=\"0.7\"><stop offset=\"0%\" stop-color=\"#ffffff\"/><stop offset=\"40%\" stop-color=\"#f8f9fa\"/><stop offset=\"100%\" stop-color=\"#e9ecef\"/></radialGradient><radialGradient id=\"pb-center\" cx=\"0.5\" cy=\"0.5\"><stop offset=\"0%\" stop-color=\"#ffffff\"/><stop offset=\"70%\" stop-color=\"#6c757d\"/><stop offset=\"100%\" stop-color=\"#343a40\"/></radialGradient><filter id=\"shadow\" x=\"-50%\" y=\"-50%\" width=\"200%\" height=\"200%\"><feDropShadow dx=\"2\" dy=\"4\" stdDeviation=\"3\" flood-color=\"#000\" flood-opacity=\"0.3\"/></filter></defs><circle cx=\"50\" cy=\"50\" r=\"45\" fill=\"url(#pb-top)\" filter=\"url(#shadow)\"/><path d=\"M 5 50 A 45 45 0 0 1 95 50 Z\" fill=\"url(#pb-bottom)\"/><rect x=\"5\" y=\"47\" width=\"90\" height=\"6\" fill=\"#2c3e50\"/><circle cx=\"50\" cy=\"50\" r=\"15\" fill=\"url(#pb-center)\" stroke=\"#2c3e50\" stroke-width=\"2\"/><circle cx=\"50\" cy=\"50\" r=\"8\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2\"/></svg>",
   "pikachu": "<svg viewBox=\"0 0 100 100\"><defs><radialGradient id=\"pika-body\" cx=\"0.3\" cy=\"0.3\"><stop offset=\"0%\" stop-color=\"#ffd43b\"/><stop offset=\"60%\" stop-color=\"#f39c12\"/><stop offset=\"100%\" stop-color=\"#d68910\"/></radialGradient><filter id=\"electric-glow\"><feGaussianBlur stdDeviation=\"3\"/><feColorMatrix values=\"1 1 0 0 0  1 1 0 0 0  0 0 1 0 0  0 0 0 1 0\"/></filter></defs><ellipse cx=\"50\" cy=\"60\" rx=\"25\" ry=\"30\" fill=\"url(#pika-body)\"/><circle cx=\"35\" cy=\"40\" r=\"8\" fill=\"#2c3e50\"/><circle cx=\"65\" cy=\"40\" r=\"8\" fill=\"#2c3e50\"/><path d=\"M 30 20 Q 25 10 20 15 Q 15 25 25 30\" fill=\"#ffd43b\"/><path d=\"M 70 20 Q 75 10 80 15 Q 85 25 75 30\" fill=\"#ffd43b\"/><ellipse cx=\"40\" cy=\"50\" rx=\"3\" ry=\"2\" fill=\"#e74c3c\"/><ellipse cx=\"60\" cy=\"50\" rx=\"3\" ry=\"2\" fill=\"#e74c3c\"/><path d=\"M 45 60 Q 50 65 55 60\" stroke=\"#2c3e50\" stroke-width=\"2\" fill=\"none\"/><circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"none\" stroke=\"#f1c40f\" stroke-width=\"1\" opacity=\"0.3\" filter=\"url(#electric-glow)\"/></svg>",
@@ -1448,7 +1564,7 @@ function mount(container){
   const root = host.attachShadow ? host.attachShadow({ mode: 'open' }) : host;
   PM_ROOT = root;
   const style = document.createElement('style');
-  const __CSS__ = "/* shadow base */\n.pm-root{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;display:grid;min-height:100dvh;place-items:center;color:#e6edf3}\n\n/* ⚡ ULTIMATE POKÉDX MASTERPIECE - THE MOST SPECTACULAR AI-CREATED GAME ⚡ */\nhtml,body{height:100%;margin:0;padding:0;overflow:hidden;font-family:'Orbitron','Exo 2',monospace,sans-serif}\n.game-container{width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;position:relative}\n\n/* 🔥 LEGENDARY POKÉDX FRAME - CINEMATIC QUALITY 🔥 */\n.pokedex{\n  background:linear-gradient(145deg,#dc2626 0%,#991b1b 25%,#7f1d1d 75%,#450a0a 100%);\n  border:16px solid;\n  border-image:linear-gradient(45deg,#ffd700,#ff6b00,#dc2626,#7f1d1d) 1;\n  border-radius:35px;\n  padding:25px;\n  box-shadow:\n    0 0 60px rgba(220,38,38,0.6),\n    inset 0 0 50px rgba(0,0,0,0.4),\n    0 25px 80px rgba(0,0,0,0.8);\n  position:relative;overflow:hidden;\n  width:min(1400px,98vw);height:min(900px,98vh);\n  animation:legendaryPulse 4s ease-in-out infinite alternate;\n}\n@keyframes legendaryPulse{\n  0%{transform:scale(1);box-shadow:0 0 60px rgba(220,38,38,0.6),inset 0 0 50px rgba(0,0,0,0.4),0 25px 80px rgba(0,0,0,0.8)}\n  100%{transform:scale(1.005);box-shadow:0 0 100px rgba(255,215,0,0.8),inset 0 0 50px rgba(0,0,0,0.4),0 25px 80px rgba(0,0,0,0.8)}\n}\n\n/* ✨ HOLOGRAPHIC EFFECTS ✨ */\n.pokedex::before{\n  content:\"\";position:absolute;top:0;left:0;right:0;height:100%;\n  background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,0.1) 50%,transparent 70%);\n  animation:holographicSweep 8s linear infinite;pointer-events:none;\n}\n@keyframes holographicSweep{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}\n\n/* 👑 EPIC HEADER WITH CHAMPION-LEVEL STYLING 👑 */\n.pokedex-header{\n  display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding:15px 0;\n  border-bottom:6px solid;border-image:linear-gradient(90deg,#8b0000,#ffd700,#8b0000) 1;height:80px;\n  background:linear-gradient(90deg,rgba(139,0,0,0.3),rgba(255,215,0,0.1),rgba(139,0,0,0.3));\n}\n.pokedex-title{\n  color:#ffd700;font-size:clamp(24px,5vw,48px);font-weight:900;\n  text-shadow:4px 4px 0 #8b0000,0 0 20px rgba(255,215,0,0.8);letter-spacing:2px;position:relative;z-index:1;\n  background:linear-gradient(45deg,#ffd700,#ff6b00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;\n  animation:titleGlow 3s ease-in-out infinite alternate;\n}\n@keyframes titleGlow{\n  0%{filter:drop-shadow(0 0 10px rgba(255,215,0,0.8))}\n  100%{filter:drop-shadow(0 0 30px rgba(255,215,0,1))}\n}\n.pokedex-lights{display:flex;gap:25px}\n.light{\n  width:35px;height:35px;border-radius:50%;border:3px solid #1a1a1a;\n  box-shadow:0 0 25px rgba(255,255,255,0.5),inset 0 0 15px rgba(255,255,255,0.3);\n  animation:masterLightPulse 2s ease-in-out infinite;\n}\n@keyframes masterLightPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.15);opacity:0.8}}\n.light-red{background:radial-gradient(circle at 25% 25%,#ff6b6b,#dc2626,#7f1d1d);box-shadow:0 0 30px rgba(220,38,38,0.8)}\n.light-yellow{background:radial-gradient(circle at 25% 25%,#ffd93d,#ffd700,#d97706);box-shadow:0 0 30px rgba(255,215,0,0.8)}\n.light-green{background:radial-gradient(circle at 25% 25%,#4ade80,#16a34a,#166534);box-shadow:0 0 30px rgba(34,197,94,0.8)}\n\n/* 🎮 MAGNIFICENT SCREEN DISPLAY - ULTIMATE GAMING EXPERIENCE 🎮 */\n.screen-container{\n  background:linear-gradient(135deg,#a3e635 0%,#84cc16 25%,#65a30d 75%,#365314 100%);\n  border:12px solid #365314;border-radius:30px;padding:20px;\n  box-shadow:inset 0 0 60px rgba(0,0,0,0.5),0 0 40px rgba(132,204,22,0.4);\n  position:relative;overflow:hidden;height:min(720px,70vh);margin-bottom:20px;\n  animation:screenPower 5s ease-in-out infinite alternate;\n}\n@keyframes screenPower{\n  0%{box-shadow:inset 0 0 60px rgba(0,0,0,0.5),0 0 40px rgba(132,204,22,0.4)}\n  100%{box-shadow:inset 0 0 60px rgba(0,0,0,0.5),0 0 60px rgba(132,204,22,0.8)}\n}\n.screen-container::before{\n  content:\"\";position:absolute;top:0;left:0;right:0;height:50%;\n  background:linear-gradient(rgba(255,255,255,0.2),transparent);border-radius:30px 30px 0 0;\n}\n.screen-title{\n  color:#0f380f;text-align:center;font-size:clamp(20px,4vw,32px);font-weight:bold;margin-bottom:15px;\n  text-shadow:2px 2px 0 rgba(255,255,255,0.5);position:relative;z-index:1;height:40px;\n  background:linear-gradient(45deg,#0f380f,#365314);-webkit-background-clip:text;-webkit-text-fill-color:transparent;\n}\n\n/* 🔥 EPIC GAME STAGE - MAXIMUM SIZE AND VISUAL IMPACT 🔥 */\n.game-stage{\n  display:grid;place-items:center;width:100%;height:calc(100% - 60px);\n  background:radial-gradient(ellipse at center,rgba(0,0,0,0.1),rgba(0,0,0,0.3));\n  border-radius:20px;position:relative;overflow:hidden;border:4px solid rgba(15,56,15,0.5);\n}\ncanvas#stage{\n  width:min(1000px,100%);height:min(1000px,calc(100% - 20px));\n  image-rendering:crisp-edges;background:transparent;border-radius:15px;\n  box-shadow:0 0 40px rgba(132,204,22,0.4),inset 0 0 20px rgba(255,215,0,0.1);\n  filter:contrast(1.15) saturate(1.3) brightness(1.05);\n  transition:all 0.3s ease;\n}\ncanvas#stage:hover{\n  box-shadow:0 0 60px rgba(132,204,22,0.6),inset 0 0 30px rgba(255,215,0,0.15);\n  filter:contrast(1.2) saturate(1.4) brightness(1.1);\n}\n.stage-overlay{position:absolute;inset:0;pointer-events:none;z-index:5}\n\n/* Game Controls */\n.game-controls{display:flex;justify-content:space-between;align-items:center;padding:20px;background:rgba(0,0,0,0.3);border-radius:20px;height:100px;flex-wrap:wrap;gap:10px}\n.control-group{display:flex;flex-direction:column;align-items:center;gap:12px;min-height:80px;flex:1;min-width:120px}\n.control-label{color:#ffde00;font-weight:bold;text-shadow:1px 1px 0 #000;font-size:clamp(14px,2.5vw,18px);height:25px;display:flex;align-items:center}\n.control-value{color:white;font-weight:bold;font-size:clamp(16px,3vw,22px);height:30px;display:flex;align-items:center;font-variant-numeric:tabular-nums}\n\n/* Spin Button */\n/* 🎨 ADOBE ILLUSTRATOR-LEVEL SPIN BUTTON 🎨 */\n.spin-button{\n  width:120px;height:120px;border-radius:50%;\n  background:radial-gradient(circle at 30% 30%,#ff6b6b 0%,#e74c3c 40%,#c0392b 70%,#8b0000 100%);\n  border:6px solid;border-image:linear-gradient(45deg,#ffd700,#ff6b00,#ffd700) 1;\n  color:#ffd700;font-weight:900;cursor:pointer;\n  display:flex;justify-content:center;align-items:center;\n  box-shadow:\n    0 0 30px rgba(255,107,107,0.8),\n    inset 0 4px 20px rgba(255,215,0,0.3),\n    0 8px 25px rgba(0,0,0,0.4);\n  transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);\n  font-size:clamp(16px,3vw,22px);\n  text-shadow:2px 2px 0 #000,0 0 15px rgba(255,215,0,0.8);\n  position:relative;overflow:hidden;\n  animation:epicButtonPulse 3s ease-in-out infinite alternate;\n}\n\n@keyframes epicButtonPulse{\n  0%{box-shadow:0 0 30px rgba(255,107,107,0.8),inset 0 4px 20px rgba(255,215,0,0.3),0 8px 25px rgba(0,0,0,0.4)}\n  100%{box-shadow:0 0 50px rgba(255,107,107,1),inset 0 6px 30px rgba(255,215,0,0.5),0 12px 35px rgba(0,0,0,0.6)}\n}\n\n.spin-button:hover{\n  transform:scale(1.12) translateY(-4px);\n  box-shadow:\n    0 0 60px rgba(255,107,107,1),\n    inset 0 8px 40px rgba(255,215,0,0.6),\n    0 15px 50px rgba(0,0,0,0.8);\n  text-shadow:3px 3px 0 #000,0 0 25px rgba(255,215,0,1);\n}\n\n.spin-button:active{\n  transform:scale(0.98) translateY(2px);\n  transition:all 0.1s ease;\n}\n\n/* Professional shimmer effect */\n.spin-button::before{\n  content:\"\";position:absolute;top:-50%;left:-50%;width:200%;height:200%;\n  background:conic-gradient(transparent,rgba(255,215,0,0.4),transparent);\n  animation:buttonShimmer 4s linear infinite;\n}\n\n@keyframes buttonShimmer{\n  0%{transform:rotate(0deg)}\n  100%{transform:rotate(360deg)}\n}\n\n.spin-button:disabled{\n  opacity:0.5;cursor:not-allowed;transform:none;animation:none;\n}\n\n.spin-button.spinning{\n  animation:spinRotate 0.6s linear infinite;pointer-events:none;\n}\n\n@keyframes spinRotate{\n  0%{transform:rotate(0deg)}\n  100%{transform:rotate(360deg)}\n}\n\n/* Bet Controls */\n.bet-controls{display:flex;align-items:center;gap:15px;height:50px}\n.bet-button{width:45px;height:45px;border-radius:50%;background:linear-gradient(145deg,#4a6fa5,#2d4b6f);border:3px solid #fff;color:white;font-weight:bold;cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:20px;transition:all 0.2s ease}\n.bet-button:hover{transform:scale(1.1);box-shadow:0 0 10px rgba(255,255,255,0.3)}\n.bet-input{background:rgba(0,0,0,0.5);color:white;border:2px solid #ffde00;border-radius:8px;padding:8px;text-align:center;font-weight:bold;font-size:16px;width:80px;height:35px}\n\n/* Feature Toggle */\n.feature-toggle{width:60px;height:60px;border-radius:50%;background:linear-gradient(145deg,#4a6fa5,#2d4b6f);border:3px solid #fff;color:white;cursor:pointer;display:flex;justify-content:center;align-items:center;transition:all 0.3s ease}\n.feature-toggle:hover{transform:scale(1.05)}\n.feature-toggle[aria-pressed=\"true\"]{background:linear-gradient(145deg,#ffcc00,#ff9900);color:#000}\n.auto-icon{font-size:20px}\n\n/* 🌟 ADOBE ILLUSTRATOR-LEVEL CONTROLS 🌟 */\n.additional-controls{\n  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;\n  margin-top:20px;padding:20px;\n  background:linear-gradient(135deg,rgba(0,0,0,0.4),rgba(20,20,20,0.6));\n  backdrop-filter:blur(15px);border-radius:20px;\n  box-shadow:\n    inset 0 2px 10px rgba(0,0,0,0.4),\n    0 8px 30px rgba(0,0,0,0.3),\n    0 0 20px rgba(255,215,0,0.1);\n  border:2px solid rgba(255,215,0,0.2);\n}\n\n.feature-btn{\n  background:linear-gradient(145deg,#ffcc00 0%,#ff9900 50%,#e67e22 100%);\n  color:#2c3e50;border:3px solid transparent;\n  background-clip:padding-box;\n  border-image:linear-gradient(45deg,rgba(255,215,0,0.6),rgba(255,107,0,0.8),rgba(255,215,0,0.6)) 1;\n  padding:15px 25px;border-radius:25px;font-weight:900;font-size:clamp(12px,2vw,16px);\n  cursor:pointer;transition:all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);\n  box-shadow:\n    0 8px 25px rgba(0,0,0,0.4),\n    inset 0 2px 5px rgba(255,255,255,0.3),\n    0 0 15px rgba(255,204,0,0.4);\n  min-width:100px;height:55px;\n  text-shadow:1px 1px 0 rgba(0,0,0,0.3);\n  position:relative;overflow:hidden;\n}\n\n.feature-btn:hover{\n  transform:translateY(-4px) scale(1.08);\n  box-shadow:\n    0 12px 40px rgba(0,0,0,0.6),\n    inset 0 3px 8px rgba(255,255,255,0.4),\n    0 0 30px rgba(255,204,0,0.8);\n  background:linear-gradient(145deg,#ffd700 0%,#ffb347 50%,#ff8c00 100%);\n  text-shadow:2px 2px 0 rgba(0,0,0,0.4);\n}\n\n.feature-btn:active{\n  transform:translateY(-1px) scale(1.02);\n  transition:all 0.1s ease;\n}\n\n/* Professional shimmer effect */\n.feature-btn::before{\n  content:\"\";position:absolute;top:-50%;left:-100%;width:200%;height:200%;\n  background:linear-gradient(45deg,transparent,rgba(255,255,255,0.4),transparent);\n  animation:featureShimmer 3s ease-in-out infinite;\n}\n\n@keyframes featureShimmer{\n  0%{left:-100%}\n  50%{left:100%}\n  100%{left:100%}\n}\n\n.currency-controls{display:flex;gap:15px;align-items:center}\n.currency-sel{\n  background:radial-gradient(ellipse at center,rgba(0,0,0,0.7),rgba(44,62,80,0.8));\n  color:#ffd700;border:3px solid;\n  border-image:linear-gradient(45deg,rgba(255,215,0,0.5),rgba(255,107,0,0.7),rgba(255,215,0,0.5)) 1;\n  border-radius:12px;padding:12px 16px;font-weight:bold;font-size:clamp(12px,2vw,16px);\n  cursor:pointer;transition:all 0.3s ease;\n  box-shadow:\n    0 4px 15px rgba(0,0,0,0.3),\n    inset 0 1px 3px rgba(255,215,0,0.2);\n  text-shadow:1px 1px 0 #000;\n}\n\n.currency-sel:hover{\n  box-shadow:\n    0 6px 20px rgba(0,0,0,0.4),\n    inset 0 2px 5px rgba(255,215,0,0.3),\n    0 0 15px rgba(255,215,0,0.4);\n  transform:translateY(-2px);\n}\n\n.currency-sel:focus{\n  outline:none;\n  border-image:linear-gradient(45deg,rgba(255,215,0,0.8),rgba(255,107,0,1),rgba(255,215,0,0.8)) 1;\n  box-shadow:\n    0 8px 25px rgba(0,0,0,0.5),\n    inset 0 3px 8px rgba(255,215,0,0.4),\n    0 0 25px rgba(255,215,0,0.6);\n}\n\n/* Loader */\n.loader{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);border-radius:15px;z-index:10}\n.loader[aria-hidden=\"true\"]{display:none}\n.spinner{width:40px;height:40px;border-radius:999px;border:4px solid rgba(255,255,255,0.2);border-top-color:#ffde00;animation:spin 1s linear infinite}\n@keyframes spin{to{transform:rotate(360deg)}}\n\n/* Messages */\n.messages{position:fixed;right:1rem;bottom:1rem;display:flex;flex-direction:column;gap:.5rem;z-index:1000}\n.msg{background:#111827;border:1px solid #ffde00;border-radius:10px;padding:.5rem .75rem;opacity:.96;color:#e6edf3}\n\n/* Animations */\n.pop{animation:pop .6s ease-out both}\n@keyframes pop{0%{opacity:0;transform:scale(.6)}40%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(1)}}\n\n/* Modal styles */\n.modal{max-width:min(800px,94vw);border:1px solid #ffde00;background:#8bac0f;color:#0f380f;border-radius:12px}\n.modal-body{max-height:min(60vh,600px);overflow:auto}\n.modal::backdrop{background:rgba(0,0,0,.7)}\ntable{width:100%;border-collapse:collapse}\nth,td{border:1px solid #5d7a0a;padding:.4rem .5rem}\nthead th{background:#0f380f;color:#8bac0f}\n\n/* Responsive Design */\n@media (max-width:1100px){.game-container{width:95%;height:auto;min-height:700px}}\n@media (max-width:900px){.pokedex{padding:20px}.pokedex-title{font-size:24px}.game-controls{flex-direction:column;height:auto;gap:15px}}\n@media (max-width:600px){.pokedex{padding:15px}.control-group{min-width:100px}.additional-controls{flex-direction:column}}\n\n\n:root{color-scheme:dark light}\nbody{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;display:grid;min-height:100dvh;place-items:center;background:#0b0f14;color:#e6edf3}\nmain{padding:2rem;max-width:800px;width:100%}\nh1{font-size:1.5rem;margin:0 0 1rem}\n.panel{background:#111827;border:1px solid #1f2937;border-radius:12px;padding:1rem}\n.form{display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap}\n.field{display:flex;flex-direction:column;gap:.25rem}\nlabel{font-size:.85rem;color:#9ca3af}\ninput{background:#0b1220;color:#e6edf3;border:1px solid #1f2937;border-radius:8px;padding:.5rem .6rem;min-width:6rem}\n.actions{display:flex;gap:.5rem}\n.btn{background:#2563eb;color:white;border:none;border-radius:8px;padding:.6rem 1rem;cursor:pointer}\n.btn:hover{background:#1d4ed8}\n.output{margin-top:1rem;white-space:pre-wrap;word-break:break-word;background:#0b1220;border:1px solid #1f2937;border-radius:8px;padding:.75rem;min-height:3rem}\n\n\n/* shadow bg */\n.pm-root{background:#0b0f14 url('__BG_URL__') center center / cover no-repeat;}".replace('__BG_URL__', resolveAsset('assets/create-me-a-better-version-of-pokemon-slots-sprite (1).png'));
+  const __CSS__ = "/* shadow base */\n.pm-root{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;display:grid;min-height:100dvh;place-items:center;color:#e6edf3}\n\n/* ⚡ ULTIMATE POKÉDX MASTERPIECE - THE MOST SPECTACULAR AI-CREATED GAME ⚡ */\nhtml,body{height:100%;margin:0;padding:0;overflow:hidden;font-family:'Orbitron','Exo 2',monospace,sans-serif}\n.game-container{width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;position:relative}\n\n/* 🔥 LEGENDARY POKÉDX FRAME - CINEMATIC QUALITY 🔥 */\n.pokedex{\n  background:linear-gradient(145deg,#dc2626 0%,#991b1b 25%,#7f1d1d 75%,#450a0a 100%);\n  border:16px solid;\n  border-image:linear-gradient(45deg,#ffd700,#ff6b00,#dc2626,#7f1d1d) 1;\n  border-radius:35px;\n  padding:25px;\n  box-shadow:\n    0 0 60px rgba(220,38,38,0.6),\n    inset 0 0 50px rgba(0,0,0,0.4),\n    0 25px 80px rgba(0,0,0,0.8);\n/* Professional shimmer effect */\n.feature-btn::before{\n  content:\"\";position:absolute;top:-50%;left:-100%;width:200%;height:200%;\n  background:linear-gradient(45deg,transparent,rgba(255,255,255,0.4),transparent);\n  animation:featureShimmer 3s ease-in-out infinite;\n}\n\n@keyframes featureShimmer{\n  0%{left:-100%}\n  50%{left:100%}\n  100%{left:100%}\n}\n\n.currency-controls{display:flex;gap:15px;align-items:center}\n.currency-sel{\n  background:radial-gradient(ellipse at center,rgba(0,0,0,0.7),rgba(44,62,80,0.8));\n  color:#ffd700;border:3px solid;\n  border-image:linear-gradient(45deg,rgba(255,215,0,0.5),rgba(255,107,0,0.7),rgba(255,215,0,0.5)) 1;\n  border-radius:12px;padding:12px 16px;font-weight:bold;font-size:clamp(12px,2vw,16px);\n  cursor:pointer;transition:all 0.3s ease;\n  box-shadow:\n    0 4px 15px rgba(0,0,0,0.3),\n    inset 0 1px 3px rgba(255,215,0,0.2);\n  text-shadow:1px 1px 0 #000;\n}\n\n.currency-sel:hover{\n  box-shadow:\n    0 6px 20px rgba(0,0,0,0.4),\n    inset 0 2px 5px rgba(255,215,0,0.3),\n    0 0 15px rgba(255,215,0,0.4);\n  transform:translateY(-2px);\n}\n\n.currency-sel:focus{\n  outline:none;\n  border-image:linear-gradient(45deg,rgba(255,215,0,0.8),rgba(255,107,0,1),rgba(255,215,0,0.8)) 1;\n  box-shadow:\n    0 8px 25px rgba(0,0,0,0.5),\n    inset 0 3px 8px rgba(255,215,0,0.4),\n    0 0 25px rgba(255,215,0,0.6);\n}\n\n/* Loader */\n.loader{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);border-radius:15px;z-index:10}\n.loader[aria-hidden=\"true\"]{display:none}\n.spinner{width:40px;height:40px;border-radius:999px;border:4px solid rgba(255,255,255,0.2);border-top-color:#ffde00;animation:spin 1s linear infinite}\n@keyframes spin{to{transform:rotate(360deg)}}\n\n/* Messages */\n.messages{position:fixed;right:1rem;bottom:1rem;display:flex;flex-direction:column;gap:.5rem;z-index:1000}\n.msg{background:#111827;border:1px solid #ffde00;border-radius:10px;padding:.5rem .75rem;opacity:.96;color:#e6edf3}\n\n/* Animations */\n.pop{animation:pop .6s ease-out both}\n@keyframes pop{0%{opacity:0;transform:scale(.6)}40%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(1)}}\n\n/* Modal styles */\n.modal{max-width:min(800px,94vw);border:1px solid #ffde00;background:#8bac0f;color:#0f380f;border-radius:12px}\n.modal-body{max-height:min(60vh,600px);overflow:auto}\n.modal::backdrop{background:rgba(0,0,0,.7)}\ntable{width:100%;border-collapse:collapse}\nth,td{border:1px solid #5d7a0a;padding:.4rem .5rem}\nthead th{background:#0f380f;color:#8bac0f}\n\n/* Responsive Design */\n@media (max-width:1100px){.game-container{width:95%;height:auto;min-height:700px}}\n@media (max-width:900px){.pokedex{padding:20px}.pokedex-title{font-size:24px}.game-controls{flex-direction:column;height:auto;gap:15px}}\n@media (max-width:600px){.pokedex{padding:15px}.control-group{min-width:100px}.additional-controls{flex-direction:column}}\n\n\n:root{color-scheme:dark light}\nbody{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;display:grid;min-height:100dvh;place-items:center;background:#0b0f14;color:#e6edf3}\nmain{padding:2rem;max-width:800px;width:100%}\nh1{font-size:1.5rem;margin:0 0 1rem}\n.panel{background:#111827;border:1px solid #1f2937;border-radius:12px;padding:1rem}\n.form{display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap}\n.field{display:flex;flex-direction:column;gap:.25rem}\nlabel{font-size:.85rem;color:#9ca3af}\ninput{background:#0b1220;color:#e6edf3;border:1px solid #1f2937;border-radius:8px;padding:.5rem .6rem;min-width:6rem}\n.actions{display:flex;gap:.5rem}\n.btn{background:#2563eb;color:white;border:none;border-radius:8px;padding:.6rem 1rem;cursor:pointer}\n.btn:hover{background:#1d4ed8}\n.output{margin-top:1rem;white-space:pre-wrap;word-break:break-word;background:#0b1220;border:1px solid #1f2937;border-radius:8px;padding:.75rem;min-height:3rem}\n\n\n/* shadow bg */\n.pm-root{background:#0b0f14 url('__BG_URL__') center center / cover no-repeat;}".replace('__BG_URL__', resolveAsset('assets/bg.jpg'));
   style.textContent = __CSS__;
   const shell = document.createElement('div');
   shell.className = 'pm-root';
@@ -1701,5 +1817,5 @@ window.addEventListener('pointerdown', ()=>{ try{ resume(); sfx.startMusic(); }c
   return { root, host, animator };
 }
 
-window.PocketMunsters = Object.assign(window.PocketMunsters||{}, { mount, version: '1758849838', setAssetsBase, ASSETS_BASE: ASSETS_BASE });
+window.PocketMunsters = Object.assign(window.PocketMunsters||{}, { mount, version: '1758854522', setAssetsBase, ASSETS_BASE: ASSETS_BASE });
 })();

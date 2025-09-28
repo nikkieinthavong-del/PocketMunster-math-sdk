@@ -1,0 +1,39 @@
+{
+  "name": "PocketMon Genesis",
+  "version": "0.1.0",
+  "type": "slots",
+  "provider": "Stake Engine",
+  "rtp": {
+    "min": 92,
+    "max": 96.5,
+    "default": 94.5,
+    "markets": {
+      "conservative": 94,
+      "standard": 94.5,
+      "competitive": 96,
+      "extreme": 94
+    }
+  },
+  "features": {
+    "clusterPays": true,
+    "waysPays": true,
+    "maxWays": 117649,
+    "evolution": true,
+    "morphing": true,
+    "tumble": true,
+    "freeSpins": true,
+    "megaSpins": true,
+    "progressiveMultipliers": true
+  },
+  "grid": {
+    "rows": 7,
+    "cols": 7
+  },
+  "maxWin": "5000x",
+  "volatility": "high",
+  "hitFrequency": 28,
+  "theme": "pokemon",
+  "certification": "stake-engine-ready",
+  "buildDate": "2025-09-28T07:53:15.967Z",
+  "entryPoint": "js/index.js"
+}
