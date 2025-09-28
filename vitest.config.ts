@@ -26,10 +26,10 @@ export default defineConfig({
       ],
       // Bootstrap thresholds; ratchet up as we add tests
       thresholds: {
-        lines: 10,
+        lines: 15,
         functions: 15,
         branches: 40,
-        statements: 10,
+        statements: 15,
       },
     },
   },
