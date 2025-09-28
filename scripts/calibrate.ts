@@ -1,26 +1,36 @@
-import { readFileSync, writeFileSync } from 'node:fs';
-import { resolve, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { spin } from '../src/js/engine/engine.js';
+import { readFileSync, writeFileSync } from "node:fs";
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { spin } from "../src/js/engine/engine.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const configPath = resolve(__dirname, '..', '..', 'config.json');
-const config = JSON.parse(readFileSync(configPath, 'utf-8'));
+const configPath = resolve(__dirname, "..", "..", "config.json");
+const config = JSON.parse(readFileSync(configPath, "utf-8"));
 
 const args = new Map<string, string>();
-process.argv.slice(2).forEach((a) => {
-  const [k, v] = a.startsWith('--') ? a.slice(2).split('=') : [a, 'true'];
-  args.set(k, v ?? 'true');
+process.argv.slice(2).forEach((a: string) => {
+  const [k, v] = a.startsWith("--") ? a.slice(2).split("=") : [a, "true"];
+  args.set(k, v ?? "true");
 });
-const spins = Number(args.get('spins') ?? 100000);
-const targetRTP = Number(args.get('targetRTP') ?? 0.95);
-const write = args.get('write') === 'true' || args.get('write') === '1';
+const spins = Number(args.get("spins") ?? 100000);
+const targetRTP = Number(args.get("targetRTP") ?? 0.95);
+const write = args.get("write") === "true" || args.get("write") === "1";
 
 const currentFactor = config.engine?.demo?.baseFactor ?? 0.25;
 
 let total = 0;
 for (let i = 0; i < spins; i++) {
-  const res = spin(config, 1, { seed: (123456789 + i) >>> 0 });
+  // Create fresh multiplier map for each spin to get base game statistics
+  const rows = config?.grid?.rows ?? 7;
+  const cols = config?.grid?.cols ?? 7;
+  const freshMultipliers = Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => 0)
+  );
+
+  const res = spin(config, 1, {
+    seed: (123456789 + i) >>> 0,
+    initMultiplierMap: freshMultipliers,
+  });
   total += res.totalWinX;
 }
 const rtp = total / spins;

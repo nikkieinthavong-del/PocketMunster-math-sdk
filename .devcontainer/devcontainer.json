@@ -1,7 +1,7 @@
 {
   "name": "math-sdk Container",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
-  
+
   // Features to add to the dev container
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},

@@ -140,7 +140,7 @@ The naming convention of packages is a combination of `<PACKAGE_TYPE>`, hyphen a
   - `/packages/components-pixi`: This local package contains reusable svelte components based on `pixi-svelte`.
   - `/packages/components-shared`: This local package contains reusable svelte components based on `html`.
   - `/packages/components-storybook`: This local package contains reusable svelte components for storybooks.
-  -  `/packages/components-ui-pixi`: This local package contains reusable svelte pixi-svelte components for the game UI.
+  - `/packages/components-ui-pixi`: This local package contains reusable svelte pixi-svelte components for the game UI.
   - `packages/components-ui-html`: This local package contains reusable svelte html components for the game UI.
 
 For `*-shared` packages, they are created to be reused as much as possible by other apps and packages. Instead of having a special dependency or usage, they should have a minimum list of dependencies and a broad set of use cases.

@@ -50,7 +50,7 @@ pnpm run storybook --filter=lines
 ```
 
 - You should see this:
-![below](../fe_assets/storybook_init.png)
+  ![below](../fe_assets/storybook_init.png)
 
 ###
 

@@ -1,0 +1,181 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://stakeengine.local/schemas/python_events.schema.json",
+  "title": "Python Spin Events (Books)",
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer", "minimum": 0 },
+          "type": { "const": "reveal" },
+          "board": { "type": "array" },
+          "gameType": { "type": ["string", "integer", "null"] }
+        },
+        "required": ["index", "type", "board"],
+        "additionalProperties": true
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "winInfo" },
+          "totalWin": { "type": "integer" },
+          "wins": { "type": "array" }
+        },
+        "required": ["index", "type", "totalWin", "wins"],
+        "additionalProperties": true
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "finalWin" },
+          "amount": { "type": "integer" }
+        },
+        "required": ["index", "type", "amount"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "setWin" },
+          "amount": { "type": "integer" },
+          "winLevel": { "type": ["string", "integer"] }
+        },
+        "required": ["index", "type", "amount", "winLevel"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "setTotalWin" },
+          "amount": { "type": "integer" }
+        },
+        "required": ["index", "type", "amount"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "wincap" },
+          "amount": { "type": "integer" }
+        },
+        "required": ["index", "type", "amount"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "updateFreeSpin" },
+          "amount": { "type": "integer" },
+          "total": { "type": "integer" }
+        },
+        "required": ["index", "type", "amount", "total"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "freeSpinTrigger" },
+          "totalFs": { "type": "integer" },
+          "positions": { "type": "array" }
+        },
+        "required": ["index", "type", "totalFs", "positions"],
+        "additionalProperties": true
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "freeSpinRetrigger" },
+          "totalFs": { "type": "integer" },
+          "positions": { "type": "array" }
+        },
+        "required": ["index", "type", "totalFs", "positions"],
+        "additionalProperties": true
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "freeSpinEnd" },
+          "amount": { "type": "integer" },
+          "winLevel": { "type": ["string", "integer"] }
+        },
+        "required": ["index", "type", "amount", "winLevel"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "enterBonus" },
+          "reason": { "type": ["string", "integer"] }
+        },
+        "required": ["index", "type", "reason"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "tumbleBoard" },
+          "newSymbols": { "type": "array" },
+          "explodingSymbols": { "type": "array" }
+        },
+        "required": ["index", "type", "newSymbols", "explodingSymbols"],
+        "additionalProperties": true
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "setTumbleWin" },
+          "amount": { "type": "integer" }
+        },
+        "required": ["index", "type", "amount"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "updateTumbleWin" },
+          "amount": { "type": "integer" }
+        },
+        "required": ["index", "type", "amount"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "updateGlobalMult" },
+          "globalMult": { "type": "integer" }
+        },
+        "required": ["index", "type", "globalMult"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "type": { "const": "updateGrid" },
+          "gridMultipliers": {
+            "type": "array",
+            "items": { "type": "array", "items": { "type": "integer", "minimum": 0 } }
+          }
+        },
+        "required": ["index", "type", "gridMultipliers"],
+        "additionalProperties": false
+      }
+    ]
+  }
+}

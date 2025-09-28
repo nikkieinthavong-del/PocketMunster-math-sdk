@@ -48,6 +48,7 @@ This repository is organized into several directories, each focusing on a specif
 ### **Detailed Subdirectory Breakdown**
 
 #### `src/`
+
 - **`calculations/`**: Handles board and symbol setup, along with various win-type game logic.
 - **`config/`**: Creates configuration files required by the RGS, frontend, and optimization algorithm.
 - **`events/`**: Defines data structures passed between the math engine and frontend engine.
@@ -57,6 +58,7 @@ This repository is organized into several directories, each focusing on a specif
 - **`write_data/`**: Writes simulation data, handles compression, and generates force files.
 
 #### `games/`
+
 - **`0_0_cluster/`**: Sample cascading cluster-wins game.
 - **`0_0_lines/`**: Basic win-lines example game.
 - **`0_0_ways/`**: Basic ways-wins example game.
@@ -64,16 +66,20 @@ This repository is organized into several directories, each focusing on a specif
 - **`0_0_expwilds/`**: Expanding Wild-reel game with an additional prize-collection feature.
 
 #### `utils/`
+
 - **`analysis/`**: Constructs and analyzes basic properties of win distributions.
 - **`game_analytics/`**: Generates hit-rate and simulation properties using recorded events, paytables, and lookup tables.
 
 #### `tests/`
+
 - **`win_calculations/`**: Tests various win-mechanic functionality.
 
 #### `uploads/`
+
 - Handles the process of uploading game files to an AWS S3 bucket for testing.
 
 #### `optimization_program/`
+
 - Experimental genetic algorithm (written in Rust) for balancing discrete-outcome games.
 
 ---

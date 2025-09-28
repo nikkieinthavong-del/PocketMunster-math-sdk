@@ -147,7 +147,6 @@ export const { eventEmitter } = createEventEmitter<EmitterEvent>();
 ```
 
 - <mark>Test it individually</mark> `(MODE_BONUS/bookEvent/updateGlobalMult)`: Run storybook and we should see this a new story "updateGlobalMult" has been added.
-
   - Now click on the `Action` button and we should see the `<GlobalMultiplier \/>` (`/apps/lines/src/components/GlobalMultiplier.svelte`) component animates correctly followed by the "<mark> ⓘ Action is resolved ✅ </mark>" message, otherwise we need to go back to the component and figure out what is wrong until it is resolved.
 
   - If you find out the component hard to debug, we'd better start creating a new story `COMPONENTS/<GlobalMultiplierSpine>/component`. `<GlobalMultiplierSpine />` component will purely take props and achieve its duty instead of being controlled by emitterEvents. This way it becomes more friendly for testing the component with the storybook controls.

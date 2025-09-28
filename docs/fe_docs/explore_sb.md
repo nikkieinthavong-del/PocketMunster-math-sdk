@@ -1,4 +1,3 @@
-
 # Explore Storybook
 
 Storybook is a powerful and handy tool to test our games. For example:
@@ -25,5 +24,3 @@ Storybook is a powerful and handy tool to test our games. For example:
 With all the stories above and the stories that created and customised by yourself, <mark>we are able to test the whole game, intermediate components and atomic components.</mark>
 
 <mark>We are also able to test our game with a book, a sequence of bookEvents and a single bookEvent.</mark> If each bookEvent is implemented well with emitterEvents and its story is resolved properly, the game is technically finished.
-
-

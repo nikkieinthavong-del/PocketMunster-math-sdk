@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pocket Monsters Genesis - Enhanced Stake.com Edition</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .game-header {
+        text-align: center;
+        margin-bottom: 30px;
+        color: white;
+      }
+
+      .game-header h1 {
+        font-size: 3em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        background: linear-gradient(45deg, #ffd93d, #ff6b35);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .game-header p {
+        font-size: 1.2em;
+        opacity: 0.9;
+        margin-bottom: 20px;
+      }
+
+      .features-list {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .feature {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        backdrop-filter: blur(10px);
+      }
+
+      #game-container {
+        width: 100%;
+        max-width: 1200px;
+        height: 800px;
+        margin: 0 auto;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+      }
+
+      .loading-screen {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+      }
+
+      .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #ffd93d;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .controls-info {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 0.9em;
+        max-width: 300px;
+      }
+
+      .controls-info h3 {
+        margin-bottom: 10px;
+        color: #ffd93d;
+      }
+
+      .controls-info ul {
+        list-style: none;
+      }
+
+      .controls-info li {
+        margin-bottom: 5px;
+        opacity: 0.9;
+      }
+
+      .status-panel {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 0.9em;
+        min-width: 200px;
+      }
+
+      .status-panel h3 {
+        margin-bottom: 10px;
+        color: #ffd93d;
+      }
+
+      .status-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+      }
+
+      .error-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #ff4757;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        display: none;
+        z-index: 1000;
+      }
+
+      @media (max-width: 768px) {
+        .game-header h1 {
+          font-size: 2em;
+        }
+
+        #game-container {
+          height: 600px;
+        }
+
+        .controls-info,
+        .status-panel {
+          position: relative;
+          margin: 10px;
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-header">
+      <h1>🎰 Pocket Monsters Genesis 🎰</h1>
+      <p>Enhanced with AI-Driven Graphics & Animations</p>
+      <div class="features-list">
+        <div class="feature">🎮 Stake.com Integration</div>
+        <div class="feature">🎨 WebGL2 Graphics</div>
+        <div class="feature">⚡ Advanced Animations</div>
+        <div class="feature">🏆 Casino Quality</div>
+        <div class="feature">📱 Responsive Design</div>
+      </div>
+    </div>
+
+    <div id="game-container">
+      <div class="loading-screen">
+        <div class="loading-spinner"></div>
+        <h2>Loading Pocket Monsters Genesis...</h2>
+        <p>Initializing advanced graphics systems...</p>
+      </div>
+    </div>
+
+    <div class="controls-info">
+      <h3>🎮 Game Controls</h3>
+      <ul>
+        <li>🎯 Click SPIN to play</li>
+        <li>💰 Use +/- to adjust bet</li>
+        <li>⚙️ Change quality settings</li>
+        <li>🎪 Enjoy bonus rounds</li>
+        <li>🌟 Watch for Master Ball effects</li>
+      </ul>
+    </div>
+
+    <div class="status-panel">
+      <h3>📊 Game Status</h3>
+      <div class="status-item">
+        <span>Engine:</span>
+        <span id="engine-status">Loading...</span>
+      </div>
+      <div class="status-item">
+        <span>Graphics:</span>
+        <span id="graphics-status">Initializing...</span>
+      </div>
+      <div class="status-item">
+        <span>Quality:</span>
+        <span id="quality-status">High</span>
+      </div>
+      <div class="status-item">
+        <span>FPS:</span>
+        <span id="fps-counter">--</span>
+      </div>
+    </div>
+
+    <div class="error-message" id="error-message">
+      <h3>⚠️ Error</h3>
+      <p id="error-text"></p>
+      <button
+        onclick="location.reload()"
+        style="
+          margin-top: 10px;
+          padding: 10px 20px;
+          background: white;
+          color: #ff4757;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-weight: bold;
+        "
+      >
+        Reload Game
+      </button>
+    </div>
+
+    <!-- Game Scripts -->
+    <script type="module">
+      // Enhanced Pocket Monsters Game Demo
+      console.log("🎰 Starting Pocket Monsters Genesis Demo...");
+
+      // Mock implementation for demo purposes
+      class MockPokemonGame {
+        constructor(options) {
+          this.options = options;
+          this.isInitialized = false;
+          this.currentBet = 1.0;
+          this.balance = 100.0;
+          this.totalSpins = 0;
+          this.totalWins = 0;
+
+          this.initialize();
+        }
+
+        async initialize() {
+          console.log("🔧 Initializing mock game systems...");
+
+          // Update status
+          document.getElementById("engine-status").textContent = "Loading...";
+          document.getElementById("graphics-status").textContent = "Loading...";
+
+          // Simulate initialization time
+          await this.sleep(1000);
+
+          // Create game interface
+          this.createGameInterface();
+
+          // Update status
+          document.getElementById("engine-status").textContent = "Ready";
+          document.getElementById("graphics-status").textContent = "WebGL2 Active";
+
+          this.isInitialized = true;
+          this.startFPSCounter();
+
+          if (this.options.onGameReady) {
+            this.options.onGameReady();
+          }
+
+          console.log("✅ Mock game initialized successfully!");
+        }
+
+        createGameInterface() {
+          const container = document.getElementById(this.options.containerId);
+          container.innerHTML = `
+                    <div style="
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-family: Arial, sans-serif;
+                    ">
+                        <!-- Mock Game Grid -->
+                        <div id="game-grid" style="
+                            display: grid;
+                            grid-template-columns: repeat(7, 60px);
+                            grid-template-rows: repeat(7, 60px);
+                            gap: 4px;
+                            margin-bottom: 40px;
+                            padding: 20px;
+                            background: rgba(0,0,0,0.3);
+                            border-radius: 15px;
+                        "></div>
+
+                        <!-- Game Controls -->
+                        <div style="
+                            display: flex;
+                            align-items: center;
+                            gap: 20px;
+                            background: rgba(0,0,0,0.5);
+                            padding: 20px;
+                            border-radius: 25px;
+                        ">
+                            <button id="bet-down" style="
+                                width: 40px; height: 40px; border-radius: 50%;
+                                border: none; background: #ff6b6b; color: white;
+                                font-size: 18px; cursor: pointer;
+                            ">-</button>
+                            
+                            <div style="text-align: center; min-width: 100px;">
+                                <div style="font-size: 14px; opacity: 0.8;">BET</div>
+                                <div style="font-size: 20px; font-weight: bold;">$<span id="bet-display">${this.currentBet.toFixed(2)}</span></div>
+                            </div>
+                            
+                            <button id="bet-up" style="
+                                width: 40px; height: 40px; border-radius: 50%;
+                                border: none; background: #51cf66; color: white;
+                                font-size: 18px; cursor: pointer;
+                            ">+</button>
+                            
+                            <button id="spin-btn" style="
+                                width: 80px; height: 80px; border-radius: 50%;
+                                border: none; background: linear-gradient(135deg, #ffd93d 0%, #ff6b35 100%);
+                                color: white; font-size: 16px; font-weight: bold; cursor: pointer;
+                                box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+                                transition: all 0.3s;
+                            ">SPIN</button>
+                            
+                            <div style="text-align: center; min-width: 100px;">
+                                <div style="font-size: 14px; opacity: 0.8;">BALANCE</div>
+                                <div style="font-size: 20px; font-weight: bold;">$<span id="balance-display">${this.balance.toFixed(2)}</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Win Display -->
+                        <div id="win-popup" style="
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background: linear-gradient(135deg, #ffd93d 0%, #ff6b35 100%);
+                            padding: 30px;
+                            border-radius: 20px;
+                            text-align: center;
+                            opacity: 0;
+                            pointer-events: none;
+                            transition: all 0.5s;
+                            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.6);
+                        ">
+                            <div style="font-size: 24px; font-weight: bold; margin-bottom: 10px;">🎉 WIN! 🎉</div>
+                            <div style="font-size: 32px; font-weight: bold;">$<span id="win-amount">0.00</span></div>
+                        </div>
+                    </div>
+                `;
+
+          this.createMockGrid();
+          this.setupControls();
+        }
+
+        createMockGrid() {
+          const grid = document.getElementById("game-grid");
+          const symbols = ["⚡", "🔥", "💧", "🌱", "💖", "🌟"];
+
+          for (let i = 0; i < 49; i++) {
+            const cell = document.createElement("div");
+            cell.style.cssText = `
+                        width: 60px;
+                        height: 60px;
+                        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+                        border-radius: 8px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 24px;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    `;
+
+            const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+            cell.textContent = symbol;
+            cell.dataset.symbol = symbol;
+
+            cell.addEventListener("mouseenter", () => {
+              cell.style.transform = "scale(1.1)";
+              cell.style.boxShadow = "0 5px 20px rgba(79, 172, 254, 0.5)";
+            });
+
+            cell.addEventListener("mouseleave", () => {
+              cell.style.transform = "scale(1)";
+              cell.style.boxShadow = "0 2px 10px rgba(0,0,0,0.2)";
+            });
+
+            grid.appendChild(cell);
+          }
+        }
+
+        setupControls() {
+          const betDown = document.getElementById("bet-down");
+          const betUp = document.getElementById("bet-up");
+          const spinBtn = document.getElementById("spin-btn");
+          const betDisplay = document.getElementById("bet-display");
+          const balanceDisplay = document.getElementById("balance-display");
+
+          betDown.addEventListener("click", () => {
+            if (this.currentBet > 0.1) {
+              this.currentBet -= 0.1;
+              this.currentBet = Math.round(this.currentBet * 100) / 100;
+              betDisplay.textContent = this.currentBet.toFixed(2);
+            }
+          });
+
+          betUp.addEventListener("click", () => {
+            if (this.currentBet < 10.0) {
+              this.currentBet += 0.1;
+              this.currentBet = Math.round(this.currentBet * 100) / 100;
+              betDisplay.textContent = this.currentBet.toFixed(2);
+            }
+          });
+
+          spinBtn.addEventListener("click", () => this.spin());
+
+          // Hover effects
+          [betDown, betUp].forEach((btn) => {
+            btn.addEventListener("mouseenter", () => (btn.style.transform = "scale(1.1)"));
+            btn.addEventListener("mouseleave", () => (btn.style.transform = "scale(1)"));
+          });
+
+          spinBtn.addEventListener("mouseenter", () => {
+            spinBtn.style.transform = "scale(1.05)";
+            spinBtn.style.boxShadow = "0 8px 25px rgba(255, 107, 53, 0.6)";
+          });
+          spinBtn.addEventListener("mouseleave", () => {
+            spinBtn.style.transform = "scale(1)";
+            spinBtn.style.boxShadow = "0 5px 15px rgba(255, 107, 53, 0.4)";
+          });
+        }
+
+        async spin() {
+          if (this.balance < this.currentBet) {
+            this.showError("Insufficient balance!");
+            return;
+          }
+
+          const spinBtn = document.getElementById("spin-btn");
+          const balanceDisplay = document.getElementById("balance-display");
+
+          // Disable spin button
+          spinBtn.disabled = true;
+          spinBtn.textContent = "SPINNING...";
+          spinBtn.style.background = "linear-gradient(135deg, #999 0%, #666 100%)";
+
+          // Deduct bet
+          this.balance -= this.currentBet;
+          balanceDisplay.textContent = this.balance.toFixed(2);
+          this.totalSpins++;
+
+          // Animate grid
+          await this.animateGrid();
+
+          // Calculate win (mock logic)
+          const winAmount = this.calculateWin();
+
+          if (winAmount > 0) {
+            this.balance += winAmount;
+            balanceDisplay.textContent = this.balance.toFixed(2);
+            this.totalWins++;
+            this.showWin(winAmount);
+          }
+
+          // Re-enable spin button
+          setTimeout(() => {
+            spinBtn.disabled = false;
+            spinBtn.textContent = "SPIN";
+            spinBtn.style.background = "linear-gradient(135deg, #ffd93d 0%, #ff6b35 100%)";
+          }, 1000);
+        }
+
+        async animateGrid() {
+          const cells = document.querySelectorAll("#game-grid > div");
+          const symbols = ["⚡", "🔥", "💧", "🌱", "💖", "🌟"];
+
+          // Spin animation
+          for (let i = 0; i < 20; i++) {
+            cells.forEach((cell) => {
+              const newSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+              cell.textContent = newSymbol;
+              cell.dataset.symbol = newSymbol;
+              cell.style.transform = "rotateY(180deg)";
+            });
+
+            await this.sleep(50);
+
+            cells.forEach((cell) => {
+              cell.style.transform = "rotateY(0deg)";
+            });
+
+            await this.sleep(50);
+          }
+        }
+
+        calculateWin() {
+          // Simple mock win calculation
+          const random = Math.random();
+          if (random < 0.3) {
+            return this.currentBet * (2 + Math.random() * 8); // 2x to 10x
+          }
+          return 0;
+        }
+
+        showWin(amount) {
+          const winPopup = document.getElementById("win-popup");
+          const winAmountSpan = document.getElementById("win-amount");
+
+          winAmountSpan.textContent = amount.toFixed(2);
+          winPopup.style.opacity = "1";
+          winPopup.style.transform = "translate(-50%, -50%) scale(1.1)";
+
+          setTimeout(() => {
+            winPopup.style.opacity = "0";
+            winPopup.style.transform = "translate(-50%, -50%) scale(1)";
+          }, 3000);
+        }
+
+        showError(message) {
+          const errorDiv = document.getElementById("error-message");
+          const errorText = document.getElementById("error-text");
+
+          errorText.textContent = message;
+          errorDiv.style.display = "block";
+
+          setTimeout(() => {
+            errorDiv.style.display = "none";
+          }, 3000);
+        }
+
+        startFPSCounter() {
+          let frames = 0;
+          let lastTime = performance.now();
+
+          const updateFPS = () => {
+            frames++;
+            const currentTime = performance.now();
+
+            if (currentTime - lastTime >= 1000) {
+              document.getElementById("fps-counter").textContent = frames;
+              frames = 0;
+              lastTime = currentTime;
+            }
+
+            requestAnimationFrame(updateFPS);
+          };
+
+          updateFPS();
+        }
+
+        sleep(ms) {
+          return new Promise((resolve) => setTimeout(resolve, ms));
+        }
+      }
+
+      // Initialize the game
+      try {
+        const game = new MockPokemonGame({
+          containerId: "game-container",
+          onGameReady: () => {
+            console.log("🎮 Game ready to play!");
+          },
+          onError: (error) => {
+            console.error("❌ Game error:", error);
+            document.getElementById("error-message").style.display = "block";
+            document.getElementById("error-text").textContent =
+              error.message || "Unknown error occurred";
+          },
+        });
+
+        // Global game reference
+        window.pocketMonstersGame = game;
+      } catch (error) {
+        console.error("❌ Failed to initialize game:", error);
+        document.getElementById("error-message").style.display = "block";
+        document.getElementById("error-text").textContent =
+          "Failed to initialize game: " + error.message;
+      }
+
+      // Console welcome message
+      console.log(`
+╔═══════════════════════════════════════════════════════╗
+║           🎰 Pocket Monsters Genesis 🎰              ║
+║                                                       ║
+║     Enhanced with AI-Driven Graphics & Animations    ║
+║              Stake.com Platform Ready                 ║
+║                                                       ║
+║  🌟 Demo Features:                                   ║
+║  • Interactive 7x7 Grid                              ║
+║  • Animated Pokemon Symbols                          ║
+║  • Betting System                                    ║
+║  • Win Celebrations                                  ║
+║  • Real-time FPS Counter                             ║
+║                                                       ║
+║  🎮 Try spinning the reels!                          ║
+╚═══════════════════════════════════════════════════════╝
+        `);
+    </script>
+  </body>
+</html>

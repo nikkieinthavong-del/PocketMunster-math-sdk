@@ -22,7 +22,7 @@ class GameConfig(Config):
         self.working_name = "Sample Lines Game"
         self.wincap = 5000.0
         self.win_type = "lines"
-        self.rtp = 0.9700
+        self.rtp = 0.965
         self.construct_paths()
 
         # Game Dimensions

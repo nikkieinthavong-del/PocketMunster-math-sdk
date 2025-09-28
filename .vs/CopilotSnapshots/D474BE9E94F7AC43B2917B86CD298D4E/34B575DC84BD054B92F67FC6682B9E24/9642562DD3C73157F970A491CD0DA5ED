@@ -1,0 +1,14 @@
+﻿{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["./src/types/shims.d.ts"]
+  },
+  "include": ["src/js/**/*.ts", "scripts/**/*.ts", "src/types/**/*.d.ts"]
+}

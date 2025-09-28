@@ -41,23 +41,20 @@ The formatting script (`scripts/format_books_json.py`) performs the following:
 ## Example formatting
 
 **Before formatting** (raw JSONL):
+
 ```json
-{"id": 1, "events": [{"type": "reveal", "board": [[{"name": "L1"}, {"name": "H1"}]]}]}
+{ "id": 1, "events": [{ "type": "reveal", "board": [[{ "name": "L1" }, { "name": "H1" }]] }] }
 ```
 
 **After formatting**:
+
 ```json
 {
   "id": 1,
   "events": [
     {
-      "type": "reveal", 
-      "board": [
-        [
-          {"name": "L1"},
-          {"name": "H1"}
-        ]
-      ]
+      "type": "reveal",
+      "board": [[{ "name": "L1" }, { "name": "H1" }]]
     }
   ]
 }

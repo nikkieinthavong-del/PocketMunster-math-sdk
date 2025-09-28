@@ -1,7 +1,7 @@
 {
   "grid": {
-    "rows": 6,
-    "cols": 5
+    "rows": 7,
+    "cols": 7
   },
   "multipliers": {
     "cellMax": 8192
@@ -9,7 +9,58 @@
   "engine": {
     "demo": {
       "winChance": 0.28,
-      "baseFactor": 431.45912937543744
+      "baseFactor": 0.000001921998425175185
+    }
+  },
+  "symbolWeights": {
+    "pikachu": 12,
+    "charmander": 11,
+    "squirtle": 11,
+    "bulbasaur": 11,
+    "jigglypuff": 10,
+    "eevee": 9,
+    "wild": 1,
+    "freeSpins": 1,
+    "pokeball": 1,
+    "egg": 1
+  },
+  "basePays": {
+    "pikachu": 10,
+    "charmander": 12,
+    "squirtle": 14,
+    "bulbasaur": 16,
+    "jigglypuff": 20,
+    "eevee": 25,
+    "wild": 0,
+    "freeSpins": 0,
+    "pokeball": 0,
+    "egg": 0
+  },
+  "evolution": {
+    "tiers": {
+      "pikachu": {
+        "2": "pikachu_T2",
+        "3": "pikachu_T3"
+      },
+      "charmander": {
+        "2": "charmander_T2",
+        "3": "charmander_T3"
+      },
+      "squirtle": {
+        "2": "squirtle_T2",
+        "3": "squirtle_T3"
+      },
+      "bulbasaur": {
+        "2": "bulbasaur_T2"
+      },
+      "jigglypuff": {
+        "2": "jigglypuff_T2",
+        "3": "jigglypuff_T3"
+      },
+      "eevee": {
+        "2": "eevee_T2",
+        "3": "eevee_T3"
+      }
     }
   }
 }

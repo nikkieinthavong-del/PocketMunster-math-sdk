@@ -1,12 +1,15 @@
 # Custom Defined Events
 
 Every betmode will have a corresponding `force_record_<betmode>.json`. This file records the `book-id` corresponding to a custom defined search key. Anytime `self.record()` is called where
+
 ```python
 def record(self, description: dict) -> None:
     self.temp_wins.append(description)
     self.temp_wins.append(self.book_id)
 ```
+
 The current simulation number will be appended to the description/key if it exists, otherwise a new dictionary entry is made based on the description passed to the `record()` function. For example, we may want to keep track of how many Scatter symbols caused a freegame trigger. Which will be useful for later analysis to investigate the frequency of any custom defined event. In the freespin trigger executable function for example,
+
 ```python
 def run_freespin_from_base(self, scatter_key: str = "scatter") -> None:
     self.record(
@@ -19,7 +22,9 @@ def run_freespin_from_base(self, scatter_key: str = "scatter") -> None:
     self.update_freespin_amount()
     self.run_freespin()
 ```
+
 This will ultimately output a `force_record_<betmode>.json` with the entries:
+
 ```json
 [
     {
@@ -55,7 +60,6 @@ This will ultimately output a `force_record_<betmode>.json` with the entries:
 ### Summary force file
 
 Once all simulations have been completed, a `force.json` file is produced, which contains all unique search fields and keys. The intended use for this file is for prototyping, where a drop-down menu, or something of the sort can be created for all possible search conditions.
-
 
 ### Accounting for discarded simulations
 

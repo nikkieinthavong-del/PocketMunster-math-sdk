@@ -1,0 +1,264 @@
+{
+  "gameId": "pocket_monsters_genesis",
+  "version": "1.0",
+  "provider": "pokemongenesis",
+  "gameName": "Pocket Monsters Genesis",
+  "gameType": "cluster_pays",
+  "grid": {
+    "rows": 7,
+    "cols": 7
+  },
+  "betSettings": {
+    "minBet": 0.01,
+    "maxBet": 100.00,
+    "maxWin": 5000,
+    "betLevels": [0.01, 0.05, 0.10, 0.25, 0.50, 1.00, 2.00, 5.00, 10.00, 25.00, 50.00, 100.00],
+    "defaultBet": 1.00
+  },
+  "rtpConfiguration": {
+    "baseRTP": 96.5,
+    "bonusRTP": 97.2,
+    "rtpLevels": [
+      {"level": "low", "rtp": 95.0},
+      {"level": "medium", "rtp": 96.5},
+      {"level": "high", "rtp": 97.5}
+    ],
+    "activeRTP": 96.5
+  },
+  "symbolConfiguration": {
+    "symbols": [
+      {
+        "id": "pikachu_t1",
+        "name": "Pikachu",
+        "type": "paying",
+        "weight": 12,
+        "tiers": ["pikachu_t1", "pikachu_t2", "pikachu_t3"],
+        "evolutionPath": {"2": "pikachu_t2", "3": "raichu"},
+        "payMultiplier": 1.0
+      },
+      {
+        "id": "charmander_t1",
+        "name": "Charmander",
+        "type": "paying",
+        "weight": 11,
+        "tiers": ["charmander_t1", "charmander_t2", "charmander_t3"],
+        "evolutionPath": {"2": "charmeleon", "3": "charizard"},
+        "payMultiplier": 1.2
+      },
+      {
+        "id": "squirtle_t1",
+        "name": "Squirtle",
+        "type": "paying",
+        "weight": 11,
+        "tiers": ["squirtle_t1", "squirtle_t2", "squirtle_t3"],
+        "evolutionPath": {"2": "wartortle", "3": "blastoise"},
+        "payMultiplier": 1.4
+      },
+      {
+        "id": "bulbasaur_t1",
+        "name": "Bulbasaur",
+        "type": "paying",
+        "weight": 11,
+        "tiers": ["bulbasaur_t1", "bulbasaur_t2", "bulbasaur_t3"],
+        "evolutionPath": {"2": "ivysaur", "3": "venusaur"},
+        "payMultiplier": 1.6
+      },
+      {
+        "id": "jigglypuff_t1",
+        "name": "Jigglypuff",
+        "type": "paying",
+        "weight": 10,
+        "tiers": ["jigglypuff_t1", "jigglypuff_t2", "jigglypuff_t3"],
+        "payMultiplier": 2.0
+      },
+      {
+        "id": "eevee_t1",
+        "name": "Eevee",
+        "type": "paying",
+        "weight": 9,
+        "tiers": ["eevee_t1", "eevee_t2", "eevee_t3"],
+        "evolutionPath": {"2": "vaporeon", "3": "jolteon", "4": "flareon"},
+        "payMultiplier": 2.5
+      },
+      {
+        "id": "wild",
+        "name": "Wild",
+        "type": "wild",
+        "weight": 1,
+        "substitutes": ["all_symbols"],
+        "payMultiplier": 0.5
+      },
+      {
+        "id": "free_spins",
+        "name": "Free Spins",
+        "type": "scatter",
+        "weight": 1,
+        "triggerCount": [3, 4, 5, 6, 7],
+        "freeSpinsAwarded": [10, 15, 20, 25, 30]
+      },
+      {
+        "id": "pokeball",
+        "name": "Pokeball",
+        "type": "bonus",
+        "weight": 1,
+        "triggerCount": [4, 5, 6, 7],
+        "bonusSpins": [8, 12, 16, 20]
+      }
+    ]
+  },
+  "paytable": {
+    "clusterPays": true,
+    "minClusterSize": 5,
+    "clusterSizeMultipliers": {
+      "5": 1.0,
+      "6": 1.2,
+      "7": 1.4,
+      "8": 1.6,
+      "9": 1.8,
+      "10": 2.0,
+      "11-15": 2.5,
+      "16-20": 3.0,
+      "21-25": 4.0,
+      "26-30": 5.0,
+      "31-35": 6.0,
+      "36-40": 8.0,
+      "41-45": 10.0,
+      "46-49": 15.0
+    },
+    "multiplierSystem": {
+      "baseMultiplier": 1,
+      "maxMultiplier": 8192,
+      "cascadeMultiplier": 1.0,
+      "growthPattern": "exponential"
+    }
+  },
+  "bonusFeatures": {
+    "freeSpins": {
+      "enabled": true,
+      "triggerSymbol": "free_spins",
+      "minTriggers": 3,
+      "maxTriggers": 7,
+      "baseFreeSpins": 10,
+      "retriggerMultiplier": 5,
+      "maxFreeSpins": 50,
+      "featureRTP": 0.37
+    },
+    "huntMode": {
+      "enabled": true,
+      "triggerSymbol": "pokeball",
+      "minTriggers": 4,
+      "maxTriggers": 7,
+      "baseFreeSpins": 8,
+      "retriggerMultiplier": 3,
+      "maxFreeSpins": 35,
+      "featureRTP": 0.25
+    },
+    "masterBall": {
+      "enabled": true,
+      "triggerProbability": 0.15,
+      "multiplierRange": [2, 5],
+      "featureRTP": 0.08
+    }
+ },
+  "gameMechanics": {
+    "cascadingReels": {
+      "enabled": true,
+      "maxCascades": 20,
+      "multiplierIncrement": 1.0,
+      "removeWinningSymbols": true
+    },
+    "evolutionSystem": {
+      "enabled": true,
+      "evolutionThresholds": [2, 3, 4],
+      "evolutionEffects": ["enhanced_payouts", "special_animations"]
+    },
+    "progressiveMultipliers": {
+      "enabled": true,
+      "maxMultiplier": 8192,
+      "resetOnNewSpin": true
+    }
+ },
+  "visualSettings": {
+    "quality": {
+      "low": {
+        "resolution": "720p",
+        "particleCount": 50,
+        "animationQuality": "basic",
+        "frameRate": 30
+      },
+      "medium": {
+        "resolution": "720p",
+        "particleCount": 150,
+        "animationQuality": "standard",
+        "frameRate": 45
+      },
+      "high": {
+        "resolution": "1080p",
+        "particleCount": 300,
+        "animationQuality": "enhanced",
+        "frameRate": 60
+      },
+      "ultra": {
+        "resolution": "1440p",
+        "particleCount": 500,
+        "animationQuality": "premium",
+        "frameRate": 60
+      }
+    },
+    "effects": {
+      "cascades": true,
+      "multipliers": true,
+      "evolutions": true,
+      "bigWin": true,
+      "megaWin": true,
+      "jackpot": true
+    }
+  },
+  "platformIntegration": {
+    "stakeCompliant": true,
+    "apiEndpoints": {
+      "spin": "/api/spin",
+      "balance": "/api/balance",
+      "history": "/api/history",
+      "config": "/api/config"
+    },
+    "websocket": {
+      "enabled": true,
+      "endpoint": "wss://ws.stake.com/pocket_monsters_genesis",
+      "reconnect": true,
+      "timeout": 30000
+    },
+    "sessionManagement": {
+      "timeout": 3600,
+      "autoRefresh": true,
+      "secureStorage": true
+    }
+  },
+  "compliance": {
+    "regulatory": {
+      "jurisdiction": "multi",
+      "complianceLevel": "strict",
+      "auditTrail": true,
+      "provablyFair": true
+    },
+    "security": {
+      "encryption": "aes_256",
+      "csp": "strict",
+      "xssProtection": true,
+      "integrityChecks": true
+    }
+  },
+  "performance": {
+    "optimization": {
+      "preloadAssets": true,
+      "lazyLoad": true,
+      "memoryLimit": "15MB",
+      "cacheStrategy": "aggressive"
+    },
+    "monitoring": {
+      "performanceMetrics": true,
+      "errorTracking": true,
+      "usageAnalytics": true
+    }
+ }
+}

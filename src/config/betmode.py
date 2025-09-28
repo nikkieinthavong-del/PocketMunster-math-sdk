@@ -8,7 +8,7 @@ class BetMode:
     name="base",
     title="Base Game",
     description="Starting Game Mode",
-    rtp=0.97,
+    rtp=0.965,
     cost=1.0,
     auto_close_disabled=False,
     is_feature = False,

@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-const roots = ["dist-web", "dist-run"].map(p => join(process.cwd(), p));
+const roots = ["dist-web", "dist-run"].map((p) => join(process.cwd(), p));
 const exts = new Set([".js", ".css", ".html"]);
 const urlRe = /https?:\/\/(?!localhost(?=[:/])|127\.0\.0\.1(?=[:/]))[^\s"'<>)+]+/gi;
 
@@ -23,7 +23,11 @@ function walk(dir) {
 }
 
 for (const r of roots) {
-  try { walk(r); } catch { /* ignore absent */ }
+  try {
+    walk(r);
+  } catch {
+    /* ignore absent */
+  }
 }
 
 if (violations.length) {

@@ -21,7 +21,7 @@ class GameConfig(Config):
         self.working_name = "sample ways game"
         self.wincap = 5000
         self.win_type = "ways"
-        self.rtp = 0.97
+        self.rtp = 0.965
         self.construct_paths()
 
         # Game Dimensions

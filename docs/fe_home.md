@@ -1,4 +1,5 @@
 # Stake Engine Software Development Kit
+
 ## **Frontend - SDK**
 
 ### **Why Use the frontend SDK?**

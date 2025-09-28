@@ -1,8 +1,17 @@
 {
-  "name": "pocket-munsters",
-  "private": true,
-  "version": "0.1.0",
+  "name": "pocket-munsters-genesis",
+  "private": false,
+  "version": "1.0.0",
   "type": "module",
+  "description": "POCKET MUNSTERS - A 7x7 cluster-pays slot game with evolution mechanics, multipliers, and bonus features for Stake Engine",
+  "keywords": [
+    "slot",
+    "game",
+    "pokemon",
+    "cluster-pays",
+    "stake-engine",
+    "casino"
+  ],
   "engines": {
     "node": ">=20 <21"
   },
@@ -20,10 +29,10 @@
     "dev:smoke": "npm run build:demo && node dist-run/scripts/dev_smoke.js",
     "smoke:web": "npm run dev:smoke",
     "serve:smoke": "npm run dev:smoke",
-  "prestorybook": "npm run package:web:prep",
-  "storybook": "cross-env STORYBOOK_DEV=1 SB_ENABLE_INTERACTIONS=1 SB_HEAVY_ADDONS=1 npm run prestorybook && storybook dev -p 6006",
-  "build-storybook": "cross-env NODE_ENV=production SB_ENABLE_INTERACTIONS=0 SB_HEAVY_ADDONS=0 storybook build",
-  "build-storybook:full": "cross-env NODE_ENV=production SB_ENABLE_INTERACTIONS=1 SB_HEAVY_ADDONS=1 storybook build",
+    "prestorybook": "npm run package:web:prep",
+    "storybook": "cross-env STORYBOOK_DEV=1 SB_ENABLE_INTERACTIONS=1 SB_HEAVY_ADDONS=1 npm run prestorybook && storybook dev -p 6006",
+    "build-storybook": "cross-env NODE_ENV=production SB_ENABLE_INTERACTIONS=0 SB_HEAVY_ADDONS=0 storybook build",
+    "build-storybook:full": "cross-env NODE_ENV=production SB_ENABLE_INTERACTIONS=1 SB_HEAVY_ADDONS=1 storybook build",
     "test": "vitest",
     "test:run": "vitest run",
     "simulate": "npm run build:demo && node dist-run/scripts/simulate.js",
@@ -33,13 +42,35 @@
     "package:math:zip": "powershell -NoLogo -NoProfile -Command \"$dest='artifacts/math.zip'; if (Test-Path $dest) { Remove-Item $dest -Force }; $ok=$false; for ($i=0; $i -lt 5; $i++) { try { Compress-Archive -Path 'dist-math/*' -DestinationPath $dest -Force; $ok=$true; break } catch { Start-Sleep -Milliseconds (200 * ($i+1)) } }; if (-not $ok) { throw 'Compress-Archive failed after retries' }\"",
     "package:math": "npm run package:math:prep && npm run package:math:zip",
     "package:web:prep": "npm run build:demo && node dist-run/scripts/package_frontend.js",
+    "package:web:test": "node scripts/test-embed.mjs",
+    "package:web:full": "npm run package:web:prep && npm run package:web:test",
     "package:web:zip": "powershell -NoLogo -NoProfile -Command \"$dest='artifacts/web.zip'; if (Test-Path $dest) { Remove-Item $dest -Force }; $ok=$false; for ($i=0; $i -lt 5; $i++) { try { Compress-Archive -Path 'dist-web/*' -DestinationPath $dest -Force; $ok=$true; break } catch { Start-Sleep -Milliseconds (200 * ($i+1)) } }; if (-not $ok) { throw 'Compress-Archive failed after retries' }\"",
-    "package:web": "npm run package:web:prep && npm run package:web:zip",
+    "package:web": "npm run package:web:full && npm run package:web:zip",
     "package:publish:prep": "npm run build:demo && node dist-run/scripts/package_publish.js",
     "package:publish:zip": "powershell -NoLogo -NoProfile -Command \"$dest='artifacts/math_static.zip'; if (Test-Path $dest) { Remove-Item $dest -Force }; $ok=$false; for ($i=0; $i -lt 5; $i++) { try { Compress-Archive -Path 'dist-publish/*' -DestinationPath $dest -Force; $ok=$true; break } catch { Start-Sleep -Milliseconds (200 * ($i+1)) } }; if (-not $ok) { throw 'Compress-Archive failed after retries' }\"",
-    "package:publish": "npm run package:publish:prep && npm run package:publish:zip"
+    "package:publish": "npm run package:publish:prep && npm run package:publish:zip",
+    "package:publish:full": "npm run package:publish:prep && npm run validate:publish && npm run package:publish:zip",
+    "validate:publish": "npm run build:demo && node dist-run/scripts/validate_publish.js",
+    "validate:index": "npm run build:demo && node dist-run/scripts/validate_index.js",
+    "qa:stake": "node scripts/qa-stake.mjs",
+    "qa:all": "npm run validate:index && npm run validate:publish && npm run qa:stake",
+    "checksums": "npm run build:demo && node dist-run/scripts/checksums.js",
+    "package:release": "npm run package:web && npm run package:publish:full && npm run checksums",
+    "rgs:mock": "npm run build:demo && node dist-run/scripts/rgs_mock.js",
+    "rgs:mock:port": "npm run build:demo && cross-env RGS_PORT=$npm_config_port node dist-run/scripts/rgs_mock.js",
+    "optimize:images": "npm run package:web:prep",
+    "lint:md": "markdownlint \"**/*.md\" --config .markdownlint.json",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "prettier": "^3.3.3",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.8",
+    "markdownlint-cli": "^0.42.0",
+    "ajv": "^8.17.1",
+    "@types/node": "^20.0.0",
+    "zstd-codec": "^0.1.4",
     "@storybook/addon-a11y": "^8.6.14",
     "@storybook/addon-essentials": "^8.2.4",
     "@storybook/addon-interactions": "^8.6.14",
@@ -56,6 +87,15 @@
     "storybook": "^8.2.4",
     "typescript": "^5.5.0",
     "vite": "^5.4.0",
-    "vitest": "^2.0.5"
+    "vitest": "^2.0.5",
+    "sharp": "^0.33.4"
+  },
+  "lint-staged": {
+    "**/*.{md,markdown}": [
+      "prettier --write"
+    ],
+    "**/*.{json,yml,yaml,html,css,scss,ts,tsx,js,mjs,cjs}": [
+      "prettier --write"
+    ]
   }
 }

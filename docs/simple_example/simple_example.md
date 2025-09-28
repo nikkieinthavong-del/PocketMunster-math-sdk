@@ -1,13 +1,13 @@
 # Getting Started with RGS Responses
 
-This brief tutorial is intended to get you up and running with the RGS using a simple game called *fifty-fifty*. 
+This brief tutorial is intended to get you up and running with the RGS using a simple game called _fifty-fifty_.
 
 ### Game Overview
 
 The rules are straightforward:
+
 - You request a response from the RGS’s `/play` API.
 - You have a 50/50 chance of either:
-
   - **2x** your bet back
   - Losing your **1x** bet.
 
@@ -40,20 +40,20 @@ We’ll use **Svelte 5** bundled with **Vite** to create a static frontend. We'l
 ### Setup Steps
 
 1. **Create the Vite project**:
-    `npm create vite@latest`
+   `npm create vite@latest`
 
 2. **Edit the `vite.config.ts` file**:
-    Make sure the defineConfig function includes: `base: "./"` (under *plugins*),
+   Make sure the defineConfig function includes: `base: "./"` (under _plugins_),
 
 3. **Replace styles and main component**:
-    - Copy the contents of [`css.txt`](css.txt) into your generated `app.css`
-    - Replace the contents of [`app_svelte.txt`](app_svelte.txt) into: `src/App.svelte`
+   - Copy the contents of [`css.txt`](css.txt) into your generated `app.css`
+   - Replace the contents of [`app_svelte.txt`](app_svelte.txt) into: `src/App.svelte`
 
 4. **Build the project**:
-    `yarn build`
+   `yarn build`
 
 5. **Deploy**:
-    - Upload the contents of the `dist/` folder to the Stake Engine under *frontend files*
+   - Upload the contents of the `dist/` folder to the Stake Engine under _frontend files_
 
 ---
 
@@ -69,5 +69,5 @@ Once the math/frontend files have been uploaded to Stake Engine, launcing the ga
 
 ![Below](../assets/rgs_fe_setup.png)
 
-Pressing ***Place BET*** will populate the *play/ response* field with the RGS game round structure. 
-If the round-win is >0, press ***END ROUND*** to finalise the bet, which will subsequently update your balance and close the bet.
+Pressing **_Place BET_** will populate the _play/ response_ field with the RGS game round structure.
+If the round-win is >0, press **_END ROUND_** to finalise the bet, which will subsequently update your balance and close the bet.

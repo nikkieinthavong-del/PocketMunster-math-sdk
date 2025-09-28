@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pocket Munsters – Stake Host Smoke</title>
+    <style>
+      :root {
+        color-scheme: dark light;
+      }
+      body {
+        margin: 0;
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          sans-serif;
+        background: #0a0c10;
+        color: #dbe2f2;
+      }
+      header {
+        padding: 16px;
+        border-bottom: 1px solid #1b2230;
+        background: linear-gradient(180deg, #0f1320, #0a0c10);
+      }
+      main {
+        padding: 16px;
+        display: grid;
+        gap: 16px;
+        grid-template-columns: 360px 1fr;
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 18px;
+      }
+      .card {
+        background: #0f1522;
+        border: 1px solid #1b2230;
+        border-radius: 8px;
+        padding: 12px;
+        box-shadow: 0 1px 0 #0b0f19 inset;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        color: #9fb3d1;
+        margin-bottom: 6px;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 6px;
+        border: 1px solid #243047;
+        background: #0a0e16;
+        color: #e6eefb;
+      }
+      button {
+        appearance: none;
+        border: 1px solid #2a3957;
+        background: #19233a;
+        color: #cfe0ff;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #1f2a46;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .row + .row {
+        margin-top: 8px;
+      }
+      .log {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        white-space: pre-wrap;
+        background: #0a0e16;
+        border: 1px solid #1b2230;
+        border-radius: 8px;
+        padding: 10px;
+        min-height: 160px;
+      }
+      .mount {
+        min-height: 540px;
+        display: grid;
+        place-items: center;
+        background: #06080d;
+        border: 1px dashed #2a3957;
+        border-radius: 8px;
+      }
+      .tips {
+        font-size: 12px;
+        color: #9fb3d1;
+      }
+      a {
+        color: #7fb2ff;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Pocket Munsters – Host Smoke Page</h1>
+      <div class="tips">
+        Use this page on a Stake-like host to validate /healthz, /api/paytable, and /api/spin. It
+        mounts the Shadow DOM container embed.
+      </div>
+    </header>
+    <main>
+      <section class="card">
+        <div class="row">
+          <div style="flex: 1">
+            <label for="base">Base URL for API (defaults to this origin)</label>
+            <input id="base" type="text" placeholder="https://example.com" />
+          </div>
+        </div>
+        <div class="row">
+          <div style="flex: 1">
+            <label for="assets">ASSETS_BASE (optional override)</label>
+            <input
+              id="assets"
+              type="text"
+              placeholder="https://cdn.example.com/path/to/dist-web/"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <button id="applyBase">Apply Base URL</button>
+          <button id="applyAssets">Apply Assets Base</button>
+          <button id="mount">Mount Game</button>
+        </div>
+        <hr style="border: none; border-top: 1px solid #1b2230; margin: 12px 0" />
+        <div class="row">
+          <button id="btnHealth">GET /healthz</button>
+          <button id="btnPaytable">GET /api/paytable</button>
+          <button id="btnSpin">POST /api/spin</button>
+        </div>
+        <div class="row">
+          <div class="tips">Tip: you can also pass ?assets_base=... in the URL.</div>
+        </div>
+      </section>
+
+      <section class="card" style="min-height: 540px">
+        <div id="mount" class="mount">Shadow DOM game will mount here</div>
+      </section>
+
+      <section class="card" style="grid-column: 1 / -1">
+        <label>Log</label>
+        <div id="log" class="log"></div>
+      </section>
+    </main>
+
+    <script>
+      // helpers
+      const $ = (sel) => document.querySelector(sel);
+      const logEl = $("#log");
+      function log(title, data) {
+        const ts = new Date().toISOString().replace("T", " ").replace("Z", "");
+        const body =
+          data === undefined ? "" : typeof data === "string" ? data : JSON.stringify(data, null, 2);
+        logEl.textContent += `[${ts}] ${title}\n${body}\n\n`;
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      // state
+      const urlParams = new URLSearchParams(location.search);
+      let BASE = urlParams.get("base") || location.origin;
+      $("#base").value = BASE;
+      const qpAssets =
+        urlParams.get("assets_base") ||
+        urlParams.get("assetsBase") ||
+        urlParams.get("assets-base") ||
+        "";
+      $("#assets").value = qpAssets;
+
+      // actions
+      $("#applyBase").addEventListener("click", () => {
+        BASE = ($("#base").value || "").trim() || location.origin;
+        log("Base URL set", BASE);
+      });
+
+      $("#applyAssets").addEventListener("click", () => {
+        const v = ($("#assets").value || "").trim();
+        if (
+          v &&
+          window.PocketMunsters &&
+          typeof window.PocketMunsters.setAssetsBase === "function"
+        ) {
+          window.PocketMunsters.setAssetsBase(v);
+          log("ASSETS_BASE set", v);
+        } else {
+          log("ASSETS_BASE not applied", "Embed not loaded yet or empty value");
+        }
+      });
+
+      $("#mount").addEventListener("click", () => {
+        try {
+          if (qpAssets && window.PocketMunsters) {
+            // If provided via query, set before mount just in case
+            window.PocketMunsters.ASSETS_BASE = qpAssets.endsWith("/") ? qpAssets : qpAssets + "/";
+          }
+          const res =
+            window.PocketMunsters && window.PocketMunsters.mount
+              ? window.PocketMunsters.mount("#mount")
+              : null;
+          if (res && res.root) {
+            log("Mounted", { version: window.PocketMunsters.version, host: !!res.host });
+          } else {
+            log("Mount failed", "window.PocketMunsters.mount not available");
+          }
+        } catch (e) {
+          log("Mount error", String(e));
+        }
+      });
+
+      async function doGet(path) {
+        try {
+          const r = await fetch(BASE + path, { headers: { accept: "application/json" } });
+          const t = await r.text();
+          let json;
+          try {
+            json = JSON.parse(t);
+          } catch {
+            json = t;
+          }
+          log(`GET ${path} -> ${r.status}`, json);
+        } catch (e) {
+          log(`GET ${path} error`, String(e));
+        }
+      }
+      async function doPost(path, body) {
+        try {
+          const r = await fetch(BASE + path, {
+            method: "POST",
+            headers: { "content-type": "application/json", accept: "application/json" },
+            body: JSON.stringify(body || {}),
+          });
+          const t = await r.text();
+          let json;
+          try {
+            json = JSON.parse(t);
+          } catch {
+            json = t;
+          }
+          log(`POST ${path} -> ${r.status}`, json);
+        } catch (e) {
+          log(`POST ${path} error`, String(e));
+        }
+      }
+
+      $("#btnHealth").addEventListener("click", () => doGet("/healthz"));
+      $("#btnPaytable").addEventListener("click", () => doGet("/api/paytable"));
+      $("#btnSpin").addEventListener("click", () => doPost("/api/spin", { bet: 1, seed: "smoke" }));
+    </script>
+
+    <!-- Container Shadow DOM embed -->
+    <script src="./dist-web/embed.container.js"></script>
+  </body>
+</html>

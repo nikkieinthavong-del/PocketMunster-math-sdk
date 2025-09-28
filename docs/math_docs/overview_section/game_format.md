@@ -5,7 +5,7 @@ Without diving into specific functions, this section is intended to walkthrough 
 ## Configuration file
 
 Game parameters should all be set in the `GameConfig` `__init__()` function. This is where to set the name name, RTP, board dimensions, payouts, reels and various special symbol actions. All required fields are listed in the `Config` class and should be filed out explicitly for each new game.
-Next the `BetMode` classes are defined. Generally there would be at a minimum a (default) `base` game and a `freegame`, which is usually purchased. 
+Next the `BetMode` classes are defined. Generally there would be at a minimum a (default) `base` game and a `freegame`, which is usually purchased.
 
 ```python
 class GameConfig(Config):
@@ -19,9 +19,9 @@ class GameConfig(Config):
         self.rtp = 0
 
         self.num_reels = 0
-        self.num_rows = [0] * self.num_reels  
+        self.num_rows = [0] * self.num_reels
         self.paytable = {
-            (kind, symbol): payout, 
+            (kind, symbol): payout,
         }
 
         self.include_padding = True
@@ -34,6 +34,7 @@ class GameConfig(Config):
 ```
 
 Each `BetMode` should likewise be set explicitly, defining the cost, rtp maximum win amounts and various gametype flags. We would like to define different win criteria within each betmode. In the sample games we define distinct criteria for any game-aspects where we would like to control either the hit-rate and/or RTP allocation. In this example we would like to control the basegame hit-rate, max-win hit-rate and freegame hit-rate. Therefore we need to specify unique `Distribution` criteria for each of these special conditions. Further information about purpose of Distribution conditions can be found [here](../gamestate_section/repeat_info.md) and [here](../gamestate_section/configuration_section/betmode_dist.md)
+
 ```python
     BetMode(
         name="base",
@@ -93,9 +94,10 @@ Each `BetMode` should likewise be set explicitly, defining the cost, rtp maximum
 When any simulation is run, the entry point will be the `run_spin()` function, which lives in the `GameState` class. `GameExecutables` and `GameCalculations` are child classes of `GameState` and also deal with game specific logic.
 
 The generic structure would follow the format:
+
 ```python
 def run_spin(self, sim):
-    self.reset_seed(sim) #seed the RNG with the simulation number 
+    self.reset_seed(sim) #seed the RNG with the simulation number
     self.repeat = True
     while self.repeat:
         self.reset_book() #reset local variables
@@ -115,14 +117,16 @@ def run_spin(self, sim):
     self.imprint_wins() #save simulation result
 ```
 
-For reproducibility the RNG is seeded with the simulation number. Betmode distribution criteria are preassigned to each simulation number, requiring the `self.repeat` condition to be initially set until the spin has completed and it can be checked that any criteria-specific conditions or win amounts are satisfied. Note that `self.repeat = False` is set in the `self.reset_book()` function. This function will reset all relevant `GameState` properties to default values. 
+For reproducibility the RNG is seeded with the simulation number. Betmode distribution criteria are preassigned to each simulation number, requiring the `self.repeat` condition to be initially set until the spin has completed and it can be checked that any criteria-specific conditions or win amounts are satisfied. Note that `self.repeat = False` is set in the `self.reset_book()` function. This function will reset all relevant `GameState` properties to default values.
 
 Generally the first steps will be to use the reelstrips provided in the configuration file to draw a board from randomly chosen reelstop positions. Wins are evaluated from one of the provided win-types for the active board, and the wallet manager is updated. After this game-logic is completed the relevant events (such as `reveal` and `winInfo`) are emitted. All sample games follow these three steps:
+
 1. Calculate current state of the board
 2. Update wallet manager
 3. Emit events
 
 To keep track of which gametype wins are allocated, the wallet manger is again invoked once all basegame actions are complete. If the game have a freegame mode and the triggering conditions are satisfied the `run_freespin()` function is invoked. This mode will have a similar structure:
+
 ```python
 def run_freespin(self):
     self.reset_fs_spin() #reset freegame variables
@@ -143,11 +147,12 @@ def run_freespin(self):
 
 ```
 
-While it is possible to perform all game actions within these functions, for clarity functions from `GameExecutables` and `GameCalculations` are typically invoked and should be created on a game-by-game basis depending on requirements. 
+While it is possible to perform all game actions within these functions, for clarity functions from `GameExecutables` and `GameCalculations` are typically invoked and should be created on a game-by-game basis depending on requirements.
 
 ## Runfile
 
-Finally to produce simulations, the `run.py` file is used to create simulation outputs and config files containing game and simulation details. 
+Finally to produce simulations, the `run.py` file is used to create simulation outputs and config files containing game and simulation details.
+
 ```python
 if __name__ == "__main__":
 
@@ -177,7 +182,8 @@ if __name__ == "__main__":
     generate_configs(gamestate)
 
 ```
-The `create_books` function handles the allocation of win criteria to simulation numbers, output file format and multi-threading parameters. 
+
+The `create_books` function handles the allocation of win criteria to simulation numbers, output file format and multi-threading parameters.
 
 ## Outputs
 

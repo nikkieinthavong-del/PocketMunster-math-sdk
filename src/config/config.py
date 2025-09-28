@@ -11,7 +11,7 @@ class Config:
     """
 
     def __init__(self):
-        self.rtp = 0.97
+        self.rtp = 0.965
         self.game_id = "0_0_asample"
         self.provider_name = "sample_provider"
         self.provider_number = 1

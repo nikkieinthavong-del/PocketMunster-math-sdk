@@ -1,4 +1,3 @@
-
 # Flow Chart
 
 Here it is a simplified flow chart of steps how a game is processed after RGS request. The real situation might be more complicated, but it follows the same idea.

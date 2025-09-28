@@ -1,5 +1,5 @@
-import type { MultiplierMap } from '../engine/types.ts';
-import { spin } from '../engine/engine.js';
+import type { MultiplierMap } from "../engine/types.ts";
+import { spin } from "../engine/engine.js";
 
 // Minimal Free Spins feature with persistent multipliers and deterministic steps
 
@@ -16,12 +16,14 @@ export interface FreeSpinsState {
 
 export interface FreeSpinsConfig {
   spinsByScatters: Record<string, number>; // e.g. { "4":10, "5":12, "6":15, "7":20 }
-  retriggerScatterCount?: number;          // default 3
-  retriggerSpins?: number;                 // default 5
+  retriggerScatterCount?: number; // default 3
+  retriggerSpins?: number; // default 5
 }
 
 function spinsForScatters(cfg: FreeSpinsConfig, scatters: number) {
-  const keys = Object.keys(cfg.spinsByScatters).map(Number).sort((a, b) => a - b);
+  const keys = Object.keys(cfg.spinsByScatters)
+    .map(Number)
+    .sort((a, b) => a - b);
   let out = 0;
   for (const k of keys) if (scatters >= k) out = cfg.spinsByScatters[String(k)];
   return out;
@@ -37,27 +39,37 @@ function bumpAllByOne(map: MultiplierMap) {
 
 function countFreeSpinsScatters(grid: any[][]) {
   let k = 0;
-  for (let r = 0; r < grid.length; r++) for (let c = 0; c < grid[0].length; c++) {
-    const id = String(grid[r][c]?.id ?? grid[r][c]?.kind);
-    if (id === 'freeSpins') k++;
-  }
+  for (let r = 0; r < grid.length; r++)
+    for (let c = 0; c < grid[0].length; c++) {
+      const id = String(grid[r][c]?.id ?? grid[r][c]?.kind);
+      if (id === "freeSpins") k++;
+    }
   return k;
 }
 
 // Simple seed mixer to derive deterministic child seeds per step
 function mixSeed(base: number, step: number) {
   let x = (base ^ (step * 0x9e3779b1)) >>> 0;
-  x ^= x << 13; x >>>= 0;
-  x ^= x >> 17; x >>>= 0;
-  x ^= x << 5;  x >>>= 0;
+  x ^= x << 13;
+  x >>>= 0;
+  x ^= x >> 17;
+  x >>>= 0;
+  x ^= x << 5;
+  x >>>= 0;
   return x >>> 0;
 }
 
-export function enterFreeSpins(configJson: any, pikachuScatterCount: number, seed: number, rows?: number, cols?: number): FreeSpinsState {
-  const r = rows ?? (configJson?.grid?.rows ?? 7);
-  const c = cols ?? (configJson?.grid?.cols ?? 7);
+export function enterFreeSpins(
+  configJson: any,
+  pikachuScatterCount: number,
+  seed: number,
+  rows?: number,
+  cols?: number
+): FreeSpinsState {
+  const r = rows ?? configJson?.grid?.rows ?? 7;
+  const c = cols ?? configJson?.grid?.cols ?? 7;
   const cfg: FreeSpinsConfig = configJson?.features?.freespins ?? {
-    spinsByScatters: { '4': 10, '5': 12, '6': 15, '7': 20 },
+    spinsByScatters: { "4": 10, "5": 12, "6": 15, "7": 20 },
     retriggerScatterCount: 3,
     retriggerSpins: 5,
   };
@@ -77,14 +89,17 @@ export function stepFreeSpins(state: FreeSpinsState, configJson: any): FreeSpins
   if (state.ended || state.spinsLeft <= 0) return state;
 
   const cfg: FreeSpinsConfig = configJson?.features?.freespins ?? {
-    spinsByScatters: { '4': 10, '5': 12, '6': 15, '7': 20 },
+    spinsByScatters: { "4": 10, "5": 12, "6": 15, "7": 20 },
     retriggerScatterCount: 3,
     retriggerSpins: 5,
   };
 
   const childSeed = mixSeed(state.seed, state.stepIndex);
 
-  const res = spin(configJson, 1, { seed: childSeed, initMultiplierMap: state.multiplierMap as any });
+  const res = spin(configJson, 1, {
+    seed: childSeed,
+    initMultiplierMap: state.multiplierMap as any,
+  });
 
   let spinsLeft = state.spinsLeft - 1;
   let totalWinX = state.totalWinX + (res.totalWinX ?? 0);

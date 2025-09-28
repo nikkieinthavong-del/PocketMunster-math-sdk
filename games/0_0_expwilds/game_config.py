@@ -12,11 +12,11 @@ class GameConfig(Config):
     def __init__(self):
         super().__init__()
         self.game_id = "0_0_expwilds"
-        self.provider_numer = 0
+        self.provider_number = 0
         self.working_name = "Expanding Wilds"
         self.wincap = 5000
         self.win_type = "lines"
-        self.rtp = 0.97
+        self.rtp = 0.965
         self.construct_paths()
 
         # Game Dimensions

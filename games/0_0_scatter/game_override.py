@@ -1,4 +1,4 @@
-from game_executables import *
+from game_executables import GameExecutables
 from src.events.events import update_freespin_event, update_global_mult_event
 from src.calculations.statistics import get_random_outcome
 

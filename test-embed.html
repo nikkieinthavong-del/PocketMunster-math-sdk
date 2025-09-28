@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PocketMon Genesis - Embed Test</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background: #0b0f14;
+        color: #e6edf3;
+      }
+      .test-container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #1f2937;
+        border-radius: 8px;
+        background: #111827;
+      }
+      .test-title {
+        color: #2563eb;
+        margin-top: 0;
+      }
+      .status {
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+      }
+      .status.success {
+        background: #10b981;
+        color: white;
+      }
+      .status.error {
+        background: #ef4444;
+        color: white;
+      }
+      .status.info {
+        background: #3b82f6;
+        color: white;
+      }
+      .test-controls {
+        margin: 10px 0;
+      }
+      button {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      button:hover {
+        background: #1d4ed8;
+      }
+      button:disabled {
+        background: #6b7280;
+        cursor: not-allowed;
+      }
+      .game-container {
+        border: 2px solid #2563eb;
+        border-radius: 8px;
+        margin: 20px 0;
+        overflow: hidden;
+      }
+      .embed-info {
+        background: #1f2937;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 14px;
+      }
+      .test-results {
+        margin-top: 20px;
+      }
+      .feature-test {
+        margin: 10px 0;
+        padding: 10px;
+        border-left: 3px solid #6b7280;
+      }
+      .feature-test.passed {
+        border-left-color: #10b981;
+      }
+      .feature-test.failed {
+        border-left-color: #ef4444;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-container">
+      <h1>PocketMon Genesis - Embed Test Harness</h1>
+
+      <div class="test-section">
+        <h2 class="test-title">🎮 Classic Script Embed Test</h2>
+        <div class="status info">Testing embed.js (single-file, non-ESM bundle)</div>
+
+        <div class="embed-info">
+          <strong>Integration Method:</strong> Classic Script<br />
+          <strong>File:</strong> embed.js (52KB)<br />
+          <strong>Features:</strong> All-in-one bundle, no module dependencies<br />
+          <strong>Usage:</strong> Include CSS + HTML + embed.js script tag
+        </div>
+
+        <div class="test-controls">
+          <button onclick="runEmbedTest()">🧪 Run Embed Test</button>
+          <button onclick="checkFeatures()">🔍 Check Features</button>
+          <button onclick="testSpin()">🎰 Test Spin</button>
+          <button onclick="testAudio()">🔊 Test Audio</button>
+        </div>
+
+        <div class="game-container">
+          <!-- Game will be embedded here -->
+          <div id="game-mount">
+            <canvas
+              id="stage"
+              width="896"
+              height="512"
+              style="display: block; margin: 0 auto; background: #000"
+            ></canvas>
+          </div>
+        </div>
+
+        <div id="test-results" class="test-results">
+          <h3>Test Results:</h3>
+          <div id="results-container"></div>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2 class="test-title">🧩 Container Embed (Shadow DOM) Test</h2>
+        <div class="status info">Testing embed.container.js (self-contained, Shadow DOM)</div>
+
+        <div class="embed-info">
+          <strong>Integration Method:</strong> Shadow DOM Container<br />
+          <strong>File:</strong> embed.container.js<br />
+          <strong>Features:</strong> Shadow DOM isolation, auto asset base, single script include<br />
+          <strong>Usage:</strong> <code>PocketMunsters.mount('#host')</code> or
+          <code>PocketMunsters.mount()</code>
+        </div>
+
+        <div class="test-controls">
+          <button onclick="runContainerEmbedTest()">🧪 Mount Container</button>
+          <button onclick="checkContainerFeatures()">🔍 Check Container Features</button>
+        </div>
+
+        <div
+          class="game-container"
+          id="container-host"
+          style="min-height: 320px; display: grid; place-items: center"
+        >
+          <em style="color: #9ca3af">Container will mount here…</em>
+        </div>
+
+        <div id="test-results-2" class="test-results">
+          <h3>Container Test Results:</h3>
+          <div id="results-container-2"></div>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2 class="test-title">📊 Test Status</h2>
+        <div id="feature-tests">
+          <div class="feature-test" id="embed-load-test">
+            <strong>Embed Load:</strong> <span id="embed-load-status">⏳ Testing...</span>
+          </div>
+          <div class="feature-test" id="api-test">
+            <strong>API Available:</strong> <span id="api-status">⏳ Testing...</span>
+          </div>
+          <div class="feature-test" id="canvas-test">
+            <strong>Canvas Rendering:</strong> <span id="canvas-status">⏳ Testing...</span>
+          </div>
+          <div class="feature-test" id="ui-test">
+            <strong>UI Controls:</strong> <span id="ui-status">⏳ Testing...</span>
+          </div>
+          <div class="feature-test" id="audio-test">
+            <strong>Audio System:</strong> <span id="audio-status">⏳ Testing...</span>
+          </div>
+          <div class="feature-test" id="spin-test">
+            <strong>Game Logic:</strong> <span id="spin-status">⏳ Testing...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="test-section">
+        <h2 class="test-title">🔧 Debug Information</h2>
+        <div class="embed-info">
+          <div><strong>Script Loaded:</strong> <span id="script-loaded">false</span></div>
+          <div>
+            <strong>Window.PocketMunsters:</strong> <span id="pocketmunsters-available">false</span>
+          </div>
+          <div><strong>Canvas Context:</strong> <span id="canvas-context">false</span></div>
+          <div><strong>Audio Context:</strong> <span id="audio-context">false</span></div>
+          <div>
+            <strong>Errors:</strong>
+            <div id="error-log" style="margin-top: 10px; color: #ef4444"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load the embed scripts -->
+    <script src="dist-web/embed.js"></script>
+    <script src="dist-web/embed.container.js"></script>
+
+    <script>
+      let testResults = [];
+      let gameInstance = null;
+      let containerInstance = null;
+
+      // Test harness functions
+      function logResult(test, status, message) {
+        const result = { test, status, message, timestamp: new Date().toISOString() };
+        testResults.push(result);
+
+        const resultsContainer = document.getElementById("results-container");
+        resultsContainer.innerHTML += `
+                <div class="feature-test ${status === "PASS" ? "passed" : "failed"}">
+                    <strong>${test}:</strong> ${message} (${result.timestamp})
+                </div>
+            `;
+
+        console.log(`[${status}] ${test}: ${message}`);
+      }
+
+      // Container: dedicated logger
+      function logResult2(test, status, message) {
+        const result = { test, status, message, timestamp: new Date().toISOString() };
+        const resultsContainer = document.getElementById("results-container-2");
+        resultsContainer.innerHTML += `
+                <div class="feature-test ${status === "PASS" ? "passed" : "failed"}">
+                    <strong>${test}:</strong> ${message} (${result.timestamp})
+                </div>
+            `;
+        console.log(`[container ${status}] ${test}: ${message}`);
+      }
+
+      function updateFeatureStatus(testId, status, message) {
+        const element = document.getElementById(testId);
+        const statusElement = element.querySelector("span");
+        statusElement.textContent = message;
+        element.className = `feature-test ${status === "PASS" ? "passed" : "failed"}`;
+      }
+
+      function runEmbedTest() {
+        testResults = [];
+        document.getElementById("results-container").innerHTML = "";
+
+        // Test 1: Script Loading
+        if (typeof window.PocketMunsters !== "undefined") {
+          logResult("Script Loading", "PASS", "embed.js loaded successfully");
+          updateFeatureStatus("embed-load-test", "PASS", "✅ Loaded");
+          document.getElementById("script-loaded").textContent = "true";
+          document.getElementById("pocketmunsters-available").textContent = "true";
+        } else {
+          logResult("Script Loading", "FAIL", "embed.js failed to load");
+          updateFeatureStatus("embed-load-test", "FAIL", "❌ Failed");
+          return;
+        }
+
+        // Test 2: API Availability
+        if (window.PocketMunsters && window.PocketMunsters.init) {
+          logResult("API Availability", "PASS", "PocketMunsters.init() available");
+          updateFeatureStatus("api-test", "PASS", "✅ Available");
+        } else {
+          logResult("API Availability", "FAIL", "PocketMunsters.init() not found");
+          updateFeatureStatus("api-test", "FAIL", "❌ Missing");
+        }
+
+        // Test 3: Canvas Setup
+        const canvas = document.getElementById("stage");
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          if (ctx) {
+            logResult("Canvas Setup", "PASS", "Canvas context available");
+            updateFeatureStatus("canvas-test", "PASS", "✅ Ready");
+            document.getElementById("canvas-context").textContent = "true";
+          } else {
+            logResult("Canvas Setup", "FAIL", "Canvas context failed");
+            updateFeatureStatus("canvas-test", "FAIL", "❌ Failed");
+          }
+        }
+
+        // Test 4: UI Elements
+        const requiredElements = ["balance", "bet", "spinBtn", "win"];
+        const missingElements = [];
+
+        requiredElements.forEach((id) => {
+          if (!document.getElementById(id)) {
+            missingElements.push(id);
+          }
+        });
+
+        if (missingElements.length === 0) {
+          logResult("UI Elements", "PASS", "All required UI elements found");
+          updateFeatureStatus("ui-test", "PASS", "✅ Complete");
+        } else {
+          logResult("UI Elements", "FAIL", `Missing elements: ${missingElements.join(", ")}`);
+          updateFeatureStatus("ui-test", "FAIL", "❌ Incomplete");
+        }
+
+        // Test 5: Audio Context
+        if (window.AudioContext || window.webkitAudioContext) {
+          logResult("Audio Context", "PASS", "Web Audio API available");
+          updateFeatureStatus("audio-test", "PASS", "✅ Available");
+          document.getElementById("audio-context").textContent = "true";
+        } else {
+          logResult("Audio Context", "FAIL", "Web Audio API not supported");
+          updateFeatureStatus("audio-test", "FAIL", "❌ Unsupported");
+        }
+
+        console.log("Embed test completed. Check results above.");
+      }
+
+      function checkFeatures() {
+        console.log("=== PocketMon Genesis Embed Features ===");
+
+        if (window.PocketMunsters) {
+          console.log("✅ PocketMunsters namespace available");
+          console.log("Available methods:", Object.keys(window.PocketMunsters));
+
+          if (window.PocketMunsters.Animator) {
+            console.log("✅ Animator class available");
+          }
+
+          if (window.PocketMunsters.sfx) {
+            console.log("✅ Sound effects available");
+            console.log("Available sounds:", Object.keys(window.PocketMunsters.sfx));
+          }
+        } else {
+          console.log("❌ PocketMunsters namespace not found");
+        }
+
+        if (window.Animator) {
+          console.log("✅ Animator class globally available");
+        }
+
+        console.log("=== Browser Compatibility ===");
+        console.log("Web Audio:", !!(window.AudioContext || window.webkitAudioContext));
+        console.log("Canvas 2D:", !!document.createElement("canvas").getContext);
+        console.log("ES6 Support:", !!(Array.from && Promise));
+      }
+
+      // Container embed tests
+      function runContainerEmbedTest() {
+        const host = document.getElementById("container-host");
+        // Script check
+        if (!window.PocketMunsters || !window.PocketMunsters.mount) {
+          logResult2(
+            "Script Loading",
+            "FAIL",
+            "embed.container.js failed to load or mount() missing"
+          );
+          return;
+        }
+        // Mount
+        try {
+          containerInstance = window.PocketMunsters.mount(host);
+          if (containerInstance && containerInstance.root && containerInstance.host) {
+            logResult2("Mount", "PASS", "Container mounted with Shadow DOM");
+          } else {
+            logResult2("Mount", "FAIL", "Invalid mount return object");
+          }
+        } catch (e) {
+          logResult2("Mount", "FAIL", "Error during mount: " + ((e && e.message) || e));
+        }
+      }
+
+      function checkContainerFeatures() {
+        if (!window.PocketMunsters) {
+          logResult2("Namespace", "FAIL", "PocketMunsters not found");
+          return;
+        }
+        const hasMount = typeof window.PocketMunsters.mount === "function";
+        logResult2(
+          "API Availability",
+          hasMount ? "PASS" : "FAIL",
+          hasMount ? "mount() available" : "mount() missing"
+        );
+        if (containerInstance && containerInstance.animator) {
+          logResult2("Animator", "PASS", "Animator instance available");
+        } else {
+          logResult2("Animator", "FAIL", "Animator not available yet");
+        }
+      }
+
+      function testSpin() {
+        const spinBtn = document.getElementById("spinBtn");
+        if (spinBtn) {
+          logResult("Spin Test", "INFO", "Click the Spin button to test game functionality");
+          updateFeatureStatus("spin-test", "INFO", "🔄 Ready to test");
+        } else {
+          logResult("Spin Test", "FAIL", "Spin button not found");
+          updateFeatureStatus("spin-test", "FAIL", "❌ No spin button");
+        }
+      }
+
+      function testAudio() {
+        if (window.PocketMunsters && window.PocketMunsters.sfx) {
+          try {
+            window.PocketMunsters.sfx.click();
+            logResult("Audio Test", "PASS", "Sound effects working");
+            updateFeatureStatus("audio-test", "PASS", "✅ Working");
+          } catch (e) {
+            logResult("Audio Test", "FAIL", `Audio error: ${e.message}`);
+            updateFeatureStatus("audio-test", "FAIL", "❌ Error");
+          }
+        } else {
+          logResult("Audio Test", "FAIL", "Sound effects not available");
+          updateFeatureStatus("audio-test", "FAIL", "❌ Unavailable");
+        }
+      }
+
+      // Error handling
+      window.addEventListener("error", function (e) {
+        const errorLog = document.getElementById("error-log");
+        errorLog.innerHTML += `<div>❌ ${e.message} (${e.filename}:${e.lineno})</div>`;
+        console.error("Embed test error:", e);
+      });
+
+      // Auto-run basic tests when page loads
+      window.addEventListener("load", function () {
+        setTimeout(runEmbedTest, 600); // Wait for embed.js to load
+        setTimeout(runContainerEmbedTest, 1200); // Load container after classic
+      });
+
+      console.log("🎮 PocketMon Genesis Embed Test Harness loaded");
+      console.log("📝 Check the test results above for embed functionality verification");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,159 @@
+{
+  "gameId": "pocket_monsters_genesis",
+  "version": "1.0.0",
+  "provider": "pokemongenesis",
+  "bundleInfo": {
+    "name": "PocketMonstersGenesis",
+    "version": "1.0.0",
+    "buildDate": "2025-09-27T23:34:00Z",
+    "size": "4.2MB",
+    "compression": "gzip",
+    "integrity": "sha256-abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"
+  },
+  "assets": {
+    "javascript": [
+      {
+        "file": "pocketmonsters-game.min.js",
+        "size": "1.8MB",
+        "integrity": "sha256-jsintegrityhash1234567890abcdef1234567890abcdef1234567890abcdef",
+        "dependencies": ["engine", "animations", "graphics"]
+      },
+      {
+        "file": "stake-integration.min.js",
+        "size": "245KB",
+        "integrity": "sha256-stakeintegrityhash1234567890abcdef1234567890abcdef1234567890abcdef",
+        "dependencies": ["api", "wallet", "events"]
+      },
+      {
+        "file": "advanced-graphics.min.js",
+        "size": "890KB",
+        "integrity": "sha256-graphicsintegrityhash1234567890abcdef1234567890abcdef1234567890abcdef",
+        "dependencies": ["webgl", "shaders", "particles"]
+      },
+      {
+        "file": "pokemon-animations.min.js",
+        "size": "650KB",
+        "integrity": "sha256-animationintegrityhash1234567890abcdef1234567890abcdef1234567890abcdef",
+        "dependencies": ["sprites", "transitions", "effects"]
+      }
+    ],
+    "css": [
+      {
+        "file": "pocketmonsters-styles.min.css",
+        "size": "156KB",
+        "integrity": "sha256-cssintegrityhash1234567890abcdef1234567890abcdef1234567890abcdef"
+      },
+      {
+        "file": "stake-ui.min.css",
+        "size": "89KB",
+        "integrity": "sha256-stakecssintegrityhash1234567890abcdef1234567890abcdef1234567890abcdef"
+      }
+    ],
+    "images": [
+      {
+        "directory": "symbols/",
+        "count": 18,
+        "format": "png",
+        "dimensions": "80x80",
+        "totalSize": "2.1MB"
+      },
+      {
+        "directory": "backgrounds/",
+        "count": 5,
+        "format": "jpg",
+        "dimensions": "1920x1080",
+        "totalSize": "850KB"
+      },
+      {
+        "directory": "ui/",
+        "count": 12,
+        "format": "png",
+        "dimensions": "various",
+        "totalSize": "340KB"
+      }
+    ],
+    "sounds": [
+      {
+        "directory": "audio/",
+        "count": 25,
+        "format": "mp3",
+        "totalSize": "450KB",
+        "categories": ["spins", "wins", "bonuses", "transitions"]
+      }
+    ]
+  },
+  "configuration": {
+    "gameSettings": {
+      "gridSize": { "rows": 7, "cols": 7 },
+      "minBet": 0.01,
+      "maxBet": 100.0,
+      "maxWin": 50000,
+      "rtp": 96.5,
+      "qualityLevels": ["low", "medium", "high", "ultra"],
+      "enableEffects": true,
+      "enableSound": true
+    },
+    "platformIntegration": {
+      "stakeCompliant": true,
+      "apiEndpoints": [
+        "https://api.stake.com/v2/games/pocket_monsters_genesis",
+        "https://api.stake.com/v2/games/pocket_monsters_genesis/spin",
+        "https://api.stake.com/v2/games/pocket_monsters_genesis/balance"
+      ],
+      "websocketEndpoint": "wss://ws.stake.com/pocket_monsters_genesis",
+      "sessionManagement": "stake_compliant",
+      "compliance": "regulated_jurisdiction_ready"
+    },
+    "optimization": {
+      "renderQuality": "high",
+      "particleCount": 300,
+      "animationSpeed": 1.0,
+      "memoryLimit": "15MB",
+      "frameRate": 60,
+      "preloadAssets": true
+    }
+  },
+  "dependencies": {
+    "framework": "custom_game_engine_v2",
+    "graphics": "webgl2_advanced",
+    "animation": "sprite_based_system",
+    "audio": "web_audio_api",
+    "networking": "websocket_stable",
+    "storage": "indexeddb_local"
+  },
+  "compatibility": {
+    "browsers": {
+      "chrome": "100+",
+      "firefox": "92+",
+      "safari": "15.4+",
+      "edge": "95+",
+      "iosSafari": "15.4+",
+      "androidChrome": "100+"
+    },
+    "mobile": {
+      "ios": "15.0+",
+      "android": "10.0+",
+      "minimumRAM": "2GB"
+    },
+    "performance": {
+      "minimumCPU": "dual_core",
+      "minimumGPU": "webgl2_compatible",
+      "minimumBandwidth": "1Mbps"
+    }
+  },
+  "security": {
+    "cspHeaders": "strict",
+    "xssProtection": "enabled",
+    "integrityChecks": "all_assets",
+    "encryption": "tls_1_3",
+    "sessionTimeout": 3600
+  },
+  "deployment": {
+    "cdn": "cloudflare_enterprise",
+    "compression": ["gzip", "brotli"],
+    "cacheStrategy": "aggressive_with_fallback",
+    "fallbackAssets": "included",
+    "hotReload": false,
+    "debugMode": false
+  }
+}

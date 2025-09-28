@@ -1,6 +1,6 @@
 from game_calculations import GameCalculations
 from src.calculations.cluster import Cluster
-from game_events import update_grid_mult_event
+from .game_events import update_grid_mult_event
 from src.events.events import update_freespin_event
 
 
@@ -14,18 +14,23 @@ class GameExecutables(GameCalculations):
         ]
 
     def update_grid_mults(self):
-        """All positions start with 1x. If there is a win in that position, the grid point
-        is 'activated' and all subsequent wins on that position will double the grid value."""
+        """Per-position multiplier progression (doubling):
+        - Stored grid value 0 means baseline x1 (inactive).
+        - On first win at a position: 0 → 2 (i.e., x2 active).
+        - On subsequent wins: value doubles (e.g., 2→4→8...), capped by maximum_board_mult.
+        This aligns with the frontend engine semantics and design doc (x1→x2→x4...→x8192)."""
         if self.win_data["totalWin"] > 0:
             for win in self.win_data["wins"]:
                 for pos in win["positions"]:
-                    if self.position_multipliers[pos["reel"]][pos["row"]] == 0:
-                        self.position_multipliers[pos["reel"]][pos["row"]] = 1
+                    r = pos["row"]
+                    c = pos["reel"]
+                    cur = self.position_multipliers[c][r]
+                    # 0 represents x1 baseline; first activation becomes x2
+                    if cur <= 0:
+                        nxt = 2
                     else:
-                        self.position_multipliers[pos["reel"]][pos["row"]] += 1
-                        self.position_multipliers[pos["reel"]][pos["row"]] = min(
-                            self.position_multipliers[pos["reel"]][pos["row"]], self.config.maximum_board_mult
-                        )
+                        nxt = cur * 2
+                    self.position_multipliers[c][r] = min(nxt, self.config.maximum_board_mult)
             update_grid_mult_event(self)
 
     def get_clusters_update_wins(self):

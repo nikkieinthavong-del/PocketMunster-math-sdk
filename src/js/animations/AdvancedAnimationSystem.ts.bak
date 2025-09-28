@@ -1,0 +1,505 @@
+/**
+ * Professional Animation System for Pocket Monsters - Stake.com Edition
+ * Advanced tweening, physics-based animations, and cinematic effects
+ */
+
+export interface AnimationConfig {
+  duration: number;
+  easing: EasingFunction;
+  delay?: number;
+  repeat?: number;
+  yoyo?: boolean;
+  onUpdate?: (progress: number, value: any) => void;
+  onComplete?: () => void;
+}
+
+export type EasingFunction = (t: number) => number;
+
+// Professional easing functions for casino-quality animations
+export class Easing {
+  static linear = (t: number) => t;
+  
+  static easeInQuad = (t: number) => t * t;
+  static easeOutQuad = (t: number) => t * (2 - t);
+  static easeInOutQuad = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  
+  static easeInCubic = (t: number) => t * t * t;
+  static easeOutCubic = (t: number) => (--t) * t * t + 1;
+  static easeInOutCubic = (t: number) => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+  
+  static easeInQuart = (t: number) => t * t * t * t;
+  static easeOutQuart = (t: number) => 1 - (--t) * t * t * t;
+  static easeInOutQuart = (t: number) => t < 0.5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t;
+  
+  static easeInElastic = (t: number) => {
+    if (t === 0) return 0;
+    if (t === 1) return 1;
+    const p = 0.3;
+    const a = 1;
+    const s = p / 4;
+    return -(a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t - s) * (2 * Math.PI) / p));
+  };
+  
+  static easeOutElastic = (t: number) => {
+    if (t === 0) return 0;
+    if (t === 1) return 1;
+    const p = 0.3;
+    const a = 1;
+    const s = p / 4;
+    return a * Math.pow(2, -10 * t) * Math.sin((t - s) * (2 * Math.PI) / p) + 1;
+  };
+  
+  static easeOutBounce = (t: number) => {
+    if (t < 1 / 2.75) {
+      return 7.5625 * t * t;
+    } else if (t < 2 / 2.75) {
+      return 7.5625 * (t -= 1.5 / 2.75) * t + 0.75;
+    } else if (t < 2.5 / 2.75) {
+      return 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375;
+    } else {
+      return 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
+    }
+  };
+}
+
+export interface Sprite {
+  id: string;
+  position: { x: number; y: number };
+  scale: { x: number; y: number };
+  rotation: number;
+  alpha: number;
+  tint: { r: number; g: number; b: number };
+  anchor: { x: number; y: number };
+  texture: WebGLTexture;
+  visible: boolean;
+  zIndex: number;
+}
+
+export interface ParticleEmitter {
+  position: { x: number; y: number };
+  velocity: { x: number; y: number; variance: number };
+  acceleration: { x: number; y: number };
+  lifetime: { min: number; max: number };
+  size: { start: number; end: number };
+  color: { start: [number, number, number, number]; end: [number, number, number, number] };
+  emissionRate: number;
+  maxParticles: number;
+  blendMode: 'normal' | 'add' | 'multiply';
+}
+
+export class AdvancedAnimationSystem {
+  private animations: Map<string, Animation> = new Map();
+  private sprites: Map<string, Sprite> = new Map();
+  private particleEmitters: Map<string, ParticleEmitter> = new Map();
+  private timeline: AnimationTimeline = new AnimationTimeline();
+  
+  // Performance optimization
+  private animationPool: Animation[] = [];
+  private lastFrameTime = 0;
+  private deltaTime = 0;
+
+  constructor() {
+    this.initializeDefaults();
+  }
+
+  private initializeDefaults() {
+    // Initialize object pools and default configurations
+  }
+
+  // Core animation methods
+  public animateSprite(spriteId: string, properties: Partial<Sprite>, config: AnimationConfig): string {
+    const sprite = this.sprites.get(spriteId);
+    if (!sprite) {
+      console.warn(`Sprite ${spriteId} not found`);
+      return '';
+    }
+
+    const animationId = this.generateAnimationId();
+    const animation = this.createAnimation(sprite, properties, config, animationId);
+    
+    this.animations.set(animationId, animation);
+    return animationId;
+  }
+
+  // Pokemon-specific animations for casino gaming
+  public animatePokemonAppear(spriteId: string, pokemonType: string): string {
+    const sprite = this.sprites.get(spriteId);
+    if (!sprite) return '';
+
+    // Set initial state (invisible, scaled down)
+    sprite.alpha = 0;
+    sprite.scale = { x: 0.1, y: 0.1 };
+    sprite.rotation = Math.PI * 0.25; // 45 degrees
+
+    // Create dramatic entrance animation
+    return this.timeline
+      .add(() => this.animateSprite(spriteId, 
+        { alpha: 1, scale: { x: 1.2, y: 1.2 } }, 
+        { duration: 300, easing: Easing.easeOutElastic }
+      ))
+      .add(() => this.animateSprite(spriteId, 
+        { scale: { x: 1, y: 1 }, rotation: 0 }, 
+        { duration: 200, easing: Easing.easeOutBounce }
+      ))
+      .add(() => this.createPokemonSparkles(spriteId, pokemonType))
+      .execute();
+  }
+
+  public animatePokemonDisappear(spriteId: string, isWinning: boolean = false): string {
+    const effects = isWinning ? this.createWinningEffects(spriteId) : null;
+    
+    return this.timeline
+      .add(() => effects) // Add winning effects if applicable
+      .add(() => this.animateSprite(spriteId, 
+        { 
+          scale: { x: 1.3, y: 1.3 }, 
+          alpha: 0.8,
+          rotation: Math.PI * 0.1 
+        }, 
+        { duration: 150, easing: Easing.easeInQuad }
+      ))
+      .add(() => this.animateSprite(spriteId, 
+        { 
+          scale: { x: 0, y: 0 }, 
+          alpha: 0,
+          rotation: Math.PI * 0.5 
+        }, 
+        { duration: 250, easing: Easing.easeInCubic }
+      ))
+      .execute();
+  }
+
+  // Advanced cascade animation with physics
+  public animateCascade(grid: Sprite[][], removedPositions: Array<[number, number]>): string {
+    const timelineId = this.generateAnimationId();
+    
+    // Phase 1: Mark winning symbols with glow effect
+    removedPositions.forEach(([row, col]) => {
+      const sprite = grid[row][col];
+      if (sprite) {
+        this.addGlowEffect(sprite.id, 500);
+      }
+    });
+
+    // Phase 2: Explosive removal with particles
+    setTimeout(() => {
+      removedPositions.forEach(([row, col]) => {
+        const sprite = grid[row][col];
+        if (sprite) {
+          this.createExplosionEffect(sprite.position.x, sprite.position.y);
+          this.animatePokemonDisappear(sprite.id, true);
+        }
+      });
+    }, 500);
+
+    // Phase 3: Gravity simulation for falling symbols
+    setTimeout(() => {
+      this.simulateGravityFall(grid);
+    }, 800);
+
+    // Phase 4: New symbols appearing from top
+    setTimeout(() => {
+      this.animateNewSymbolsAppear(grid);
+    }, 1200);
+
+    return timelineId;
+  }
+
+  // Multiplier effects with dynamic visuals
+  public animateMultiplierIncrease(position: { x: number; y: number }, oldValue: number, newValue: number): string {
+    const multiplierSprite = this.createMultiplierSprite(position, newValue);
+    
+    // Pulsing animation based on multiplier tier
+    const pulseIntensity = Math.min(newValue / 2, 3.0);
+    const glowColor = this.getMultiplierGlowColor(newValue);
+    
+    return this.timeline
+      .add(() => this.animateSprite(multiplierSprite.id, 
+        { scale: { x: 1.5, y: 1.5 } }, 
+        { duration: 200, easing: Easing.easeOutQuad }
+      ))
+      .add(() => this.addPulsingGlow(multiplierSprite.id, glowColor, pulseIntensity))
+      .add(() => this.animateSprite(multiplierSprite.id, 
+        { scale: { x: 1, y: 1 } }, 
+        { duration: 300, easing: Easing.easeOutBounce }
+      ))
+      .execute();
+  }
+
+  // Master Ball effect with cinematic flair
+  public animateMasterBallEffect(multiplier: number): string {
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    
+    return this.timeline
+      .add(() => this.createScreenFlash('#FFD700', 200)) // Gold flash
+      .add(() => this.createRadialShockwave(centerX, centerY, 800))
+      .add(() => this.createMasterBallParticles(centerX, centerY, multiplier))
+      .add(() => this.animateAllMultipliersGlow(multiplier))
+      .add(() => this.createFloatingText(`${multiplier}x MASTER BALL!`, centerX, centerY))
+      .execute();
+  }
+
+  // Bonus mode entrance animations
+  public animateBonusModeEntrance(bonusType: 'frenzy' | 'hunt' | 'epic'): string {
+    const config = this.getBonusModeConfig(bonusType);
+    
+    return this.timeline
+      .add(() => this.createScreenTransition(config.backgroundColor, 1000))
+      .add(() => this.createBonusLogo(bonusType, config))
+      .add(() => this.transformGameBoard(config.boardEffect))
+      .add(() => this.createAmbientParticles(config.particleEffect))
+      .execute();
+  }
+
+  // Particle system integration
+  public createExplosionEffect(x: number, y: number, intensity: number = 1.0): string {
+    const emitterId = this.generateAnimationId();
+    
+    const emitter: ParticleEmitter = {
+      position: { x, y },
+      velocity: { x: 0, y: 0, variance: 200 * intensity },
+      acceleration: { x: 0, y: 300 }, // Gravity
+      lifetime: { min: 0.5, max: 1.5 },
+      size: { start: 10 * intensity, end: 2 },
+      color: { 
+        start: [1.0, 0.8, 0.2, 1.0], // Bright yellow
+        end: [1.0, 0.2, 0.0, 0.0]     // Fade to red
+      },
+      emissionRate: 100,
+      maxParticles: 200,
+      blendMode: 'add'
+    };
+    
+    this.particleEmitters.set(emitterId, emitter);
+    
+    // Auto-cleanup after 2 seconds
+    setTimeout(() => {
+      this.particleEmitters.delete(emitterId);
+    }, 2000);
+    
+    return emitterId;
+  }
+
+  public createPokemonSparkles(spriteId: string, pokemonType: string): string {
+    const sprite = this.sprites.get(spriteId);
+    if (!sprite) return '';
+    
+    const sparkleColor = this.getPokemonSparkleColor(pokemonType);
+    
+    return this.createExplosionEffect(
+      sprite.position.x, 
+      sprite.position.y, 
+      0.5
+    );
+  }
+
+  // Advanced timing and sequencing
+  public createAnimationSequence(animations: Array<() => string>): string {
+    return this.timeline.sequence(animations).execute();
+  }
+
+  public createParallelAnimations(animations: Array<() => string>): string {
+    return this.timeline.parallel(animations).execute();
+  }
+
+  // Performance monitoring and optimization
+  public update(timestamp: number) {
+    this.deltaTime = timestamp - this.lastFrameTime;
+    this.lastFrameTime = timestamp;
+    
+    // Update all active animations
+    this.updateAnimations(this.deltaTime);
+    this.updateParticleEmitters(this.deltaTime);
+    this.timeline.update(this.deltaTime);
+    
+    // Cleanup completed animations
+    this.cleanupCompletedAnimations();
+  }
+
+  private updateAnimations(deltaTime: number) {
+    for (const [id, animation] of this.animations) {
+      animation.update(deltaTime);
+      
+      if (animation.isComplete()) {
+        this.animations.delete(id);
+        this.returnAnimationToPool(animation);
+      }
+    }
+  }
+
+  private updateParticleEmitters(deltaTime: number) {
+    for (const [id, emitter] of this.particleEmitters) {
+      // Update particle physics and lifetime
+      this.updateParticleSystem(emitter, deltaTime);
+    }
+  }
+
+  // Utility methods
+  private generateAnimationId(): string {
+    return `anim_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private createAnimation(target: any, properties: any, config: AnimationConfig, id: string): Animation {
+    return new Animation(target, properties, config, id);
+  }
+
+  private getMultiplierGlowColor(value: number): [number, number, number] {
+    if (value <= 2) return [0.0, 1.0, 0.0];      // Green
+    if (value <= 4) return [0.0, 0.5, 1.0];      // Blue  
+    if (value <= 8) return [1.0, 0.5, 0.0];      // Orange
+    if (value <= 16) return [1.0, 0.0, 0.5];     // Pink
+    return [1.0, 1.0, 0.0];                      // Gold
+  }
+
+  private getPokemonSparkleColor(pokemonType: string): [number, number, number] {
+    const colors = {
+      'pikachu': [1.0, 1.0, 0.0],     // Yellow
+      'charmander': [1.0, 0.5, 0.0],  // Orange
+      'squirtle': [0.0, 0.5, 1.0],    // Blue
+      'bulbasaur': [0.0, 1.0, 0.0],   // Green
+      'jigglypuff': [1.0, 0.5, 1.0],  // Pink
+      'eevee': [0.8, 0.6, 0.4],       // Brown
+      'wild': [1.0, 1.0, 1.0]         // White
+    };
+    
+    return colors[pokemonType] || colors['wild'];
+  }
+
+  private getBonusModeConfig(bonusType: string) {
+    const configs = {
+      'frenzy': {
+        backgroundColor: '#FF4500',
+        boardEffect: 'energize',
+        particleEffect: 'fire'
+      },
+      'hunt': {
+        backgroundColor: '#8B4513', 
+        boardEffect: 'darken',
+        particleEffect: 'leaves'
+      },
+      'epic': {
+        backgroundColor: '#4B0082',
+        boardEffect: 'cosmic',
+        particleEffect: 'stars'
+      }
+    };
+    
+    return configs[bonusType] || configs['frenzy'];
+  }
+
+  // Placeholder methods for complex effects
+  private addGlowEffect(spriteId: string, duration: number) { }
+  private simulateGravityFall(grid: Sprite[][]) { }
+  private animateNewSymbolsAppear(grid: Sprite[][]) { }
+  private createMultiplierSprite(position: any, value: number): Sprite { return {} as Sprite; }
+  private addPulsingGlow(spriteId: string, color: any, intensity: number) { }
+  private createScreenFlash(color: string, duration: number) { }
+  private createRadialShockwave(x: number, y: number, radius: number) { }
+  private createMasterBallParticles(x: number, y: number, multiplier: number) { }
+  private animateAllMultipliersGlow(multiplier: number) { }
+  private createFloatingText(text: string, x: number, y: number) { }
+  private createScreenTransition(color: string, duration: number) { }
+  private createBonusLogo(type: string, config: any) { }
+  private transformGameBoard(effect: string) { }
+  private createAmbientParticles(effect: string) { }
+  private updateParticleSystem(emitter: ParticleEmitter, deltaTime: number) { }
+  private cleanupCompletedAnimations() { }
+  private returnAnimationToPool(animation: Animation) { }
+  private createWinningEffects(spriteId: string) { }
+}
+
+// Supporting classes
+export class Animation {
+  private startTime: number = 0;
+  private currentTime: number = 0;
+  private initialValues: any = {};
+  
+  constructor(
+    private target: any,
+    private properties: any,
+    private config: AnimationConfig,
+    private id: string
+  ) {
+    this.captureInitialValues();
+  }
+
+  private captureInitialValues() {
+    for (const prop in this.properties) {
+      this.initialValues[prop] = this.target[prop];
+    }
+  }
+
+  update(deltaTime: number) {
+    this.currentTime += deltaTime;
+    const progress = Math.min(this.currentTime / this.config.duration, 1.0);
+    const easedProgress = this.config.easing(progress);
+    
+    // Interpolate values
+    for (const prop in this.properties) {
+      const startValue = this.initialValues[prop];
+      const endValue = this.properties[prop];
+      this.target[prop] = this.interpolate(startValue, endValue, easedProgress);
+    }
+    
+    if (this.config.onUpdate) {
+      this.config.onUpdate(progress, this.target);
+    }
+    
+    if (progress >= 1.0 && this.config.onComplete) {
+      this.config.onComplete();
+    }
+  }
+
+  private interpolate(start: any, end: any, progress: number): any {
+    if (typeof start === 'number' && typeof end === 'number') {
+      return start + (end - start) * progress;
+    }
+    
+    if (typeof start === 'object' && typeof end === 'object') {
+      const result: any = {};
+      for (const key in start) {
+        result[key] = this.interpolate(start[key], end[key], progress);
+      }
+      return result;
+    }
+    
+    return progress < 1.0 ? start : end;
+  }
+
+  isComplete(): boolean {
+    return this.currentTime >= this.config.duration;
+  }
+}
+
+export class AnimationTimeline {
+  private sequences: Array<() => any> = [];
+  private parallelGroups: Array<Array<() => any>> = [];
+  
+  add(animation: () => any): AnimationTimeline {
+    this.sequences.push(animation);
+    return this;
+  }
+  
+  sequence(animations: Array<() => any>): AnimationTimeline {
+    this.sequences.push(...animations);
+    return this;
+  }
+  
+  parallel(animations: Array<() => string>): AnimationTimeline {
+    this.parallelGroups.push(animations);
+    return this;
+  }
+  
+  execute(): string {
+    const timelineId = `timeline_${Date.now()}`;
+    // Execute timeline logic
+    return timelineId;
+  }
+  
+  update(deltaTime: number) {
+    // Update timeline progress
+  }
+}
+
+// All classes are already exported individually above

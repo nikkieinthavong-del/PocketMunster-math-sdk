@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Husky pre-commit hook
+# Run lint-staged to format/lint staged files
+npx --no-install lint-staged

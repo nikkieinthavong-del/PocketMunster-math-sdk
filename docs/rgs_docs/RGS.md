@@ -1,5 +1,3 @@
-
-
 # RGS Endpoints
 
 This specification outlines the API endpoints available to providers for communicating with the Stake Engine. These APIs enable key operations such as creating bets, completing bets, validating sessions, and retrieving player balances.
@@ -65,29 +63,29 @@ Currency impacts **only** the display layer; it does not affect gameplay logic.
 
 ## Supported Currencies
 
-| Currency               | Abbreviation | Display  | Example  |
-| ---------------------- | ------------ | -------- | -------- |
-| United States Dollar   | USD          | $        | $10.00   |
-| Canadian Dollar        | CAD          | CA$      | CA$10.00 |
-| Japanese Yen           | JPY          | ¥        | ¥10      |
-| Euro                   | EUR          | €        | €10.00   |
-| Russian Ruble          | RUB          | ₽        | ₽10.00   |
-| Chinese Yuan           | CNY          | CN¥      | CN¥10.00 |
-| Philippine Peso        | PHP          | ₱        | ₱10.00   |
-| Indian Rupee           | INR          | ₹        | ₹10.00   |
-| Indonesian Rupiah      | IDR          | Rp       | Rp10     |
-| South Korean Won       | KRW          | ₩        | ₩10      |
-| Brazilian Real         | BRL          | R$       | R$10.00  |
-| Mexican Peso           | MXN          | MX$      | MX$10.00 |
-| Danish Krone           | DKK          | KR       | 10.00 KR |
-| Polish Złoty           | PLN          | zł       | 10.00 zł |
-| Vietnamese Đồng        | VND          | ₫        | 10 ₫     |
-| Turkish Lira           | TRY          | ₺        | ₺10.00   |
-| Chilean Peso           | CLP          | CLP      | 10 CLP   |
-| Argentine Peso         | ARS          | ARS      | 10.00 ARS|
-| Peruvian Sol           | PEN          | S/       | S/10.00  |
-| Stake Gold Coin        | XGC          | GC       | 10.00 GC |
-| Stake Cash             | XSC          | SC       | 10.00 SC |
+| Currency             | Abbreviation | Display | Example   |
+| -------------------- | ------------ | ------- | --------- |
+| United States Dollar | USD          | $       | $10.00    |
+| Canadian Dollar      | CAD          | CA$     | CA$10.00  |
+| Japanese Yen         | JPY          | ¥       | ¥10       |
+| Euro                 | EUR          | €       | €10.00    |
+| Russian Ruble        | RUB          | ₽       | ₽10.00    |
+| Chinese Yuan         | CNY          | CN¥     | CN¥10.00  |
+| Philippine Peso      | PHP          | ₱       | ₱10.00    |
+| Indian Rupee         | INR          | ₹       | ₹10.00    |
+| Indonesian Rupiah    | IDR          | Rp      | Rp10      |
+| South Korean Won     | KRW          | ₩       | ₩10       |
+| Brazilian Real       | BRL          | R$      | R$10.00   |
+| Mexican Peso         | MXN          | MX$     | MX$10.00  |
+| Danish Krone         | DKK          | KR      | 10.00 KR  |
+| Polish Złoty         | PLN          | zł      | 10.00 zł  |
+| Vietnamese Đồng      | VND          | ₫       | 10 ₫      |
+| Turkish Lira         | TRY          | ₺       | ₺10.00    |
+| Chilean Peso         | CLP          | CLP     | 10 CLP    |
+| Argentine Peso       | ARS          | ARS     | 10.00 ARS |
+| Peruvian Sol         | PEN          | S/      | S/10.00   |
+| Stake Gold Coin      | XGC          | GC      | 10.00 GC  |
+| Stake Cash           | XSC          | SC      | 10.00 SC  |
 
 Here are some functions that will help you achieve the display format for the currencies.
 
@@ -120,7 +118,7 @@ type Currency =
 
 /**
  * Currency metadata: symbol, default decimals, symbol placement
- * 
+ *
  */
 const CurrencyMeta: Record<
   Currency,
@@ -233,7 +231,7 @@ POST /wallet/authenticate
 
 ```json
 {
-  "sessionID": "xxxxxxx",
+  "sessionID": "xxxxxxx"
 }
 ```
 
@@ -391,8 +389,6 @@ Stake Engine uses standard HTTP response codes (200, 400, 500) with specific err
 | ERR_GEN         | General Server Error          |
 | ERR_MAINTENANCE | RGS Under Planned Maintenance |
 
-
-
 ## Math Publication File Formats
 
-When publishing math results, ensure that the [file-format](../rgs_docs/data_format.md) is abided by. These are strict conditions for successful math file publication. 
+When publishing math results, ensure that the [file-format](../rgs_docs/data_format.md) is abided by. These are strict conditions for successful math file publication.

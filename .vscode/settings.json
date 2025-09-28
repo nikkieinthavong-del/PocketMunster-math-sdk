@@ -11,9 +11,10 @@
         "tag:yaml.org,2002:python/name:pymdownx.superfences.fence_code_format",
         "tag:yaml.org,2002:python/object/apply:pymdownx.slugs.slugify mapping"
       ],
-    "cSpell.words": [
-        "reelset",
-        "reelstop",
-        "Reelstrips"
-    ]
+  "cSpell.words": [
+    "reelset",
+    "reelstop",
+    "Reelstrips"
+  ],
+  "npm.packageManager": "npm"
 }

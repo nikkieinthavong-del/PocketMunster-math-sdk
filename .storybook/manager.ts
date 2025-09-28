@@ -1,10 +1,10 @@
-import { addons } from '@storybook/manager-api';
-import { create } from '@storybook/theming/create';
+import { addons } from "@storybook/manager-api";
+import { create } from "@storybook/theming/create";
 
 const brand = create({
-  base: 'dark',
-  brandTitle: 'POCKET MUNSTERS — UI Lab',
-  brandUrl: 'https://example.local/',
+  base: "dark",
+  brandTitle: "POCKET MUNSTERS — UI Lab",
+  brandUrl: "https://example.local/",
 });
 
 addons.setConfig({

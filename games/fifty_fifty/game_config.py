@@ -11,11 +11,11 @@ class GameConfig(Config):
     def __init__(self):
         super().__init__()
         self.game_id = "fifty_fifty"
-        self.provider_numer = 0
+        self.provider_number = 0
         self.working_name = "fifty_fifty"
         self.wincap = 2
         self.win_type = "other"
-        self.rtp = 0
+        self.rtp = 0.965
         self.construct_paths()
 
         # Game Dimensions

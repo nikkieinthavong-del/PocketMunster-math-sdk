@@ -23,8 +23,8 @@ class GameConfig(Config):
         self.working_name = "Sample Cluster Game"
         self.wincap = 5000.0
         self.win_type = "cluster"
-        self.rtp = 0.9700
-        self.construct_paths()
+        self.rtp = 0.965
+        self.construct_paths(self.game_id)
 
         # Game Dimensions
         self.num_reels = 7
@@ -80,7 +80,8 @@ class GameConfig(Config):
             self.freegame_type: min(self.freespin_triggers[self.freegame_type].keys()) - 1,
         }
 
-        self.maximum_board_mult = 512
+        # Per-position multiplier cap (align with frontend default of 8192)
+        self.maximum_board_mult = 8192
 
         reels = {"BR0": "BR0.csv", "FR0": "FR0.csv", "WCAP": "WCAP.csv"}
         self.reels = {}

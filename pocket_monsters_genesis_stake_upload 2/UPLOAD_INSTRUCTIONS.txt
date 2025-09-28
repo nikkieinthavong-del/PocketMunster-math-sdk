@@ -1,0 +1,25 @@
+STAKE UPLOAD INSTRUCTIONS
+
+File: pocket_monsters_genesis_stake_upload.zip
+Game: Pocket Monsters Genesis
+RTP: 96.5%
+Platform: stake-engine.com
+
+UPLOAD LOCATION:
+- Go to: https://stake-engine.com/developer
+- Login to your developer account
+- Navigate to 'Game Upload' section
+- Click 'Upload New Game'
+- Select this zip file: pocket_monsters_genesis_stake_upload.zip
+- Follow the on-screen instructions for completion
+
+REQUIRED INFORMATION:
+- Game Name: Pocket Monsters Genesis
+- Game Type: Cluster Pays (7x7 grid)
+- RTP: 96.5%
+- Volatility: Medium-High
+- Theme: Pokemon
+- Technology: WebGL2 with StakeEngine SDK
+
+The upload includes all mathematical models, frontend assets, API specifications,
+and verification documents required for approval.

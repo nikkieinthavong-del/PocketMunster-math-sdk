@@ -1,5 +1,5 @@
 from game_override import GameStateOverride
-from game_events import update_grid_mult_event
+from .game_events import update_grid_mult_event
 
 
 class GameState(GameStateOverride):

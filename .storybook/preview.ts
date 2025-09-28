@@ -1,28 +1,40 @@
 // Global preview configuration for Storybook (HTML)
-import { initialize, mswDecorator } from 'msw-storybook-addon';
-import type { StoryContext, StoryFn } from '@storybook/html';
-import { http, HttpResponse } from 'msw';
-import { withThemeByClassName } from '@storybook/addon-themes';
+import { initialize, mswDecorator } from "msw-storybook-addon";
+import type { StoryContext, StoryFn } from "@storybook/html";
+import { http, HttpResponse } from "msw";
+import { withThemeByClassName } from "@storybook/addon-themes";
 
 // Initialize MSW
-initialize({ onUnhandledRequest: 'bypass' });
+initialize({ onUnhandledRequest: "bypass" });
 
 // Provide default handlers so stories render without a backend
 export const handlers = [
   // Paytable mirrors dist-publish/index.json when present
-  http.get('/api/paytable', async () => {
+  http.get("/api/paytable", async () => {
     try {
-      const r = await fetch('/publish/index.json');
+      const r = await fetch("/publish/index.json");
       if (r.ok) {
         const data = await r.json();
         return HttpResponse.json(data, { status: 200 });
       }
     } catch {}
     // Fallback minimal shape expected by UI
-    return HttpResponse.json({ modes: [{ name: 'base', cost: 1, events: 'books_base.jsonl.zst', weights: 'lookUpTable_base_0.csv' }] }, { status: 200 });
+    return HttpResponse.json(
+      {
+        modes: [
+          {
+            name: "base",
+            cost: 1,
+            events: "books_base.jsonl.zst",
+            weights: "lookUpTable_base_0.csv",
+          },
+        ],
+      },
+      { status: 200 }
+    );
   }),
   // Spin returns a simple deterministic stub
-  http.post('/api/spin', async ({ request }) => {
+  http.post("/api/spin", async ({ request }) => {
     let bet = 1;
     try {
       const body: any = await request.json();
@@ -32,23 +44,25 @@ export const handlers = [
     // Minimal event-like payload the app can consume
     const result = {
       bet,
-      totalWin: Math.round((Math.random() < 0.25 ? bet * (2 + Math.floor(Math.random() * 5)) : 0) * 100) / 100,
+      totalWin:
+        Math.round((Math.random() < 0.25 ? bet * (2 + Math.floor(Math.random() * 5)) : 0) * 100) /
+        100,
       wins: [],
       steps: [],
     };
     return HttpResponse.json({ ok: true, result }, { status: 200 });
   }),
   // Bonus buy placeholder
-  http.post('/api/buy', async () => {
+  http.post("/api/buy", async () => {
     return HttpResponse.json({ ok: true, started: true }, { status: 200 });
   }),
 ];
 
 // Inject theme CSS once (class-based themes)
 (() => {
-  const id = 'pm-theme-styles';
-  if (typeof document !== 'undefined' && !document.getElementById(id)) {
-    const style = document.createElement('style');
+  const id = "pm-theme-styles";
+  if (typeof document !== "undefined" && !document.getElementById(id)) {
+    const style = document.createElement("style");
     style.id = id;
     style.textContent = `
     /* Light */
@@ -69,20 +83,20 @@ export const handlers = [
 export const decorators = [
   mswDecorator,
   withThemeByClassName({
-    themes: { Light: 'theme-light', Dark: 'theme-dark' },
-    defaultTheme: 'Dark',
+    themes: { Light: "theme-light", Dark: "theme-dark" },
+    defaultTheme: "Dark",
   }),
 ];
 
 export const parameters = {
-  layout: 'fullscreen',
+  layout: "fullscreen",
   controls: { expanded: true },
   a11y: { disable: false },
   themes: {
-    default: 'Dark',
+    default: "Dark",
     list: [
-      { name: 'Light', class: 'theme-light', color: '#f7fafc' },
-      { name: 'Dark', class: 'theme-dark', color: '#0b1220' },
+      { name: "Light", class: "theme-light", color: "#f7fafc" },
+      { name: "Dark", class: "theme-dark", color: "#0b1220" },
     ],
   },
 };
@@ -90,13 +104,13 @@ export const parameters = {
 // Themes addon configuration: toggles body classes and variables
 export const globalTypes = {
   theme: {
-    description: 'Global theme for components',
-    defaultValue: 'dark',
+    description: "Global theme for components",
+    defaultValue: "dark",
     toolbar: {
-      icon: 'mirror',
+      icon: "mirror",
       items: [
-        { value: 'light', title: 'Light' },
-        { value: 'dark', title: 'Dark' },
+        { value: "light", title: "Light" },
+        { value: "dark", title: "Dark" },
       ],
       dynamicTitle: true,
     },

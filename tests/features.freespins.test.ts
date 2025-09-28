@@ -1,11 +1,11 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { describe, it, expect } from 'vitest';
-import { enterFreeSpins, stepFreeSpins } from '../src/js/features/freespins';
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { describe, it, expect } from "vitest";
+import { enterFreeSpins, stepFreeSpins } from "../src/js/features/freespins";
 
-const config = JSON.parse(readFileSync(resolve(process.cwd(), 'config.json'), 'utf-8'));
-describe('Free Spins', () => {
-  it('is deterministic for a given seed and trigger count', () => {
+const config = JSON.parse(readFileSync(resolve(process.cwd(), "config.json"), "utf-8"));
+describe("Free Spins", () => {
+  it("is deterministic for a given seed and trigger count", () => {
     const seed = 4242;
     let a = enterFreeSpins(config, 4, seed);
     let b = enterFreeSpins(config, 4, seed);
@@ -19,7 +19,7 @@ describe('Free Spins', () => {
     }
   });
 
-  it('multiplier map shape matches grid config', () => {
+  it("multiplier map shape matches grid config", () => {
     const seed = 777;
     const rows = config.grid?.rows ?? 7;
     const cols = config.grid?.cols ?? 7;

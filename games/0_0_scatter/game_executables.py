@@ -6,7 +6,7 @@ from copy import copy
 
 from game_calculations import GameCalculations
 from src.calculations.scatter import Scatter
-from game_events import send_mult_info_event
+from .game_events import send_mult_info_event
 from src.events.events import (
     set_win_event,
     set_total_event,

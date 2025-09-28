@@ -1,0 +1,204 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://stakeengine.local/schemas/events.schema.json",
+  "title": "Spin Events",
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
+        "type": "object",
+        "properties": {
+          "type": { "const": "spinStart" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "seed": { "type": ["integer", "null"] }
+            },
+            "required": [],
+            "additionalProperties": true
+          }
+        },
+        "required": ["type", "payload"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": { "const": "cascadeStart" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "chainMultiplier": { "type": "number" }
+            },
+            "required": ["index", "chainMultiplier"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["type", "payload"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": { "const": "win" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "clusterId": { "type": "string" },
+              "cells": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "row": { "type": "integer", "minimum": 0 },
+                    "col": { "type": "integer", "minimum": 0 }
+                  },
+                  "required": ["row", "col"],
+                  "additionalProperties": false
+                }
+              },
+              "symbol": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "tier": { "type": "integer", "minimum": 0 }
+                },
+                "required": ["id", "tier"],
+                "additionalProperties": true
+              },
+              "size": { "type": "integer", "minimum": 1 },
+              "multiplier": { "type": "number", "minimum": 1 },
+              "winAmount": { "type": "integer", "minimum": 0 }
+            },
+            "required": ["clusterId", "cells", "symbol", "size", "multiplier", "winAmount"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["type", "payload"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": { "const": "evolution" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "step": { "enum": ["T1_T2", "T2_T3"] },
+              "species": { "type": "string" },
+              "tierBefore": { "type": "integer", "minimum": 1 },
+              "tierAfter": { "type": "integer", "minimum": 1 },
+              "cells": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "row": { "type": "integer", "minimum": 0 },
+                    "col": { "type": "integer", "minimum": 0 }
+                  },
+                  "required": ["row", "col"],
+                  "additionalProperties": false
+                }
+              },
+              "eggsConsumed": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "row": { "type": "integer", "minimum": 0 },
+                    "col": { "type": "integer", "minimum": 0 }
+                  },
+                  "required": ["row", "col"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["step", "species", "tierBefore", "tierAfter", "cells", "eggsConsumed"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["type", "payload"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": { "const": "wildInject" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "positions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "row": { "type": "integer", "minimum": 0 },
+                    "col": { "type": "integer", "minimum": 0 }
+                  },
+                  "required": ["row", "col"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["index", "positions"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["type", "payload"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": { "const": "masterBall" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "multiplier": { "type": "integer", "minimum": 1 }
+            },
+            "required": ["index", "multiplier"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["type", "payload"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": { "const": "cascadeEnd" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "removed": { "type": "integer", "minimum": 0 }
+            },
+            "required": ["index", "removed"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["type", "payload"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "type": { "const": "spinEnd" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "totalWinX": { "type": "integer", "minimum": 0 }
+            },
+            "required": ["totalWinX"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["type", "payload"],
+        "additionalProperties": false
+      }
+    ]
+  }
+}
