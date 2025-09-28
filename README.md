@@ -76,3 +76,7 @@ Notes
 
 - Use the “Quick sim (base)” task (200 spins) for fast iteration.
 - For tighter estimates, increase --spins to 500k–1M.
+
+## Contributions
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for setup, scripts, formatting, and PR guidance.
