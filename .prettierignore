@@ -1,0 +1,13 @@
+# Generated artifacts
+coverage/
+dist-*/
+artifacts/
+__pycache__/
+*.zip
+
+# Node
+node_modules/
+package-lock.json
+
+# Python env
+env/

@@ -1,0 +1,12 @@
+#!/usr/bin/env sh#!/usr/bin/env sh
+
+. "$(dirname -- "$0")/_/husky.sh"# Husky pre-commit hook
+
+# Run lint-staged to format/lint staged files
+
+# Run Prettier on staged filesnpx --no-install lint-staged
+
+npx lint-staged
+
+# Lint Markdown separately to catch repo-wide issues on commit
+npx markdownlint "**/*.md" || true

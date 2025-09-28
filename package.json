@@ -20,27 +20,31 @@
     "simulate:bonus:1m": "npm run build:demo && node dist-run/scripts/simulate_bonus.js --spins=1000000",
     "calibrate:total": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=200000 --targetRTP=0.95 --write",
     "calibrate:total:big": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=500000 --targetRTP=0.95 --write",
-    "calibrate:total:1m": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=1000000 --targetRTP=0.95 --write"
+    "calibrate:total:1m": "npm run build:demo && node dist-run/scripts/calibrate_total.js --spins=1000000 --targetRTP=0.95 --write",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint:md": "markdownlint README.md",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
     "@esotericsoftware/spine-webgl": "^4.2.92",
-  "@storybook/addon-docs": "^8.6.14",
-  "@storybook/addon-essentials": "^8.6.14",
-  "@storybook/addon-interactions": "^8.6.14",
-  "@storybook/addon-links": "^8.6.14",
-  "@storybook/addon-webpack5-compiler-swc": "^3.0.0",
-  "@storybook/react-webpack5": "^8.6.14",
-  "@types/node": "^20.12.12",
+    "@storybook/addon-docs": "^8.6.14",
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/addon-interactions": "^8.6.14",
+    "@storybook/addon-links": "^8.6.14",
+    "@storybook/addon-webpack5-compiler-swc": "^3.0.0",
+    "@storybook/react-webpack5": "^8.6.14",
+    "@types/node": "^20.12.12",
     "babel-loader": "^10.0.0",
     "css-loader": "^7.1.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.4",
     "prop-types": "^15.8.1",
     "sharp": "^0.34.4",
-  "storybook": "^8.6.14",
+    "storybook": "^8.6.14",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.4",
     "typescript": "^5.5.4",
@@ -48,7 +52,11 @@
     "vitest": "^3.2.4",
     "webpack": "^5.101.3",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2"
+    "webpack-dev-server": "^5.2.2",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.10",
+    "markdownlint-cli": "^0.41.0",
+    "prettier": "^3.3.3"
   },
   "engines": {
     "node": ">=20 <21"
@@ -56,5 +64,10 @@
   "dependencies": {
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,md,mdx,json,yml,yaml}": [
+      "prettier --write"
+    ]
   }
 }
