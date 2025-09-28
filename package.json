@@ -28,6 +28,7 @@
     "ci:local": "npm run format:check && npm run lint:md && npm run typecheck && npm run build:demo && npm test -- --coverage && npm run simulate && npm run simulate:bonus"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
@@ -71,5 +72,10 @@
     "*.{js,jsx,ts,tsx,css,md,mdx,json,yml,yaml}": [
       "prettier --write"
     ]
+=======
+    "cross-env": "^10.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.5"
+>>>>>>> origin/main
   }
 }
