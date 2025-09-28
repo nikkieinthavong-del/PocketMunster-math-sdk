@@ -24,7 +24,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check README.md package.json tsconfig.json tsconfig.run.json .github/workflows/ci.yml",
     "lint:md": "markdownlint README.md",
-    "prepare": "husky"
+    "prepare": "husky",
+    "ci:local": "npm run format:check && npm run lint:md && npm run typecheck && npm run build:demo && npm test -- --coverage && npm run simulate && npm run simulate:bonus"
   },
   "devDependencies": {
     "@babel/core": "^7.28.4",
@@ -38,10 +39,15 @@
     "@storybook/addon-webpack5-compiler-swc": "^3.0.0",
     "@storybook/react-webpack5": "^8.6.14",
     "@types/node": "^20.12.12",
+    "@vitest/coverage-v8": "^3.2.4",
     "babel-loader": "^10.0.0",
     "css-loader": "^7.1.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.4",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.10",
+    "markdownlint-cli": "^0.41.0",
+    "prettier": "^3.3.3",
     "prop-types": "^15.8.1",
     "sharp": "^0.34.4",
     "storybook": "^8.6.14",
@@ -52,11 +58,7 @@
     "vitest": "^3.2.4",
     "webpack": "^5.101.3",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.10",
-    "markdownlint-cli": "^0.41.0",
-    "prettier": "^3.3.3"
+    "webpack-dev-server": "^5.2.2"
   },
   "engines": {
     "node": ">=20 <21"
