@@ -96,6 +96,13 @@ nav:
       - File Structure: fe_docs/file_struct.md
       - Context: fe_docs/context.md
       - UI: fe_docs/ui.md
+      - Animations & Reactions:
+        - Overview: fe_docs/animations/index.md
+        - Animation Engine: fe_docs/animations/engine.md
+        - Stories: fe_docs/animations/stories.md
+        - Reveals: fe_docs/animations/reveals.md
+        - Symbol Reactions: fe_docs/animations/symbol-reactions.md
+        - Reel Reactions: fe_docs/animations/reel-reactions.md
 
     - RGS Technical Details: rgs_docs/RGS.md
   - RGS Connection Example: simple_example/simple_example.md

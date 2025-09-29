@@ -1,0 +1,29 @@
+28
+Gyarados,100,water,leaf,earth,2,Dragon Rage,30,50, ,Bubblebeam,40,40,disable
+Voltorb,40,electric, ,earth,2,Spark,10,20, ,Explode,40,40,wild storm
+Mankey,40,earth, ,fighting,2,Fury Swipes,20,60,wild card,Pranks,0,0,recharge
+Rhyhorn,70,earth,electric,fighting,2,Leer,30,0,stun,Horn Attack,30,40, 
+Onix,70,earth,electric,water,2,Rock Throw,10,20,stun,Harden,20,0,disable
+Diglett,30,earth,leaf,electric,2,Dig,10,10, ,Mud Slap,20,30, 
+Machop,50,fighting,electric, ,1,Low Kick,10,20, 
+Wooper,50,water,electric,leaf,2,Amnesia,30,0,disable,Slam,20,30, 
+Totodile,50,water, ,leaf,2,Leer,30,0,stun,Fury Swipes,20,40, 
+Seel,60,water, ,electric,1,Headbutt,30,30,stun
+Staryu,40,water, ,electric,1,Slap,20,20, 
+Magikarp,30,water, ,electric,2,Tackle,20,30, ,Flail,20,15,wild storm
+Tangela,50,leaf, ,fire,2,Bind,25,20,stun,Poisonpowder,30,40,wild card
+Pinisir,60,leaf, ,fire,2,Irongrip,20,20,stun,Guillotine,40,50,wild card
+Venonat,40,leaf, ,fire,2,Stun Spore,20,20,stun,Leech Life,0,15,recharge
+Bulbasaur,40,leaf, ,fire,1,Leech Seed,0,0,recharge
+Nidoran,40,leaf, ,fire,1,Horn Hazard,30,40,wild card
+Cyndaquil,50,fire, ,water,2,Fireworks,20,30, ,Quick Attack,20,15,wild storm
+Magmar,50,fire, ,water,2,Fire Punch,30,35, ,Flamethrower,30,50,wild card
+Growlithe,60,fire, ,water,1,Flare,20,30, 
+Vulpix,50,fire, ,water,1,Confuse Ray,20,0,stun
+Charmander,50,fire, ,water,2,Scratch,10,15, ,Ember,30,40,wild card
+Mareep,40,electric, ,fire,2,Static Electricity,20,0,stun,Thundershock,20,25,stun
+Pikachu,50,electric, ,fire,2,Quick Attack,10,20, ,Agility,30,0,disable
+Pidgey,40,fighting,earth,electric,1,Whirlwind,15,20,stun
+Spearow,50,fighting,earth,electric,2,Peck,10,10, ,Mirror Move,20,30,wild card
+Doduo,50,fighting,earth,electric,1,Fury Attack,20,40,wild card
+Jigglypuff,60,fighting,fighting,fire,3,Lullaby,30,10,stun,Pound,20,25, ,Sing,20,10,disable

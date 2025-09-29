@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
     "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "strict": true,
+    "types": ["node"],
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "strict": true
   },
-  "include": ["src/js/**/*.ts"]
+  "include": ["src/**/*.ts", "scripts/**/*.ts", "config.json"],
+  "exclude": ["dist", "dist-run", "node_modules", "src/stories/**"]
 }

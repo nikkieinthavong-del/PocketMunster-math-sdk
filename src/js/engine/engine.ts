@@ -41,8 +41,10 @@ export function spin(
   bet: number,
   opts: { seed?: number; maxCascades?: number; initMultiplierMap?: MultiplierMap } = {},
 ): SpinResult {
-  const rows = configJson?.grid?.rows ?? 7;
-  const cols = configJson?.grid?.cols ?? 7;
+  const rows = configJson.grid?.rows ?? 7;
+  const cols = configJson.grid?.cols ?? 7;
+
+  // ESM-safe RNG setup assumed above; rand() available here
   let seed = (opts.seed ?? Date.now()) >>> 0;
 
   // simple seeded RNG
@@ -50,14 +52,6 @@ export function spin(
     seed = (seed * 1664525 + 1013904223) >>> 0;
     return seed / 0x100000000;
   };
-
-  // build a simple grid with tiers
-  const grid: any[][] = Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => ({
-      kind: 'tier',
-      tier: 1 + Math.floor(rand() * 3), // 1..3
-    })),
-  );
 
   // multiplier map (all x1 unless provided)
   const multiplierMap: MultiplierMap =
@@ -67,59 +61,75 @@ export function spin(
   const events: SpinEvent[] = [];
   events.push({ type: 'spinStart', payload: { seed: opts.seed } });
 
-  // Tuning knobs for demo math (now read from config)
+  // Tuning knobs for demo math (already in your file)
   const WIN_CHANCE = configJson?.engine?.demo?.winChance ?? 0.28;
   const BASE_FACTOR = configJson?.engine?.demo?.baseFactor ?? 0.25;
 
-  // Weighted helpers
+  // Helper for weighted picks
   const pickWeighted = (pairs: Array<[number, number]>): number => {
     const total = pairs.reduce((a, [, w]) => a + w, 0);
     let x = rand() * total;
-    for (const [val, w] of pairs) {
-      x -= w;
-      if (x <= 0) return val;
-    }
+    for (const [val, w] of pairs) { x -= w; if (x <= 0) return val; }
     return pairs[pairs.length - 1][0];
   };
 
-  // create a demo win with controlled frequency
+  // Build a display grid and prefill with blanks
+  const grid: any[][] = Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => ({ kind: 'blank' })),
+  );
+
+  // Demo win generation (unchanged except using WIN_CHANCE/BASE_FACTOR)
   let totalWinX = 0;
   if (rand() < WIN_CHANCE) {
-    // Favor small sizes/tiers to keep EV reasonable
     const size = pickWeighted([[3, 70], [4, 25], [5, 5]]);
     const tier = pickWeighted([[1, 70], [2, 25], [3, 5]]);
     const row = Math.floor(rand() * rows);
     const col = Math.max(0, Math.min(cols - size, Math.floor(rand() * cols)));
-
-    // positions across the row
     const cells = Array.from({ length: size }, (_, i) => ({ row, col: col + i }));
 
-    // compute a simple win
+    // mark cells for visibility (optional)
+    for (const p of cells) grid[p.row][p.col] = { kind: 'win' };
+
     const baseWinX = tier * size * BASE_FACTOR;
     const multiplier = cells.reduce((acc, p) => acc * (multiplierMap[p.row][p.col] ?? 1), 1);
     const winAmount = baseWinX * Math.max(1, multiplier) * bet;
     totalWinX += winAmount;
 
-    events.push({
-      type: 'win',
-      payload: {
-        clusterId: `${row}-${col}-${size}`,
-        cells, // Array<{ row, col }>
-        symbol: { id: `tier${tier}`, tier },
-        size,
-        multiplier,
-        winAmount,
-      },
-    });
+    events.push({ type: 'win', payload: { row, col, size, tier, winX: winAmount } });
+  }
+
+  // Place scatters (controls Free Spins triggers)
+  // Configure via config.engine.demo.scatterWeights: [ [count, weight], ... ]
+  const defaultScatterWeights: Array<[number, number]> = [
+    [0, 960], [1, 30], [2, 8], [3, 2], [4, 0.8], [5, 0.15], [6, 0.04], [7, 0.01],
+  ];
+  const scatterPairs: Array<[number, number]> =
+    configJson?.engine?.demo?.scatterWeights ?? defaultScatterWeights;
+
+  let scatterCount = Math.min(
+    pickWeighted(scatterPairs),
+    rows * cols,
+  );
+
+  // Random unique positions for scatters
+  if (scatterCount > 0) {
+    const positions: Array<[number, number]> = [];
+    while (positions.length < scatterCount) {
+      const r = Math.floor(rand() * rows);
+      const c = Math.floor(rand() * cols);
+      // avoid duplicates
+      if (!positions.some(([rr, cc]) => rr === r && cc === c)) positions.push([r, c]);
+    }
+    for (const [r, c] of positions) grid[r][c] = { kind: 'scatter_pikachu' };
+    events.push({ type: 'scatters', payload: { count: scatterCount } });
   }
 
   events.push({ type: 'spinEnd', payload: { totalWinX } });
 
   return {
-    grid,
-    multiplierMap,
     totalWinX,
+    grid,
     events,
-    uiHints: null,
+    multiplierMap,
   } as SpinResult;
 }

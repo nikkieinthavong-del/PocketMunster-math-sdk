@@ -1,0 +1,254 @@
+{
+  "game": {
+    "name": "PocketMon Genesis",
+    "version": "1.0.0",
+    "type": "slots",
+    "theme": "pokemon",
+    "provider": "Stake Engine",
+    "certification": "stake-ready"
+  },
+  "grid": {
+    "rows": 7,
+    "cols": 7,
+    "layout": "7x7"
+  },
+  "mathematics": {
+    "rtp": {
+      "target": 94.5,
+      "range": {
+        "min": 92,
+        "max": 96.5
+      },
+      "markets": {
+        "conservative": 94,
+        "standard": 94.5,
+        "competitive": 96,
+        "extreme": 94
+      },
+      "verification": "monte-carlo-1m-spins"
+    },
+    "volatility": {
+      "class": "high",
+      "variance": 2,
+      "hitFrequency": 28,
+      "maxWin": 5000
+    },
+    "paylines": {
+      "type": "cluster-ways-hybrid",
+      "clusterMinSize": 5,
+      "maxWays": 117649,
+      "adjacencyType": "orthogonal"
+    }
+  },
+  "features": {
+    "basePays": {
+      "enabled": true,
+      "contribution": 35
+    },
+    "clusterPays": {
+      "enabled": true,
+      "minSize": 5,
+      "contribution": 15,
+      "bonusMultipliers": [
+        1,
+        1.5,
+        3,
+        6,
+        15,
+        40
+      ]
+    },
+    "waysPays": {
+      "enabled": true,
+      "maxWays": 117649,
+      "contribution": 10,
+      "leftToRight": true,
+      "rightToLeft": false
+    },
+    "evolution": {
+      "enabled": true,
+      "contribution": 8,
+      "chains": [
+        "pikachu->raichu",
+        "charmander->charmeleon->charizard->mega_charizard_x",
+        "squirtle->wartortle->blastoise",
+        "bulbasaur->ivysaur->venusaur"
+      ],
+      "megaEvolutionChance": 0.6
+    },
+    "morphing": {
+      "enabled": true,
+      "contribution": 3,
+      "baseChance": 0.15,
+      "adjacentBonus": 0.3,
+      "wildInfluence": 0.4
+    },
+    "tumble": {
+      "enabled": true,
+      "contribution": 12,
+      "maxCascades": 8,
+      "multiplierProgression": [
+        1,
+        2,
+        3,
+        5,
+        8,
+        13,
+        21,
+        34
+      ],
+      "chainBonusThreshold": 3
+    },
+    "freeSpins": {
+      "enabled": true,
+      "contribution": 15,
+      "trigger": {
+        "symbol": "scatter_pikachu",
+        "minCount": 3,
+        "awards": {
+          "3": 8,
+          "4": 10,
+          "5": 12,
+          "6": 15,
+          "7": 20
+        }
+      },
+      "progression": {
+        "levels": 5,
+        "thresholds": [
+          5,
+          15,
+          35,
+          70,
+          150
+        ],
+        "multiplierBoost": 0.5,
+        "megaSpinRequirement": 3
+      },
+      "retrigger": {
+        "enabled": true,
+        "minScatters": 3,
+        "awardSpins": 5,
+        "maxRetriggers": 5
+      }
+    },
+    "megaFeatures": {
+      "enabled": true,
+      "contribution": 5,
+      "triggers": [
+        "evolution_chain",
+        "full_screen",
+        "legendary_mode"
+      ],
+      "multipliers": {
+        "evolution_chain": 25,
+        "full_screen": 100,
+        "legendary_mode": 500
+      }
+    }
+  },
+  "symbols": {
+    "tiers": {
+      "tier1": {
+        "symbols": [
+          "pikachu",
+          "charmander",
+          "squirtle",
+          "bulbasaur"
+        ],
+        "paytable": {
+          "3": 0.4,
+          "4": 1.5,
+          "5": 6,
+          "6": 20,
+          "7": 80
+        }
+      },
+      "tier2": {
+        "symbols": [
+          "raichu",
+          "charmeleon",
+          "wartortle",
+          "ivysaur"
+        ],
+        "paytable": {
+          "3": 1.2,
+          "4": 4.5,
+          "5": 18,
+          "6": 60,
+          "7": 240
+        }
+      },
+      "tier3": {
+        "symbols": [
+          "charizard",
+          "blastoise",
+          "venusaur"
+        ],
+        "paytable": {
+          "3": 4,
+          "4": 15,
+          "5": 60,
+          "6": 200,
+          "7": 800
+        }
+      },
+      "mega": {
+        "symbols": [
+          "mega_charizard_x",
+          "mega_mewtwo_y"
+        ],
+        "paytable": {
+          "2": 8,
+          "3": 40,
+          "4": 160,
+          "5": 640,
+          "6": 1600,
+          "7": 4000
+        }
+      }
+    },
+    "special": {
+      "wild": {
+        "id": "wild_pokeball",
+        "substitutes": "all_standard"
+      },
+      "scatter": {
+        "id": "scatter_pikachu",
+        "triggers": "free_spins"
+      }
+    }
+  },
+  "audio": {
+    "enabled": true,
+    "effects": [
+      "spin",
+      "win",
+      "evolution",
+      "freespins",
+      "megawin"
+    ],
+    "volume": 0.7
+  },
+  "animations": {
+    "enabled": true,
+    "quality": "ultra",
+    "effects": [
+      "particles",
+      "screen_shake",
+      "flash",
+      "zoom"
+    ],
+    "spine2d": true
+  },
+  "technical": {
+    "engine": "javascript-es2022",
+    "framework": "typescript-modular",
+    "rendering": "canvas-2d",
+    "performance": {
+      "targetFPS": 60,
+      "memoryOptimized": true,
+      "mobileOptimized": true
+    }
+  }
+}

@@ -1,0 +1,84 @@
+/* ⚡ ULTIMATE POKÉDX MASTERPIECE - THE MOST SPECTACULAR AI-CREATED GAME ⚡ */
+html,body{height:100%;margin:0;padding:0;overflow:hidden;font-family:'Orbitron','Exo 2',monospace,sans-serif}
+.game-container{width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;position:relative}
+
+/* 🔥 LEGENDARY POKÉDX FRAME - CINEMATIC QUALITY 🔥 */
+.pokedex{
+  background:linear-gradient(145deg,#dc2626 0%,#991b1b 25%,#7f1d1d 75%,#450a0a 100%);
+  border:16px solid;
+  border-image:linear-gradient(45deg,#ffd700,#ff6b00,#dc2626,#7f1d1d) 1;
+  border-radius:35px;
+  padding:25px;
+  box-shadow:
+    0 0 60px rgba(220,38,38,0.6),
+    inset 0 0 50px rgba(0,0,0,0.4),
+    0 25px 80px rgba(0,0,0,0.8);
+/* Professional shimmer effect */
+.feature-btn::before{
+  content:"";position:absolute;top:-50%;left:-100%;width:200%;height:200%;
+  background:linear-gradient(45deg,transparent,rgba(255,255,255,0.4),transparent);
+  animation:featureShimmer 3s ease-in-out infinite;
+}
+
+@keyframes featureShimmer{
+  0%{left:-100%}
+  50%{left:100%}
+  100%{left:100%}
+}
+
+.currency-controls{display:flex;gap:15px;align-items:center}
+.currency-sel{
+  background:radial-gradient(ellipse at center,rgba(0,0,0,0.7),rgba(44,62,80,0.8));
+  color:#ffd700;border:3px solid;
+  border-image:linear-gradient(45deg,rgba(255,215,0,0.5),rgba(255,107,0,0.7),rgba(255,215,0,0.5)) 1;
+  border-radius:12px;padding:12px 16px;font-weight:bold;font-size:clamp(12px,2vw,16px);
+  cursor:pointer;transition:all 0.3s ease;
+  box-shadow:
+    0 4px 15px rgba(0,0,0,0.3),
+    inset 0 1px 3px rgba(255,215,0,0.2);
+  text-shadow:1px 1px 0 #000;
+}
+
+.currency-sel:hover{
+  box-shadow:
+    0 6px 20px rgba(0,0,0,0.4),
+    inset 0 2px 5px rgba(255,215,0,0.3),
+    0 0 15px rgba(255,215,0,0.4);
+  transform:translateY(-2px);
+}
+
+.currency-sel:focus{
+  outline:none;
+  border-image:linear-gradient(45deg,rgba(255,215,0,0.8),rgba(255,107,0,1),rgba(255,215,0,0.8)) 1;
+  box-shadow:
+    0 8px 25px rgba(0,0,0,0.5),
+    inset 0 3px 8px rgba(255,215,0,0.4),
+    0 0 25px rgba(255,215,0,0.6);
+}
+
+/* Loader */
+.loader{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);border-radius:15px;z-index:10}
+.loader[aria-hidden="true"]{display:none}
+.spinner{width:40px;height:40px;border-radius:999px;border:4px solid rgba(255,255,255,0.2);border-top-color:#ffde00;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Messages */
+.messages{position:fixed;right:1rem;bottom:1rem;display:flex;flex-direction:column;gap:.5rem;z-index:1000}
+.msg{background:#111827;border:1px solid #ffde00;border-radius:10px;padding:.5rem .75rem;opacity:.96;color:#e6edf3}
+
+/* Animations */
+.pop{animation:pop .6s ease-out both}
+@keyframes pop{0%{opacity:0;transform:scale(.6)}40%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(1)}}
+
+/* Modal styles */
+.modal{max-width:min(800px,94vw);border:1px solid #ffde00;background:#8bac0f;color:#0f380f;border-radius:12px}
+.modal-body{max-height:min(60vh,600px);overflow:auto}
+.modal::backdrop{background:rgba(0,0,0,.7)}
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid #5d7a0a;padding:.4rem .5rem}
+thead th{background:#0f380f;color:#8bac0f}
+
+/* Responsive Design */
+@media (max-width:1100px){.game-container{width:95%;height:auto;min-height:700px}}
+@media (max-width:900px){.pokedex{padding:20px}.pokedex-title{font-size:24px}.game-controls{flex-direction:column;height:auto;gap:15px}}
+@media (max-width:600px){.pokedex{padding:15px}.control-group{min-width:100px}.additional-controls{flex-direction:column}}

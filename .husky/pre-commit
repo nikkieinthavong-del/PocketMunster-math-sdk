@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+set -e
+
+# Format staged files
+npx --no -- lint-staged
+
+# Lint Markdown (scope to README only to keep noise low)
+npx --no -- markdownlint README.md || true

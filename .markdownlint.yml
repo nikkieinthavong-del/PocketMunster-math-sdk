@@ -1,0 +1,7 @@
+default: true
+MD013: # line-length
+  line_length: 120
+  code_blocks: false
+  tables: false
+MD033: false # inline HTML allowed
+MD041: false # first line heading not required in some docs

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stakeengine.github.io/math-sdk/schemas/spin_result.schema.json",
+  "title": "SpinResult",
+  "type": "object",
+  "required": ["grid", "multiplierMap", "events", "totalWinX"],
+  "properties": {
+    "grid": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["kind"],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "standard",
+                "wild",
+                "egg",
+                "scatter_pokeball",
+                "scatter_pikachu",
+                "scatter_trainer",
+                "win",
+                "blank"
+              ]
+            },
+            "tier": { "type": ["integer", "null"] },
+            "id": { "type": ["string", "null"] }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "multiplierMap": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": { "type": "number", "minimum": 0 }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "spinStart",
+              "win",
+              "tumbleStart",
+              "tumbleEnd",
+              "cellMultiplierUp",
+              "evolutionStep",
+              "raidStart",
+              "raidResolve",
+              "featureEnter",
+              "spinEnd",
+              "scatters"
+            ]
+          },
+          "payload": { "type": ["object", "null"] }
+        },
+        "additionalProperties": true
+      }
+    },
+    "totalWinX": { "type": "number", "minimum": 0 },
+    "uiHints": { "type": ["object", "null"] }
+  },
+  "additionalProperties": true
+}

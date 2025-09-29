@@ -11,9 +11,17 @@
         "tag:yaml.org,2002:python/name:pymdownx.superfences.fence_code_format",
         "tag:yaml.org,2002:python/object/apply:pymdownx.slugs.slugify mapping"
       ],
-    "cSpell.words": [
-        "reelset",
-        "reelstop",
-        "Reelstrips"
-    ]
+  "cSpell.words": [
+    "reelset",
+    "reelstop",
+    "Reelstrips"
+  ],
+  // Ensure Python terminals load environment variables from .env
+  "python.envFile": "${workspaceFolder}/.env",
+  // Activate the selected Python environment automatically in terminals
+  "python.terminal.activateEnvironment": true,
+  // Some versions of the Python extension support using the envFile in terminals explicitly
+  "python.terminal.useEnvFile": true,
+  // Ensure pytest/debug sessions also pick up the env file (if you use Python tests)
+  "python.testing.pytestEnvFile": "${workspaceFolder}/.env"
 }
