@@ -76,7 +76,7 @@ export class GameController {
 
   private createOptimalRTPConfig(): RTOConfig {
     return {
-      targetRTP: 0.945, // Target 94.5% RTP for optimal balance
+      targetRTP: 0.965, // Target 96.5% RTP per Stake guidelines
       volatility: 'high',
       hitFrequency: 0.28,
       maxWinCap: 5000, // 5000x max win
