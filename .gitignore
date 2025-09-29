@@ -20,13 +20,41 @@ __pycache__
 **/optimization_files/**
 
 /env
-*.env
+# Ignore real env files but keep example templates tracked
+.env
+uploads/.env
+.env*
+!.env.example
+!uploads/.env.example
 *.DS_Store
 
-**/site/*
+# dependencies
+node_modules/
 
+<<<<<<< HEAD
+# builds
+dist/
+dist-run/
+.vite/
+coverage/
+.nyc_output/
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# misc
+.DS_Store
+
+
+*storybook.log
+storybook-static
+=======
 # Node.js dependencies
 node_modules/
 dist/
 dist-run/
 
+>>>>>>> origin/main
