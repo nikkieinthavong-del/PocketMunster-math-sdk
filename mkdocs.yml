@@ -7,7 +7,7 @@ theme:
   palette:
     - scheme: slate
       primary: 'custom'
-      accent: 'custom'  
+      accent: 'custom'
       toggle:
         icon: material/weather-sunny
         name: Light mode
@@ -36,73 +36,73 @@ markdown_extensions:
       line_spans: __span
       pygments_lang_class: true
 
-
 nav:
   - index.md
   - Frontend-SDK: fe_home.md
   - Math-SDK: math_home.md
   - Technical Details:
-    - Math SDK Technical Details:
-      - Engine Setup: math_docs/general_overview.md
-      - Quickstart Guide: math_docs/quickstart.md
-      - Required Math File Format: rgs_docs/data_format.md
-      - SDK Directory: math_docs/directory.md
-      - High-Level Structure:
-          - State Machine: math_docs/overview_section/state_overview.md
-          - Game Structure: math_docs/overview_section/game_struct.md
-          - Game Format: math_docs/overview_section/game_format.md
+      - Math SDK Technical Details:
+          - Engine Setup: math_docs/general_overview.md
+          - Quickstart Guide: math_docs/quickstart.md
+          - Required Math File Format: rgs_docs/data_format.md
+          - SDK Directory: math_docs/directory.md
+          - High-Level Structure:
+              - State Machine: math_docs/overview_section/state_overview.md
+              - Game Structure: math_docs/overview_section/game_struct.md
+              - Game Format: math_docs/overview_section/game_format.md
 
-      - Gamestate Structure:
-        - Simulation Acceptance: math_docs/gamestate_section/repeat_info.md
-        - Setup: 
-          - Configs: math_docs/gamestate_section/configuration_section/config_overview.md
-          - BetMode: math_docs/gamestate_section/configuration_section/betmode_overview.md
-          - Distribution: math_docs/gamestate_section/configuration_section/betmode_dist.md
-        - Symbols and Board:
-          - Symbols: math_docs/gamestate_section/syms_board_section/symbol_info.md
-          - Board: math_docs/gamestate_section/syms_board_section/board_info.md
-        - Wins: math_docs/gamestate_section/win_info.md
-        - Events: math_docs/gamestate_section/events_info.md
-        - Force Files: math_docs/gamestate_section/force_info.md
+          - Gamestate Structure:
+              - Simulation Acceptance: math_docs/gamestate_section/repeat_info.md
+              - Setup:
+                  - Configs: math_docs/gamestate_section/configuration_section/config_overview.md
+                  - BetMode: math_docs/gamestate_section/configuration_section/betmode_overview.md
+                  - Distribution: math_docs/gamestate_section/configuration_section/betmode_dist.md
+              - Symbols and Board:
+                  - Symbols: math_docs/gamestate_section/syms_board_section/symbol_info.md
+                  - Board: math_docs/gamestate_section/syms_board_section/board_info.md
+              - Wins: math_docs/gamestate_section/win_info.md
+              - Events: math_docs/gamestate_section/events_info.md
+              - Force Files: math_docs/gamestate_section/force_info.md
 
-      - Source Files:
-        - Calculations: 
-          - Board: math_docs/source_section/board_info.md
-          - Tumble: math_docs/source_section/tumble_info.md
-          - Lines: math_docs/source_section/lines_info.md
-          - Ways: math_docs/source_section/ways_info.md
-          - Scatter: math_docs/source_section/scatter_info.md
-          - Cluster: math_docs/source_section/cluster_info.md
-        - Config: math_docs/source_section/config_info.md
-        - Events: math_docs/source_section/event_info.md
-        - Executables: math_docs/source_section/executables_info.md
-        - State: math_docs/source_section/state_info.md
-        - Win Manager: math_docs/source_section/win_manager.md
-        - Outputs: math_docs/source_section/file_info.md
+          - Source Files:
+              - Calculations:
+                  - Board: math_docs/source_section/board_info.md
+                  - Tumble: math_docs/source_section/tumble_info.md
+                  - Lines: math_docs/source_section/lines_info.md
+                  - Ways: math_docs/source_section/ways_info.md
+                  - Scatter: math_docs/source_section/scatter_info.md
+                  - Cluster: math_docs/source_section/cluster_info.md
+              - Config: math_docs/source_section/config_info.md
+              - Events: math_docs/source_section/event_info.md
+              - Executables: math_docs/source_section/executables_info.md
+              - State: math_docs/source_section/state_info.md
+              - Win Manager: math_docs/source_section/win_manager.md
+              - Outputs: math_docs/source_section/file_info.md
 
-      - Utilities: math_docs/utils_section/utilities.md
-      - Example Games: math_docs/sample_section/sample_games.md
-      - Uploads: math_docs/uploads_section/upload_info.md
-      
-      - Optimization Algorithm: math_docs/optimization_section/optimization_algorithm.md
+          - Utilities: math_docs/utils_section/utilities.md
+          - Example Games: math_docs/sample_section/sample_games.md
+          - Uploads: math_docs/uploads_section/upload_info.md
 
-    - Frontend SDK Technical Details: 
-      - Dependencies: fe_docs/dependencies.md
-      - Getting Started: fe_docs/get_started.md
-      - Storybook: fe_docs/explore_sb.md
-      - Flowchart: fe_docs/flowchart.md
-      - Task Breakdown: fe_docs/task_bd.md
-      - Adding New Events: fe_docs/steps.md
-      - File Structure: fe_docs/file_struct.md
-      - Context: fe_docs/context.md
-      - UI: fe_docs/ui.md
-      - Animations & Reactions:
-        - Overview: fe_docs/animations/index.md
-        - Animation Engine: fe_docs/animations/engine.md
-        - Stories: fe_docs/animations/stories.md
-        - Reveals: fe_docs/animations/reveals.md
-        - Symbol Reactions: fe_docs/animations/symbol-reactions.md
-        - Reel Reactions: fe_docs/animations/reel-reactions.md
+          - Optimization Algorithm: math_docs/optimization_section/optimization_algorithm.md
 
-    - RGS Technical Details: rgs_docs/RGS.md
+      - Frontend SDK Technical Details:
+          - Dependencies: fe_docs/dependencies.md
+          - Getting Started: fe_docs/get_started.md
+          - Storybook: fe_docs/explore_sb.md
+          - Flowchart: fe_docs/flowchart.md
+          - Task Breakdown: fe_docs/task_bd.md
+          - Adding New Events: fe_docs/steps.md
+          - File Structure: fe_docs/file_struct.md
+          - Context: fe_docs/context.md
+          - UI: fe_docs/ui.md
+          - Animations & Reactions:
+              - Overview: fe_docs/animations/index.md
+              - Animation Engine: fe_docs/animations/engine.md
+              - Visuals Config: fe_docs/animations/visuals-config.md
+              - Stories: fe_docs/animations/stories.md
+              - Reveals: fe_docs/animations/reveals.md
+              - Symbol Reactions: fe_docs/animations/symbol-reactions.md
+              - Reel Reactions: fe_docs/animations/reel-reactions.md
+
+      - RGS Technical Details: rgs_docs/RGS.md
   - RGS Connection Example: simple_example/simple_example.md

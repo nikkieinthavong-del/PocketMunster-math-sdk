@@ -98,59 +98,59 @@
 // ============================================================================
 
 export interface AnimationConfig {
- enableParticles: boolean;
- enableSpine: boolean;
- quality: 'low' | 'medium' | 'high' | 'ultra';
- frameRate: number;
- particleDensity: number;
- maxConcurrentAnimations: number;
+  enableParticles: boolean;
+  enableSpine: boolean;
+  quality: 'low' | 'medium' | 'high' | 'ultra';
+  frameRate: number;
+  particleDensity: number;
+  maxConcurrentAnimations: number;
 }
 
 export interface ReelMotionConfig {
- spinDuration: number;
- anticipationDelay: number;
- easeType: 'bounce' | 'elastic' | 'smooth' | 'sharp';
- blurEffect: boolean;
- reelSeparation: boolean;
+  spinDuration: number;
+  anticipationDelay: number;
+  easeType: 'bounce' | 'elastic' | 'smooth' | 'sharp';
+  blurEffect: boolean;
+  reelSeparation: boolean;
 }
 
 export interface ParticleEffect {
- id: string;
- type: 'evolution_burst' | 'win_sparkle' | 'scatter_magic' | 'cascade_explosion' | 'mega_aura';
- position: { x: number; y: number };
- duration: number;
- intensity: number;
- color: string;
- particleCount: number;
- startTime: number;
+  id: string;
+  type: 'evolution_burst' | 'win_sparkle' | 'scatter_magic' | 'cascade_explosion' | 'mega_aura';
+  position: { x: number; y: number };
+  duration: number;
+  intensity: number;
+  color: string;
+  particleCount: number;
+  startTime: number;
 }
 
 export interface SpineAnimation {
- id: string;
- skeletonData: string;
- animationName: string;
- position: { x: number; y: number };
- scale: number;
- loop: boolean;
- duration?: number;
- onComplete?: () => void;
- startTime: number;
+  id: string;
+  skeletonData: string;
+  animationName: string;
+  position: { x: number; y: number };
+  scale: number;
+  loop: boolean;
+  duration?: number;
+  onComplete?: () => void;
+  startTime: number;
 }
 
 export interface CinematicEffect {
- id: string;
- type: 'screen_shake' | 'flash' | 'zoom' | 'slow_motion' | 'lightning';
- intensity: number;
- duration: number;
- delay?: number;
- startTime: number;
+  id: string;
+  type: 'screen_shake' | 'flash' | 'zoom' | 'slow_motion' | 'lightning';
+  intensity: number;
+  duration: number;
+  delay?: number;
+  startTime: number;
 }
 
 export interface AnimationMetrics {
- fps: number;
- activeAnimations: number;
- memoryUsage: number;
- lastFrameTime: number;
+  fps: number;
+  activeAnimations: number;
+  memoryUsage: number;
+  lastFrameTime: number;
 }
 
 // ============================================================================
@@ -158,17 +158,21 @@ export interface AnimationMetrics {
 // ============================================================================
 
 export class AnimationError extends Error {
- constructor(message: string, public readonly code: string, public readonly context?: any) {
-   super(message);
-   this.name = 'AnimationError';
- }
+  constructor(
+    message: string,
+    public readonly code: string,
+    public readonly context?: any,
+  ) {
+    super(message);
+    this.name = 'AnimationError';
+  }
 }
 
 export class ConfigurationError extends AnimationError {
- constructor(message: string, context?: any) {
-   super(message, 'CONFIG_ERROR', context);
-   this.name = 'ConfigurationError';
- }
+  constructor(message: string, context?: any) {
+    super(message, 'CONFIG_ERROR', context);
+    this.name = 'ConfigurationError';
+  }
 }
 
 // ============================================================================
@@ -176,75 +180,84 @@ export class ConfigurationError extends AnimationError {
 // ============================================================================
 
 export class AnimationConfigManager {
- private static instance: AnimationConfigManager;
- private config: Required<AnimationConfig>;
- private reelConfig: Required<ReelMotionConfig>;
+  private static instance: AnimationConfigManager;
+  private config: Required<AnimationConfig>;
+  private reelConfig: Required<ReelMotionConfig>;
 
- private constructor() {
-   this.config = this.getDefaultAnimationConfig();
-   this.reelConfig = this.getDefaultReelConfig();
- }
+  private constructor() {
+    this.config = this.getDefaultAnimationConfig();
+    this.reelConfig = this.getDefaultReelConfig();
+  }
 
- static getInstance(): AnimationConfigManager {
-   if (!AnimationConfigManager.instance) {
-     AnimationConfigManager.instance = new AnimationConfigManager();
-   }
-   return AnimationConfigManager.instance;
- }
+  static getInstance(): AnimationConfigManager {
+    if (!AnimationConfigManager.instance) {
+      AnimationConfigManager.instance = new AnimationConfigManager();
+    }
+    return AnimationConfigManager.instance;
+  }
 
- updateAnimationConfig(config: Partial<AnimationConfig>): void {
-   this.validateAnimationConfig(config);
-   this.config = { ...this.config, ...config };
- }
+  updateAnimationConfig(config: Partial<AnimationConfig>): void {
+    this.validateAnimationConfig(config);
+    this.config = { ...this.config, ...config };
+  }
 
- updateReelConfig(config: Partial<ReelMotionConfig>): void {
-   this.validateReelConfig(config);
-   this.reelConfig = { ...this.reelConfig, ...config };
- }
+  updateReelConfig(config: Partial<ReelMotionConfig>): void {
+    this.validateReelConfig(config);
+    this.reelConfig = { ...this.reelConfig, ...config };
+  }
 
- getAnimationConfig(): Readonly<Required<AnimationConfig>> {
-   return { ...this.config };
- }
+  getAnimationConfig(): Readonly<Required<AnimationConfig>> {
+    return { ...this.config };
+  }
 
- getReelConfig(): Readonly<Required<ReelMotionConfig>> {
-   return { ...this.reelConfig };
- }
+  getReelConfig(): Readonly<Required<ReelMotionConfig>> {
+    return { ...this.reelConfig };
+  }
 
- private getDefaultAnimationConfig(): Required<AnimationConfig> {
-   return {
-     enableParticles: true,
-     enableSpine: false,
-     quality: 'high',
-     frameRate: 60,
-     particleDensity: 1.0,
-     maxConcurrentAnimations: 50,
-   };
- }
+  private getDefaultAnimationConfig(): Required<AnimationConfig> {
+    return {
+      enableParticles: true,
+      enableSpine: false,
+      quality: 'high',
+      frameRate: 60,
+      particleDensity: 1.0,
+      maxConcurrentAnimations: 50,
+    };
+  }
 
- private getDefaultReelConfig(): Required<ReelMotionConfig> {
-   return {
-     spinDuration: 2000,
-     anticipationDelay: 300,
-     easeType: 'elastic',
-     blurEffect: true,
-     reelSeparation: true,
-   };
- }
+  private getDefaultReelConfig(): Required<ReelMotionConfig> {
+    return {
+      spinDuration: 2000,
+      anticipationDelay: 300,
+      easeType: 'elastic',
+      blurEffect: true,
+      reelSeparation: true,
+    };
+  }
 
- private validateAnimationConfig(config: Partial<AnimationConfig>): void {
-   if (config.frameRate !== undefined && (config.frameRate < 30 || config.frameRate > 120)) {
-     throw new ConfigurationError('Frame rate must be between 30 and 120 FPS', { frameRate: config.frameRate });
-   }
-   if (config.particleDensity !== undefined && (config.particleDensity < 0.1 || config.particleDensity > 2.0)) {
-     throw new ConfigurationError('Particle density must be between 0.1 and 2.0', { particleDensity: config.particleDensity });
-   }
- }
+  private validateAnimationConfig(config: Partial<AnimationConfig>): void {
+    if (config.frameRate !== undefined && (config.frameRate < 30 || config.frameRate > 120)) {
+      throw new ConfigurationError('Frame rate must be between 30 and 120 FPS', {
+        frameRate: config.frameRate,
+      });
+    }
+    if (
+      config.particleDensity !== undefined &&
+      (config.particleDensity < 0.1 || config.particleDensity > 2.0)
+    ) {
+      throw new ConfigurationError('Particle density must be between 0.1 and 2.0', {
+        particleDensity: config.particleDensity,
+      });
+    }
+  }
 
- private validateReelConfig(config: Partial<ReelMotionConfig>): void {
-   if (config.spinDuration !== undefined && config.spinDuration < 500) {
-     throw new ConfigurationError('Spin duration must be at least 500ms', { spinDuration: config.spinDuration });
-   }
- }
+  private validateReelConfig(config: Partial<ReelMotionConfig>): void {
+    if (config.spinDuration !== undefined && config.spinDuration < 500) {
+      throw new ConfigurationError('Spin duration must be at least 500ms', {
+        spinDuration: config.spinDuration,
+      });
+    }
+  }
 }
 
 // ============================================================================
@@ -252,51 +265,54 @@ export class AnimationConfigManager {
 // ============================================================================
 
 export class ParticlePool {
- private static instance: ParticlePool;
- private pool: Map<string, ParticleEffect[]> = new Map();
- private activeParticles: Set<string> = new Set();
+  private static instance: ParticlePool;
+  private pool: Map<string, ParticleEffect[]> = new Map();
+  private activeParticles: Set<string> = new Set();
 
- static getInstance(): ParticlePool {
-   if (!ParticlePool.instance) {
-     ParticlePool.instance = new ParticlePool();
-   }
-   return ParticlePool.instance;
- }
+  static getInstance(): ParticlePool {
+    if (!ParticlePool.instance) {
+      ParticlePool.instance = new ParticlePool();
+    }
+    return ParticlePool.instance;
+  }
 
- getParticle(effectType: string): ParticleEffect | null {
-   const pool = this.pool.get(effectType) || [];
-   const particle = pool.pop();
-   if (particle) {
-     this.activeParticles.add(particle.id);
-   }
-   return particle || null;
- }
+  getParticle(effectType: string): ParticleEffect | null {
+    const pool = this.pool.get(effectType) || [];
+    const particle = pool.pop();
+    if (particle) {
+      this.activeParticles.add(particle.id);
+    }
+    return particle || null;
+  }
 
- releaseParticle(particle: ParticleEffect): void {
-   if (this.activeParticles.has(particle.id)) {
-     this.activeParticles.delete(particle.id);
-     const pool = this.pool.get(particle.type) || [];
-     pool.push(particle);
-     this.pool.set(particle.type, pool);
-   }
- }
+  releaseParticle(particle: ParticleEffect): void {
+    if (this.activeParticles.has(particle.id)) {
+      this.activeParticles.delete(particle.id);
+      const pool = this.pool.get(particle.type) || [];
+      pool.push(particle);
+      this.pool.set(particle.type, pool);
+    }
+  }
 
- createParticle(effectType: ParticleEffect['type'], config: Omit<ParticleEffect, 'id' | 'type' | 'startTime'>): ParticleEffect {
-   const particle: ParticleEffect = {
-     id: `particle_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-     type: effectType as ParticleEffect['type'],
-     startTime: performance.now(),
-     ...config,
-   };
+  createParticle(
+    effectType: ParticleEffect['type'],
+    config: Omit<ParticleEffect, 'id' | 'type' | 'startTime'>,
+  ): ParticleEffect {
+    const particle: ParticleEffect = {
+      id: `particle_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      type: effectType as ParticleEffect['type'],
+      startTime: performance.now(),
+      ...config,
+    };
 
-   this.activeParticles.add(particle.id);
-   return particle;
- }
+    this.activeParticles.add(particle.id);
+    return particle;
+  }
 
- cleanup(): void {
-   this.activeParticles.clear();
-   this.pool.clear();
- }
+  cleanup(): void {
+    this.activeParticles.clear();
+    this.pool.clear();
+  }
 }
 
 // ============================================================================
@@ -304,35 +320,40 @@ export class ParticlePool {
 // ============================================================================
 
 export class EasingUtils {
- static bounce(t: number): number {
-   if (t < 0.5) return 2 * t * t;
-   return -1 + (4 - 2 * t) * t;
- }
+  static bounce(t: number): number {
+    if (t < 0.5) return 2 * t * t;
+    return -1 + (4 - 2 * t) * t;
+  }
 
- static elastic(t: number): number {
-   if (t === 0 || t === 1) return t;
-   const p = 0.3;
-   const s = p / 4;
-   return Math.pow(2, -10 * t) * Math.sin((t - s) * (2 * Math.PI) / p) + 1;
- }
+  static elastic(t: number): number {
+    if (t === 0 || t === 1) return t;
+    const p = 0.3;
+    const s = p / 4;
+    return Math.pow(2, -10 * t) * Math.sin(((t - s) * (2 * Math.PI)) / p) + 1;
+  }
 
- static smooth(t: number): number {
-   return t * t * (3 - 2 * t);
- }
+  static smooth(t: number): number {
+    return t * t * (3 - 2 * t);
+  }
 
- static sharp(t: number): number {
-   return t * t;
- }
+  static sharp(t: number): number {
+    return t * t;
+  }
 
- static applyEasing(t: number, type: string): number {
-   switch (type) {
-     case 'bounce': return this.bounce(t);
-     case 'elastic': return this.elastic(t);
-     case 'smooth': return this.smooth(t);
-     case 'sharp': return this.sharp(t);
-     default: return t;
-   }
- }
+  static applyEasing(t: number, type: string): number {
+    switch (type) {
+      case 'bounce':
+        return this.bounce(t);
+      case 'elastic':
+        return this.elastic(t);
+      case 'smooth':
+        return this.smooth(t);
+      case 'sharp':
+        return this.sharp(t);
+      default:
+        return t;
+    }
+  }
 }
 
 // ============================================================================
@@ -342,165 +363,174 @@ export class EasingUtils {
 export class AnimationEngine {
   private canvas: any; // HTMLCanvasElement
   private ctx: any; // CanvasRenderingContext2D
- private configManager: AnimationConfigManager;
- private particlePool: ParticlePool;
- private animationMetrics: AnimationMetrics;
- private lastFrameTime: number = 0;
- private frameCount: number = 0;
- private metricsUpdateInterval: number = 1000; // Update metrics every second
+  private configManager: AnimationConfigManager;
+  private particlePool: ParticlePool;
+  private animationMetrics: AnimationMetrics;
+  private lastFrameTime: number = 0;
+  private frameCount: number = 0;
+  private metricsUpdateInterval: number = 1000; // Update metrics every second
 
- // Animation collections with proper typing
- private activeParticles: Map<string, ParticleEffect> = new Map();
- private activeSpineAnimations: Map<string, SpineAnimation> = new Map();
- private activeCinematicEffects: Map<string, CinematicEffect> = new Map();
+  // Animation collections with proper typing
+  private activeParticles: Map<string, ParticleEffect> = new Map();
+  private activeSpineAnimations: Map<string, SpineAnimation> = new Map();
+  private activeCinematicEffects: Map<string, CinematicEffect> = new Map();
 
- constructor(canvas: HTMLCanvasElement, config?: Partial<AnimationConfig>) {
-   this.validateCanvas(canvas);
-   this.canvas = canvas;
-   this.ctx = this.getCanvasContext(canvas);
-   this.configManager = AnimationConfigManager.getInstance();
-   this.particlePool = ParticlePool.getInstance();
-   this.animationMetrics = {
-     fps: 0,
-     activeAnimations: 0,
-     memoryUsage: 0,
-     lastFrameTime: 0,
-   };
+  constructor(canvas: HTMLCanvasElement, config?: Partial<AnimationConfig>) {
+    this.validateCanvas(canvas);
+    this.canvas = canvas;
+    this.ctx = this.getCanvasContext(canvas);
+    this.configManager = AnimationConfigManager.getInstance();
+    this.particlePool = ParticlePool.getInstance();
+    this.animationMetrics = {
+      fps: 0,
+      activeAnimations: 0,
+      memoryUsage: 0,
+      lastFrameTime: 0,
+    };
 
-   if (config) {
-     this.configManager.updateAnimationConfig(config);
-   }
+    if (config) {
+      this.configManager.updateAnimationConfig(config);
+    }
 
-   this.setupCanvas();
-   this.startRenderLoop();
- }
+    this.setupCanvas();
+    this.startRenderLoop();
+  }
 
- private validateCanvas(canvas: HTMLCanvasElement): void {
-   if (!canvas) {
-     throw new AnimationError('Canvas element is required', 'CANVAS_REQUIRED');
-   }
- }
+  private validateCanvas(canvas: HTMLCanvasElement): void {
+    if (!canvas) {
+      throw new AnimationError('Canvas element is required', 'CANVAS_REQUIRED');
+    }
+  }
 
- private getCanvasContext(canvas: any): any {
-   const ctx = canvas.getContext('2d');
-   if (!ctx) {
-     throw new AnimationError('Failed to get 2D rendering context', 'CONTEXT_ERROR');
-   }
-   return ctx;
- }
+  private getCanvasContext(canvas: any): any {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      throw new AnimationError('Failed to get 2D rendering context', 'CONTEXT_ERROR');
+    }
+    return ctx;
+  }
 
- private setupCanvas(): void {
-   try {
-     const dpr = (window && window.devicePixelRatio) || 1;
-     const rect = this.canvas.getBoundingClientRect();
+  private setupCanvas(): void {
+    try {
+      const dpr = (window && window.devicePixelRatio) || 1;
+      const rect = this.canvas.getBoundingClientRect();
 
-     this.canvas.width = rect.width * dpr;
-     this.canvas.height = rect.height * dpr;
-     this.ctx.scale(dpr, dpr);
+      this.canvas.width = rect.width * dpr;
+      this.canvas.height = rect.height * dpr;
+      this.ctx.scale(dpr, dpr);
 
-     this.canvas.style.width = rect.width + 'px';
-     this.canvas.style.height = rect.height + 'px';
-   } catch (error) {
-     throw new AnimationError('Failed to setup canvas', 'CANVAS_SETUP_ERROR', { error });
-   }
- }
+      this.canvas.style.width = rect.width + 'px';
+      this.canvas.style.height = rect.height + 'px';
+    } catch (error) {
+      throw new AnimationError('Failed to setup canvas', 'CANVAS_SETUP_ERROR', { error });
+    }
+  }
 
- private startRenderLoop(): void {
-   const render = (timestamp: number) => {
-     try {
-       this.updateMetrics(timestamp);
-       this.clearCanvas();
-       this.updateAnimations(timestamp);
-       this.renderFrame(timestamp);
-       this.cleanupCompletedAnimations();
-     } catch (error) {
-       console.error('Animation render error:', error);
-     }
-     requestAnimationFrame(render);
-   };
-   requestAnimationFrame(render);
- }
+  private startRenderLoop(): void {
+    const render = (timestamp: number) => {
+      try {
+        this.updateMetrics(timestamp);
+        this.clearCanvas();
+        this.updateAnimations(timestamp);
+        this.renderFrame(timestamp);
+        this.cleanupCompletedAnimations();
+      } catch (error) {
+        console.error('Animation render error:', error);
+      }
+      requestAnimationFrame(render);
+    };
+    requestAnimationFrame(render);
+  }
 
- private updateMetrics(timestamp: number): void {
-   this.frameCount++;
-   const deltaTime = timestamp - this.lastFrameTime;
+  private updateMetrics(timestamp: number): void {
+    this.frameCount++;
+    const deltaTime = timestamp - this.lastFrameTime;
 
-   if (deltaTime >= this.metricsUpdateInterval) {
-     this.animationMetrics.fps = Math.round((this.frameCount * 1000) / deltaTime);
-     this.animationMetrics.activeAnimations =
-       this.activeParticles.size + this.activeSpineAnimations.size + this.activeCinematicEffects.size;
-     this.animationMetrics.lastFrameTime = deltaTime;
-     this.frameCount = 0;
-   }
+    if (deltaTime >= this.metricsUpdateInterval) {
+      this.animationMetrics.fps = Math.round((this.frameCount * 1000) / deltaTime);
+      this.animationMetrics.activeAnimations =
+        this.activeParticles.size +
+        this.activeSpineAnimations.size +
+        this.activeCinematicEffects.size;
+      this.animationMetrics.lastFrameTime = deltaTime;
+      this.frameCount = 0;
+    }
 
-   this.lastFrameTime = timestamp;
- }
+    this.lastFrameTime = timestamp;
+  }
 
- private clearCanvas(): void {
-   this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
- }
+  private clearCanvas(): void {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
 
- private updateAnimations(timestamp: number): void {
-   this.updateParticles(timestamp);
-   this.updateSpineAnimations(timestamp);
-   this.updateCinematicEffects(timestamp);
- }
+  private updateAnimations(timestamp: number): void {
+    this.updateParticles(timestamp);
+    this.updateSpineAnimations(timestamp);
+    this.updateCinematicEffects(timestamp);
+  }
 
- private cleanupCompletedAnimations(): void {
-   const currentTime = performance.now();
-   const config = this.configManager.getAnimationConfig();
+  private cleanupCompletedAnimations(): void {
+    const currentTime = performance.now();
+    const config = this.configManager.getAnimationConfig();
 
-   // Cleanup particles
-   for (const [id, particle] of this.activeParticles.entries()) {
-     if (currentTime - particle.startTime > particle.duration) {
-       this.particlePool.releaseParticle(particle);
-       this.activeParticles.delete(id);
-     }
-   }
+    // Cleanup particles
+    for (const [id, particle] of this.activeParticles.entries()) {
+      if (currentTime - particle.startTime > particle.duration) {
+        this.particlePool.releaseParticle(particle);
+        this.activeParticles.delete(id);
+      }
+    }
 
-   // Cleanup cinematic effects
-   for (const [id, effect] of this.activeCinematicEffects.entries()) {
-     if (currentTime - effect.startTime > effect.duration) {
-       this.activeCinematicEffects.delete(id);
-     }
-   }
+    // Cleanup cinematic effects
+    for (const [id, effect] of this.activeCinematicEffects.entries()) {
+      if (currentTime - effect.startTime > effect.duration) {
+        this.activeCinematicEffects.delete(id);
+      }
+    }
 
-   // Check animation limits
-   if (this.getTotalActiveAnimations() > config.maxConcurrentAnimations) {
-     this.cleanupExcessAnimations();
-   }
- }
+    // Check animation limits
+    if (this.getTotalActiveAnimations() > config.maxConcurrentAnimations) {
+      this.cleanupExcessAnimations();
+    }
+  }
 
- private getTotalActiveAnimations(): number {
-   return this.activeParticles.size + this.activeSpineAnimations.size + this.activeCinematicEffects.size;
- }
+  private getTotalActiveAnimations(): number {
+    return (
+      this.activeParticles.size + this.activeSpineAnimations.size + this.activeCinematicEffects.size
+    );
+  }
 
- private cleanupExcessAnimations(): void {
-   // Remove oldest particles first
-   const particles = Array.from(this.activeParticles.values())
-     .sort((a, b) => a.startTime - b.startTime);
+  private cleanupExcessAnimations(): void {
+    // Remove oldest particles first
+    const particles = Array.from(this.activeParticles.values()).sort(
+      (a, b) => a.startTime - b.startTime,
+    );
 
-   const excessCount = this.getTotalActiveAnimations() - this.configManager.getAnimationConfig().maxConcurrentAnimations;
-   for (let i = 0; i < excessCount && i < particles.length; i++) {
-     const particle = particles[i];
-     this.particlePool.releaseParticle(particle);
-     this.activeParticles.delete(particle.id);
-   }
- }
+    const excessCount =
+      this.getTotalActiveAnimations() -
+      this.configManager.getAnimationConfig().maxConcurrentAnimations;
+    for (let i = 0; i < excessCount && i < particles.length; i++) {
+      const particle = particles[i];
+      this.particlePool.releaseParticle(particle);
+      this.activeParticles.delete(particle.id);
+    }
+  }
 
   // ============================================================================
   // REEL ANIMATION MANAGER
   // ============================================================================
 
-  public async spinReels(reelConfigs: Array<{
-    reelIndex: number;
-    symbols: string[];
-    finalPosition: number;
-    anticipation?: boolean;
-  }>): Promise<void> {
+  public async spinReels(
+    reelConfigs: Array<{
+      reelIndex: number;
+      symbols: string[];
+      finalPosition: number;
+      anticipation?: boolean;
+    }>,
+  ): Promise<void> {
     try {
       this.validateReelConfigs(reelConfigs);
-      const promises = reelConfigs.map(config => this.spinSingleReel(config));
+      const promises = reelConfigs.map((config) => this.spinSingleReel(config));
       await Promise.all(promises);
     } catch (error) {
       throw new AnimationError('Failed to spin reels', 'REEL_SPIN_ERROR', { error, reelConfigs });
@@ -518,7 +548,8 @@ export class AnimationEngine {
         this.validateReelConfig(config);
         const startTime = performance.now();
         const reelConfig = this.configManager.getReelConfig();
-        const totalDuration = reelConfig.spinDuration + (config.anticipation ? reelConfig.anticipationDelay : 0);
+        const totalDuration =
+          reelConfig.spinDuration + (config.anticipation ? reelConfig.anticipationDelay : 0);
 
         const animateReel = (currentTime: number) => {
           try {
@@ -544,7 +575,12 @@ export class AnimationEngine {
               resolve();
             }
           } catch (error) {
-            reject(new AnimationError('Reel animation failed', 'REEL_ANIMATION_ERROR', { error, config }));
+            reject(
+              new AnimationError('Reel animation failed', 'REEL_ANIMATION_ERROR', {
+                error,
+                config,
+              }),
+            );
           }
         };
 
@@ -555,12 +591,14 @@ export class AnimationEngine {
     });
   }
 
-  private validateReelConfigs(reelConfigs: Array<{
-    reelIndex: number;
-    symbols: string[];
-    finalPosition: number;
-    anticipation?: boolean;
-  }>): void {
+  private validateReelConfigs(
+    reelConfigs: Array<{
+      reelIndex: number;
+      symbols: string[];
+      finalPosition: number;
+      anticipation?: boolean;
+    }>,
+  ): void {
     if (!Array.isArray(reelConfigs) || reelConfigs.length === 0) {
       throw new AnimationError('Reel configs must be a non-empty array', 'INVALID_REEL_CONFIGS');
     }
@@ -570,20 +608,29 @@ export class AnimationEngine {
     });
   }
 
-  private validateReelConfig(config: {
-    reelIndex: number;
-    symbols: string[];
-    finalPosition: number;
-    anticipation?: boolean;
-  }, index?: number): void {
+  private validateReelConfig(
+    config: {
+      reelIndex: number;
+      symbols: string[];
+      finalPosition: number;
+      anticipation?: boolean;
+    },
+    index?: number,
+  ): void {
     if (typeof config.reelIndex !== 'number' || config.reelIndex < 0) {
       throw new AnimationError('Invalid reel index', 'INVALID_REEL_INDEX', { config, index });
     }
     if (!Array.isArray(config.symbols) || config.symbols.length === 0) {
-      throw new AnimationError('Symbols must be a non-empty array', 'INVALID_SYMBOLS', { config, index });
+      throw new AnimationError('Symbols must be a non-empty array', 'INVALID_SYMBOLS', {
+        config,
+        index,
+      });
     }
     if (typeof config.finalPosition !== 'number') {
-      throw new AnimationError('Final position must be a number', 'INVALID_FINAL_POSITION', { config, index });
+      throw new AnimationError('Final position must be a number', 'INVALID_FINAL_POSITION', {
+        config,
+        index,
+      });
     }
   }
 
@@ -625,12 +672,12 @@ export class AnimationEngine {
 
   private getSymbolColor(symbol: string): string {
     const colors: Record<string, string> = {
-      'pikachu': '#FFD700',
-      'charizard': '#FF6B35',
-      'blastoise': '#4FC3F7',
-      'venusaur': '#66BB6A',
-      'mewtwo': '#AB47BC',
-      'scatter': '#F06292',
+      pikachu: '#FFD700',
+      charizard: '#FF6B35',
+      blastoise: '#4FC3F7',
+      venusaur: '#66BB6A',
+      mewtwo: '#AB47BC',
+      scatter: '#F06292',
     };
     return colors[symbol] || '#FFFFFF';
   }
@@ -645,7 +692,7 @@ export class AnimationEngine {
   public async playEvolutionAnimation(
     positions: Array<[number, number]>,
     fromSpecies: string,
-    toSpecies: string
+    toSpecies: string,
   ): Promise<void> {
     try {
       this.validateEvolutionAnimationInput(positions, fromSpecies, toSpecies);
@@ -654,10 +701,10 @@ export class AnimationEngine {
       positions.forEach(([row, col]) => {
         const particle = this.particlePool.createParticle('evolution_burst', {
           position: this.gridToScreen(row, col),
-          duration: 2000,
+          duration: this.scaleDuration(2000),
           intensity: 0.8,
           color: '#FFD700',
-          particleCount: 50,
+          particleCount: this.scaleCount(50),
         });
         this.activeParticles.set(particle.id, particle);
       });
@@ -685,14 +732,17 @@ export class AnimationEngine {
       // Wait for animation to complete
       await this.delay(2500);
     } catch (error) {
-      throw new AnimationError('Evolution animation failed', 'EVOLUTION_ANIMATION_ERROR', { error, positions });
+      throw new AnimationError('Evolution animation failed', 'EVOLUTION_ANIMATION_ERROR', {
+        error,
+        positions,
+      });
     }
   }
 
   private validateEvolutionAnimationInput(
     positions: Array<[number, number]>,
     fromSpecies: string,
-    toSpecies: string
+    toSpecies: string,
   ): void {
     if (!Array.isArray(positions) || positions.length === 0) {
       throw new AnimationError('Positions must be a non-empty array', 'INVALID_POSITIONS');
@@ -708,7 +758,10 @@ export class AnimationEngine {
   /**
    * Cluster win celebration with cascading particles
    */
-  public async playClusterWinAnimation(positions: Array<[number, number]>, tier: number): Promise<void> {
+  public async playClusterWinAnimation(
+    positions: Array<[number, number]>,
+    tier: number,
+  ): Promise<void> {
     try {
       this.validateClusterWinInput(positions, tier);
       const intensity = Math.min(tier / 3, 1);
@@ -717,10 +770,10 @@ export class AnimationEngine {
         setTimeout(() => {
           const particle = this.particlePool.createParticle('win_sparkle', {
             position: this.gridToScreen(row, col),
-            duration: 1500,
+            duration: this.scaleDuration(1500),
             intensity,
             color: tier >= 3 ? '#FF6B35' : '#4FC3F7',
-            particleCount: 25 * tier,
+            particleCount: this.scaleCount(25 * tier),
           });
           this.activeParticles.set(particle.id, particle);
         }, index * 100);
@@ -739,7 +792,11 @@ export class AnimationEngine {
 
       await this.delay(2000);
     } catch (error) {
-      throw new AnimationError('Cluster win animation failed', 'CLUSTER_WIN_ERROR', { error, positions, tier });
+      throw new AnimationError('Cluster win animation failed', 'CLUSTER_WIN_ERROR', {
+        error,
+        positions,
+        tier,
+      });
     }
   }
 
@@ -757,7 +814,7 @@ export class AnimationEngine {
    */
   public async playCascadeAnimation(
     removedPositions: Array<[number, number]>,
-    newPositions: Array<[number, number]>
+    newPositions: Array<[number, number]>,
   ): Promise<void> {
     try {
       this.validateCascadeInput(removedPositions, newPositions);
@@ -766,10 +823,10 @@ export class AnimationEngine {
       removedPositions.forEach(([row, col]) => {
         const particle = this.particlePool.createParticle('cascade_explosion', {
           position: this.gridToScreen(row, col),
-          duration: 800,
+          duration: this.scaleDuration(800),
           intensity: 0.6,
           color: '#FF9800',
-          particleCount: 20,
+          particleCount: this.scaleCount(20),
         });
         this.activeParticles.set(particle.id, particle);
       });
@@ -779,13 +836,17 @@ export class AnimationEngine {
 
       await this.delay(1200);
     } catch (error) {
-      throw new AnimationError('Cascade animation failed', 'CASCADE_ERROR', { error, removedPositions, newPositions });
+      throw new AnimationError('Cascade animation failed', 'CASCADE_ERROR', {
+        error,
+        removedPositions,
+        newPositions,
+      });
     }
   }
 
   private validateCascadeInput(
     removedPositions: Array<[number, number]>,
-    newPositions: Array<[number, number]>
+    newPositions: Array<[number, number]>,
   ): void {
     if (!Array.isArray(removedPositions)) {
       throw new AnimationError('Removed positions must be an array', 'INVALID_REMOVED_POSITIONS');
@@ -814,9 +875,10 @@ export class AnimationEngine {
       const progress = Math.min(elapsed / duration, 1);
 
       // Bounce easing for landing effect
-      const easedProgress = progress < 0.8
-        ? progress
-        : 0.8 + (progress - 0.8) * Math.sin((progress - 0.8) * Math.PI * 5) * 0.2;
+      const easedProgress =
+        progress < 0.8
+          ? progress
+          : 0.8 + (progress - 0.8) * Math.sin((progress - 0.8) * Math.PI * 5) * 0.2;
 
       const currentY = startY + (y - startY) * easedProgress;
 
@@ -878,10 +940,10 @@ export class AnimationEngine {
               x: Math.random() * this.canvas.width,
               y: Math.random() * this.canvas.height,
             },
-            duration: 3000,
+            duration: this.scaleDuration(3000),
             intensity: 1.0,
             color: '#FFD700',
-            particleCount: 100,
+            particleCount: this.scaleCount(100),
           });
           this.activeParticles.set(particle.id, particle);
         }, i * 200);
@@ -896,6 +958,146 @@ export class AnimationEngine {
   private validateWinAmount(winAmount: number): void {
     if (typeof winAmount !== 'number' || winAmount <= 0) {
       throw new AnimationError('Win amount must be a positive number', 'INVALID_WIN_AMOUNT');
+    }
+  }
+
+  /**
+   * Subtle scatter pulse at given positions (used when scatters land)
+   */
+  public async playScatterPulse(
+    positions: Array<[number, number]>,
+    intensity: number = 0.5,
+  ): Promise<void> {
+    try {
+      if (!Array.isArray(positions) || positions.length === 0) {
+        return; // nothing to show
+      }
+
+      const clampedIntensity = Math.min(Math.max(intensity, 0.2), 1.0);
+      const color = '#F06292';
+
+      positions.forEach(([row, col], idx) => {
+        setTimeout(() => {
+          const particle = this.particlePool.createParticle('scatter_magic', {
+            position: this.gridToScreen(row, col),
+            duration: this.scaleDuration(900),
+            intensity: clampedIntensity,
+            color,
+            particleCount: this.scaleCount(Math.floor(12 * clampedIntensity) + 8),
+          });
+          this.activeParticles.set(particle.id, particle);
+        }, idx * 60);
+      });
+
+      const flash: CinematicEffect = {
+        id: `flash_scatter_${Date.now()}`,
+        type: 'flash',
+        intensity: 0.25 * clampedIntensity,
+        duration: 350,
+        startTime: performance.now(),
+      };
+      this.activeCinematicEffects.set(flash.id, flash);
+
+      await this.delay(650 + positions.length * 60);
+    } catch (error) {
+      throw new AnimationError('Scatter pulse animation failed', 'SCATTER_PULSE_ERROR', {
+        error,
+        positions,
+      });
+    }
+  }
+
+  /**
+   * Free Spins entrance glow/zoom
+   */
+  public async playFreeSpinsEntrance(scatterCount: number): Promise<void> {
+    try {
+      const base = Math.min(Math.max(scatterCount, 3), 7);
+
+      const flash: CinematicEffect = {
+        id: `flash_fs_${Date.now()}`,
+        type: 'flash',
+        intensity: 0.35 + (base - 3) * 0.08,
+        duration: 600,
+        startTime: performance.now(),
+      };
+      this.activeCinematicEffects.set(flash.id, flash);
+
+      const zoom: CinematicEffect = {
+        id: `zoom_fs_${Date.now()}`,
+        type: 'zoom',
+        intensity: 0.25 + (base - 3) * 0.05,
+        duration: 900,
+        startTime: performance.now(),
+      };
+      this.activeCinematicEffects.set(zoom.id, zoom);
+
+      // Ambient magic particles to sell the transition
+      for (let i = 0; i < base; i++) {
+        setTimeout(() => {
+          const particle = this.particlePool.createParticle('scatter_magic', {
+            position: {
+              x: Math.random() * this.canvas.width,
+              y: Math.random() * this.canvas.height,
+            },
+            duration: this.scaleDuration(1000),
+            intensity: 0.4 + i * 0.05,
+            color: '#F06292',
+            particleCount: this.scaleCount(18 + i * 2),
+          });
+          this.activeParticles.set(particle.id, particle);
+        }, i * 90);
+      }
+
+      await this.delay(1000 + base * 90);
+    } catch (error) {
+      throw new AnimationError('Free Spins entrance animation failed', 'FS_ENTRANCE_ERROR', {
+        error,
+        scatterCount,
+      });
+    }
+  }
+
+  /**
+   * Subtle morphing FX: small pulses at positions
+   */
+  public async playMorphingAnimation(
+    positions: Array<[number, number]>,
+    intensity: number = 0.4,
+  ): Promise<void> {
+    try {
+      if (!Array.isArray(positions) || positions.length === 0) return;
+      const clamped = Math.min(Math.max(intensity, 0.2), 1.0);
+      const color = '#7FC8FF';
+
+      positions.forEach(([row, col], idx) => {
+        setTimeout(() => {
+          const particle = this.particlePool.createParticle('win_sparkle', {
+            position: this.gridToScreen(row, col),
+            duration: this.scaleDuration(700),
+            intensity: clamped,
+            color,
+            particleCount: this.scaleCount(Math.floor(10 * clamped) + 6),
+          });
+          this.activeParticles.set(particle.id, particle);
+        }, idx * 40);
+      });
+
+      const flash: CinematicEffect = {
+        id: `flash_morph_${Date.now()}`,
+        type: 'flash',
+        intensity: 0.18 * clamped,
+        duration: 250,
+        startTime: performance.now(),
+      };
+      this.activeCinematicEffects.set(flash.id, flash);
+
+      await this.delay(450 + positions.length * 40);
+    } catch (error) {
+      throw new AnimationError('Morphing animation failed', 'MORPH_ANIMATION_ERROR', {
+        error,
+        positions,
+      });
     }
   }
 
@@ -927,6 +1129,25 @@ export class AnimationEngine {
 
       this.applyCinematicEffect(effect, age / effect.duration);
     }
+  }
+
+  // Global scaling helpers for particle-heavy effects
+  private getParticleScale(): number {
+    const cfg = this.configManager.getAnimationConfig();
+    // Use particleDensity as the scalar; clamp to sane bounds
+    return Math.max(0.25, Math.min(cfg.particleDensity, 2.0));
+  }
+
+  private scaleCount(base: number): number {
+    const s = this.getParticleScale();
+    return Math.max(1, Math.round(base * s));
+  }
+
+  private scaleDuration(baseMs: number): number {
+    const s = this.getParticleScale();
+    // Avoid extreme durations; keep within 0.5x..1.5x window
+    const clamped = Math.max(0.5, Math.min(s, 1.5));
+    return Math.round(baseMs * clamped);
   }
 
   private applyCinematicEffect(effect: CinematicEffect, progress: number): void {
@@ -1012,7 +1233,9 @@ export class AnimationEngine {
       const y = effect.position.y + Math.sin(angle) * distance;
 
       const alpha = 1 - particleProgress;
-      this.ctx.fillStyle = `${effect.color}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`;
+      this.ctx.fillStyle = `${effect.color}${Math.floor(alpha * 255)
+        .toString(16)
+        .padStart(2, '0')}`;
       this.ctx.fillRect(x - 2, y - 2, 4, 4);
     }
   }
@@ -1057,18 +1280,21 @@ export class AnimationEngine {
    */
   public preloadParticleEffects(): void {
     const effectTypes: Array<ParticleEffect['type']> = [
-      'evolution_burst', 'win_sparkle', 'scatter_magic',
-      'cascade_explosion', 'mega_aura'
+      'evolution_burst',
+      'win_sparkle',
+      'scatter_magic',
+      'cascade_explosion',
+      'mega_aura',
     ];
 
-    effectTypes.forEach(type => {
+    effectTypes.forEach((type) => {
       for (let i = 0; i < 10; i++) {
         this.particlePool.createParticle(type, {
           position: { x: 0, y: 0 },
-          duration: 1000,
+          duration: this.scaleDuration(1000),
           intensity: 1.0,
           color: '#FFFFFF',
-          particleCount: 50,
+          particleCount: this.scaleCount(50),
         });
       }
     });
@@ -1088,7 +1314,46 @@ export class AnimationEngine {
    * Utility method for delays
    */
   private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  /**
+   * Near-miss scatter anticipation cue: gentle sparkle and flash
+   */
+  public async playScatterAnticipation(positions: Array<[number, number]>): Promise<void> {
+    try {
+      if (!Array.isArray(positions) || positions.length === 0) return;
+      const color = '#FEEAA1';
+
+      positions.forEach(([row, col], idx) => {
+        setTimeout(() => {
+          const particle = this.particlePool.createParticle('win_sparkle', {
+            position: this.gridToScreen(row, col),
+            duration: this.scaleDuration(600),
+            intensity: 0.35,
+            color,
+            particleCount: this.scaleCount(12),
+          });
+          this.activeParticles.set(particle.id, particle);
+        }, idx * 45);
+      });
+
+      const flash: CinematicEffect = {
+        id: `flash_anticipation_${Date.now()}`,
+        type: 'flash',
+        intensity: 0.18,
+        duration: this.scaleDuration(250),
+        startTime: performance.now(),
+      };
+      this.activeCinematicEffects.set(flash.id, flash);
+
+      await this.delay(500 + positions.length * 45);
+    } catch (error) {
+      throw new AnimationError('Scatter anticipation failed', 'SCATTER_ANTICIPATION_ERROR', {
+        error,
+        positions,
+      });
+    }
   }
 }
 
@@ -1118,7 +1383,7 @@ export class SpineAnimationManager {
   public async loadPokemonSkeleton(
     pokemonName: string,
     skeletonPath: string,
-    atlasPath: string
+    atlasPath: string,
   ): Promise<void> {
     try {
       this.validateSkeletonInput(pokemonName, skeletonPath, atlasPath);
@@ -1135,13 +1400,12 @@ export class SpineAnimationManager {
         skeletonPath,
         atlasPath,
       });
-
     } catch (error) {
       throw new AnimationError('Failed to load Pokemon skeleton', 'SKELETON_LOAD_ERROR', {
         error,
         pokemonName,
         skeletonPath,
-        atlasPath
+        atlasPath,
       });
     }
   }
@@ -1149,7 +1413,7 @@ export class SpineAnimationManager {
   public async playPokemonAnimation(
     pokemonName: string,
     animationName: string,
-    position: { x: number; y: number }
+    position: { x: number; y: number },
   ): Promise<void> {
     try {
       this.validateAnimationInput(pokemonName, animationName, position);
@@ -1165,18 +1429,21 @@ export class SpineAnimationManager {
       // Set skeleton position
       // Play animation
       // Set up completion callback
-
     } catch (error) {
       throw new AnimationError('Failed to play Pokemon animation', 'ANIMATION_PLAY_ERROR', {
         error,
         pokemonName,
         animationName,
-        position
+        position,
       });
     }
   }
 
-  private validateSkeletonInput(pokemonName: string, skeletonPath: string, atlasPath: string): void {
+  private validateSkeletonInput(
+    pokemonName: string,
+    skeletonPath: string,
+    atlasPath: string,
+  ): void {
     if (typeof pokemonName !== 'string' || pokemonName.trim() === '') {
       throw new AnimationError('Pokemon name must be a non-empty string', 'INVALID_POKEMON_NAME');
     }
@@ -1191,13 +1458,16 @@ export class SpineAnimationManager {
   private validateAnimationInput(
     pokemonName: string,
     animationName: string,
-    position: { x: number; y: number }
+    position: { x: number; y: number },
   ): void {
     if (typeof pokemonName !== 'string' || pokemonName.trim() === '') {
       throw new AnimationError('Pokemon name must be a non-empty string', 'INVALID_POKEMON_NAME');
     }
     if (typeof animationName !== 'string' || animationName.trim() === '') {
-      throw new AnimationError('Animation name must be a non-empty string', 'INVALID_ANIMATION_NAME');
+      throw new AnimationError(
+        'Animation name must be a non-empty string',
+        'INVALID_ANIMATION_NAME',
+      );
     }
     if (typeof position.x !== 'number' || typeof position.y !== 'number') {
       throw new AnimationError('Position must have valid x and y coordinates', 'INVALID_POSITION');

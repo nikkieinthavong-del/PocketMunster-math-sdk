@@ -28,7 +28,6 @@
     "ci:local": "npm run format:check && npm run lint:md && npm run typecheck && npm run build:demo && npm test -- --coverage && npm run simulate && npm run simulate:bonus"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
@@ -42,6 +41,7 @@
     "@types/node": "^20.12.12",
     "@vitest/coverage-v8": "^3.2.4",
     "babel-loader": "^10.0.0",
+    "cross-env": "^10.0.0",
     "css-loader": "^7.1.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.4",
@@ -72,10 +72,5 @@
     "*.{js,jsx,ts,tsx,css,md,mdx,json,yml,yaml}": [
       "prettier --write"
     ]
-=======
-    "cross-env": "^10.0.0",
-    "typescript": "^5.5.0",
-    "vitest": "^2.0.5"
->>>>>>> origin/main
   }
 }

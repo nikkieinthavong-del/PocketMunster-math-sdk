@@ -7,42 +7,30 @@
     "cellMax": 8192
   },
   "engine": {
+    "visuals": {
+      "enableReelSpin": true,
+      "enableClusterCelebrate": true,
+      "enableMegaWinCelebration": true,
+      "enableEvolutionAnimation": true,
+      "enableMorphingFX": true,
+      "enableCascadeFX": true,
+      "enableScatterPulse": true,
+      "enableFsEntrance": true,
+      "enableScatterAnticipation": true,
+      "particleDensity": 0.8
+    },
     "demo": {
       "winChance": 0.28,
       "baseFactor": 0.6894905710424741,
       "scatterWeights": [
-        [
-          0,
-          940
-        ],
-        [
-          1,
-          35
-        ],
-        [
-          2,
-          15
-        ],
-        [
-          3,
-          6
-        ],
-        [
-          4,
-          3
-        ],
-        [
-          5,
-          0.7
-        ],
-        [
-          6,
-          0.2
-        ],
-        [
-          7,
-          0.05
-        ]
+        [0, 940],
+        [1, 35],
+        [2, 15],
+        [3, 6],
+        [4, 3],
+        [5, 0.7],
+        [6, 0.2],
+        [7, 0.05]
       ]
     }
   }
