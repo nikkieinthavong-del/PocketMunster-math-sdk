@@ -54,3 +54,32 @@ describe('tumble basics', () => {
     }
   });
 });
+
+describe('tumble multiplier tiers', () => {
+  it('increments winning position multipliers by tier per cascade level', async () => {
+    const { applyWinningPositionMultipliers } = await import('../src/js/engine/tumble.js');
+
+    const multiplierMap = [[1, 1, 1]];
+    const winningPositions: Array<[number, number]> = [
+      [0, 0],
+      [0, 1],
+      [0, 2],
+    ];
+
+    // Level 0: +1 each
+    let updates = applyWinningPositionMultipliers(multiplierMap as any, winningPositions, 0);
+    expect(updates.map(({ newValue, oldValue }: any) => newValue - oldValue)).toEqual([1, 1, 1]);
+
+    // Level 1: +2 each (early cascades)
+    updates = applyWinningPositionMultipliers(multiplierMap as any, winningPositions, 1);
+    expect(updates.map(({ newValue, oldValue }: any) => newValue - oldValue)).toEqual([2, 2, 2]);
+
+    // Level 3: +3 each (mid cascades)
+    updates = applyWinningPositionMultipliers(multiplierMap as any, winningPositions, 3);
+    expect(updates.map(({ newValue, oldValue }: any) => newValue - oldValue)).toEqual([3, 3, 3]);
+
+    // Level 5: +5 each (late cascades)
+    updates = applyWinningPositionMultipliers(multiplierMap as any, winningPositions, 5);
+    expect(updates.map(({ newValue, oldValue }: any) => newValue - oldValue)).toEqual([5, 5, 5]);
+  });
+});
