@@ -9,3 +9,5 @@ This section documents the frontend animation system and how it reacts to math e
 - Reel reactions (spin, stop, bounce, nudge)
 - Scene transitions (enter/exit, cutscenes)
 - Timing, easing, and performance notes
+
+See also: [Visuals Config](./visuals-config.md) for gating flags and `particleDensity` presets.
