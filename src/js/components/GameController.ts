@@ -60,12 +60,13 @@ export class GameController {
     this.gameState = this.initializeGameState();
 
     if (canvas) {
+      const pd = this.config?.engine?.visuals?.particleDensity;
       this.animationEngine = new AnimationEngine(canvas, {
         enableParticles: true,
         enableSpine: true,
         quality: 'ultra',
         frameRate: 60,
-        particleDensity: 1.0,
+        particleDensity: typeof pd === 'number' ? pd : 1.0,
       });
       // Warm up particle pools for smoother first visuals
       this.animationEngine.preloadParticleEffects();
@@ -654,11 +655,18 @@ export class GameController {
 
     // Adjust win chances based on RTP performance
     let winChanceAdjustment = 1;
-    if (currentRTP < targetRTP - 0.02) {
-      winChanceAdjustment = 1.2; // Increase win chance by 20%
-    } else if (currentRTP > targetRTP + 0.02) {
-      winChanceAdjustment = 0.8; // Decrease win chance by 20%
+    const underBand = currentRTP < targetRTP - 0.01; // 1% under target
+    const overBand = currentRTP > targetRTP + 0.01; // 1% over target
+
+    if (underBand) {
+      winChanceAdjustment = 1.05; // gentle +5%
+    } else if (overBand) {
+      winChanceAdjustment = 0.95; // gentle -5%
     }
+
+    // Clamp the adjusted win chance to sane bounds [0.05, 0.6]
+    const baseWinChance = this.config.engine?.demo?.winChance || 0.28;
+    const adjustedWinChance = Math.max(0.05, Math.min(baseWinChance * winChanceAdjustment, 0.6));
 
     return {
       ...this.config,
@@ -666,7 +674,7 @@ export class GameController {
         ...this.config.engine,
         demo: {
           ...this.config.engine?.demo,
-          winChance: (this.config.engine?.demo?.winChance || 0.28) * winChanceAdjustment,
+          winChance: adjustedWinChance,
         },
       },
     };

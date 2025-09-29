@@ -369,6 +369,10 @@ export class AnimationEngine {
   private lastFrameTime: number = 0;
   private frameCount: number = 0;
   private metricsUpdateInterval: number = 1000; // Update metrics every second
+  // Auto-throttle state for adaptive performance
+  private throttleScale: number = 1.0; // 0.5 .. 1.0, multiplies particleDensity
+  private slowFrameStreak: number = 0;
+  private fastFrameStreak: number = 0;
 
   // Animation collections with proper typing
   private activeParticles: Map<string, ParticleEffect> = new Map();
@@ -454,6 +458,38 @@ export class AnimationEngine {
         this.activeCinematicEffects.size;
       this.animationMetrics.lastFrameTime = deltaTime;
       this.frameCount = 0;
+
+      // Auto-throttle particle density based on sustained FPS
+      try {
+        const cfg = this.configManager.getAnimationConfig();
+        const targetFps = Math.max(30, Math.min(cfg.frameRate, 120));
+        const fps = this.animationMetrics.fps || targetFps;
+        const belowThreshold = fps < targetFps * 0.9; // drop if <90% target
+        const aboveThreshold = fps > targetFps * 0.98; // recover if >98% target
+
+        if (belowThreshold) {
+          this.slowFrameStreak++;
+          this.fastFrameStreak = 0;
+        } else if (aboveThreshold) {
+          this.fastFrameStreak++;
+          this.slowFrameStreak = 0;
+        } else {
+          // reset streaks if in the neutral band
+          this.slowFrameStreak = 0;
+          this.fastFrameStreak = 0;
+        }
+
+        // Apply throttling after sustained condition for ~0.5-1.0s
+        if (this.slowFrameStreak >= 6) {
+          this.throttleScale = Math.max(0.5, +(this.throttleScale - 0.1).toFixed(2));
+          this.slowFrameStreak = 0;
+        } else if (this.fastFrameStreak >= 10 && this.throttleScale < 1.0) {
+          this.throttleScale = Math.min(1.0, +(this.throttleScale + 0.05).toFixed(2));
+          this.fastFrameStreak = 0;
+        }
+      } catch {
+        // non-fatal; keep rendering
+      }
     }
 
     this.lastFrameTime = timestamp;
@@ -1134,8 +1170,9 @@ export class AnimationEngine {
   // Global scaling helpers for particle-heavy effects
   private getParticleScale(): number {
     const cfg = this.configManager.getAnimationConfig();
-    // Use particleDensity as the scalar; clamp to sane bounds
-    return Math.max(0.25, Math.min(cfg.particleDensity, 2.0));
+    // Use particleDensity multiplied by adaptive throttle; clamp to sane bounds
+    const raw = cfg.particleDensity * this.throttleScale;
+    return Math.max(0.25, Math.min(raw, 2.0));
   }
 
   private scaleCount(base: number): number {
